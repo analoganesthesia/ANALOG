@@ -1,373 +1,473 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="fr">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANALOG — Réinventer le parcours anesthésique</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonts (libres) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<title>ANALOG</title>
+  <style>
+    :root{
+      /* Page beige clair */
+      --bg: #F7F5F2;
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      --text: #101114;
+      --muted: #5A6472;
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+      --stroke: rgba(16,17,20,.10);
 
-<style>
+      --radius-xl: 28px;
+      --radius-lg: 18px;
 
-:root{
---bg:#F7F5F2;
---text:#101114;
---muted:#5A6472;
---radius:26px;
---container:1100px;
-}
+      --shadow-subtle: 0 10px 30px rgba(16,17,20,.06);
+      --container: 1180px;
+    }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x:hidden;
+    }
 
-body{
-background:var(--bg);
-font-family:Inter,system-ui;
-color:var(--text);
-line-height:1.6;
-}
+    a{color:inherit; text-decoration:none}
 
-.container{
-width:min(var(--container),92%);
-margin:auto;
-}
+    .container{
+      width:min(var(--container), calc(100% - 48px));
+      margin:0 auto;
+    }
 
-header{
-height:80px;
-display:flex;
-align-items:center;
-border-bottom:1px solid rgba(0,0,0,.05);
-}
+    /* Header: logo only (left) */
+    .header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background: rgba(247,245,242,.86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(16,17,20,.06);
+    }
+    .header-inner{
+      height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo img{
+      height:48px;
+      width:auto;
+      display:block;
+    }
 
-.logo img{
-height:52px;
-}
+    /* HERO: centered, simplified */
+    .hero{
+      padding: 72px 0 42px;
+      text-align:center;
+    }
+    .brand-hero{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 300;         /* fine */
+      font-size: clamp(64px, 8vw, 140px);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      margin: 18px 0 22px;
+    }
+    .h1{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(34px, 3.8vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px;
+    }
+    .lead{
+      margin: 0 auto;
+      max-width: 72ch;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 300;
+    }
 
-.hero{
-text-align:center;
-padding:80px 0 60px;
-}
+    /* Sections: ONLY these get subtle pastel backgrounds */
+    section{
+      padding: 58px 0;
+    }
 
-.brand{
-font-size:clamp(60px,10vw,120px);
-font-weight:300;
-letter-spacing:.06em;
-}
+    .section-wrap{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16,17,20,.06);
+      box-shadow: var(--shadow-subtle);
+      overflow:hidden;
+    }
+    .section-pad{
+      padding: 30px 26px;
+    }
 
-.hero h1{
-font-family:Fraunces,serif;
-font-size:clamp(34px,5vw,52px);
-margin-top:20px;
-}
+    /* Pastel backgrounds per section (very light) */
+    .pastel-1{
+      background:
+        radial-gradient(820px 520px at 20% 10%, rgba(255, 176, 140, .20), transparent 60%),
+        radial-gradient(760px 520px at 70% 10%, rgba(182, 144, 255, .18), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-2{
+      background:
+        radial-gradient(820px 520px at 15% 25%, rgba(255, 190, 220, .18), transparent 62%),
+        radial-gradient(820px 520px at 85% 35%, rgba(182, 144, 255, .14), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-3{
+      background:
+        radial-gradient(820px 520px at 30% 20%, rgba(182, 144, 255, .16), transparent 62%),
+        radial-gradient(820px 520px at 80% 50%, rgba(255, 176, 140, .14), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-4{
+      background:
+        radial-gradient(820px 520px at 25% 35%, rgba(255, 190, 220, .16), transparent 62%),
+        radial-gradient(820px 520px at 70% 15%, rgba(255, 176, 140, .12), transparent 62%),
+        rgba(255,255,255,.40);
+    }
 
-.hero p{
-margin-top:16px;
-max-width:700px;
-margin-inline:auto;
-color:var(--muted);
-font-size:18px;
-}
+    .h2{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(24px, 2.4vw, 40px);
+      letter-spacing: -0.01em;
+      margin:0 0 10px;
+      line-height:1.1;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      line-height:1.65;
+      font-size: 16px;
+      font-weight: 300;
+    }
 
-section{
-padding:60px 0;
-}
+    .center{
+      text-align:center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
 
-.box{
-border-radius:var(--radius);
-padding:40px;
-background:rgba(255,255,255,.45);
-}
+    /* Product grid (kept, but still minimal) */
+    .grid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+    .item{
+      padding: 16px 16px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(16,17,20,.08);
+      background: rgba(255,255,255,.55);
+      color: rgba(16,17,20,.92);
+      line-height:1.35;
+      font-weight: 400;
+    }
 
-.pastel1{
-background:linear-gradient(135deg,#f6e7e2,#ece7f7);
-}
+    footer{
+      padding: 18px 0 34px;
+      color: rgba(16,17,20,.55);
+      font-size: 13px;
+      text-align:center;
+    }
 
-.pastel2{
-background:linear-gradient(135deg,#f3e9f3,#e7f0f9);
-}
-
-.pastel3{
-background:linear-gradient(135deg,#f6eee6,#efe8f5);
-}
-
-.pastel4{
-background:linear-gradient(135deg,#f3e9f1,#f1eee6);
-}
-
-.center{
-text-align:center;
-max-width:720px;
-margin:auto;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
-margin-top:20px;
-}
-
-.item{
-padding:14px 16px;
-background:rgba(255,255,255,.6);
-border-radius:14px;
-}
-
-.final{
-text-align:center;
-padding:90px 0;
-font-family:Fraunces,serif;
-font-size:clamp(32px,5vw,52px);
-font-weight:700;
-}
-
-/* CONTACT */
-
-.contact-box{
-border-radius:var(--radius);
-padding:50px;
-background:linear-gradient(135deg,#f6e7e2,#e9e3f5,#f4e6e6);
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:60px;
-}
-
-.contact-title{
-font-family:Fraunces,serif;
-font-size:42px;
-margin-bottom:16px;
-}
-
-form{
-display:flex;
-flex-direction:column;
-gap:18px;
-}
-
-input,textarea{
-width:100%;
-padding:16px;
-border-radius:12px;
-border:1px solid #ddd;
-font-size:16px;
-background:white;
-}
-
-textarea{
-resize:vertical;
-}
-
-button{
-padding:16px;
-background:#111;
-color:white;
-border:none;
-border-radius:12px;
-cursor:pointer;
-width:200px;
-}
-
-/* MOBILE */
-
-@media(max-width:900px){
-
-.grid{
-grid-template-columns:1fr;
-}
-
-.contact-box{
-grid-template-columns:1fr;
-gap:30px;
-padding:30px;
-}
-
-button{
-width:100%;
-}
-
-}
-
-</style>
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px){
+      .container{ width: calc(100% - 28px); }
+      .hero{ padding: 56px 0 34px; }
+      .section-pad{ padding: 22px 18px; }
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <!-- Assumes logo_analog.png is in the SAME folder as index.html -->
+        <a class="logo" href="#top" aria-label="ANALOG">
+          <img src="logo_analog.png" alt="ANALOG" />
+        </a>
+      </div>
+    </div>
+  </header>
 
-<header>
-<div class="container">
-<div class="logo">
-<img src="logo_analog.png">
-</div>
-</div>
-</header>
+  <main id="top">
+    <!-- HERO (simplified, centered) -->
+    <section class="hero">
+      <div class="container">
+        <div class="brand-hero">ANALOG</div>
 
-<div class="hero container">
+        <h1 class="h1">Réinventer le parcours anesthésique</h1>
 
-<div class="brand">ANALOG</div>
+        <p class="lead">
+          Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.
+        </p>
+      </div>
+    </section>
 
-<h1>Réinventer le parcours anesthésique</h1>
+    <!-- PROBLÈME -->
+    <section id="probleme">
+      <div class="container">
+        <div class="section-wrap pastel-1">
+          <div class="section-pad center">
+            <h2 class="h2">Problématique</h2>
+            <p class="sub">L’anesthésie est encore organisée avec des outils fragmentés.</p>
+            <p class="sub" style="margin-top:10px;">Temps médical perdu. Données dispersées. Parcours patient peu digitalisé.</p>
+            <p class="sub" style="margin-top:10px;">La médecine progresse. Les outils, beaucoup moins.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<p>
-Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.
-</p>
+    <!-- VISION -->
+    <section id="vision">
+      <div class="container">
+        <div class="section-wrap pastel-2">
+          <div class="section-pad center">
+            <h2 class="h2">Vision</h2>
+            <p class="sub">Et si tout le parcours anesthésique devenait intelligent ?</p>
+            <p class="sub" style="margin-top:10px;">
+              Un seul environnement numérique. Un parcours structuré. Une IA médicale supervisée.
+            </p>
+            <p class="sub" style="margin-top:10px;">
+              Pour libérer du temps médical et renforcer la sécurité du patient.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <!-- PRODUIT -->
+    <section id="solution">
+      <div class="container">
+        <div class="section-wrap pastel-3">
+          <div class="section-pad">
+            <div class="center">
+              <h2 class="h2">Solution</h2>
+              <p class="sub">ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
+            </div>
 
-<section>
-<div class="container">
-<div class="box pastel1 center">
+            <div class="grid">
+              <div class="item">Consultation préopératoire automatisée</div>
+              <div class="item">IA médicale supervisée d’aide à la décision</div>
+              <div class="item">Espace patient personnel et sécurisé</div>
+              <div class="item">Feuille d’anesthésie intelligente</div>
+              <div class="item">Suivi post-opératoire jusqu’au domicile</div>
+              <div class="item">Interopérabilité avec les logiciels existants</div>
+            </div>
 
-<p>L’anesthésie est encore organisée avec des outils fragmentés.</p>
+            <div class="center" style="margin-top:16px;">
+              <p class="sub">Une seule plateforme. Tout le parcours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<p>Temps médical perdu.</p>
-<p>Données dispersées.</p>
-<p>Parcours patient peu digitalisé.</p>
+    <!-- ÉQUIPE -->
+    <section id="equipe">
+      <div class="container">
+        <div class="section-wrap pastel-4">
+          <div class="section-pad center">
+            <h2 class="h2">Équipe</h2>
+            <p class="sub">
+              ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.
+            </p>
+            <p class="sub" style="margin-top:10px;">
+              Notre ambition : concevoir l’infrastructure numérique de l’anesthésie moderne.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<p style="margin-top:12px;">La médecine progresse.</p>
+    <section>
+  <div class="container">
+    <div class="center" style="padding:60px 0;">
 
-<p><strong>Les outils, beaucoup moins.</strong></p>
+      <p style="
+        font-family:Fraunces,serif;
+        font-weight:700;
+        font-size:clamp(32px,4vw,56px);
+        line-height:1.2;
+      ">
+        Le futur du parcours anesthésique commence ici.
+      </p>
 
-</div>
-</div>
+      <p style="
+        font-family:Fraunces,serif;
+        font-weight:700;
+        font-size:clamp(32px,4vw,56px);
+        line-height:1.2;
+      ">
+        ANALOG arrive.
+      </p>
+
+    </div>
+  </div>
 </section>
 
-<section>
-<div class="container">
-<div class="box pastel2 center">
+   <!-- CONTACT -->
+<section style="padding:80px 0;">
+  <div class="container">
 
-<p>Et si tout le parcours anesthésique devenait intelligent ?</p>
+    <div class="contact-grid" style="
+      border-radius:28px;
+      background:linear-gradient(135deg,#f6e7e2,#e9e3f5,#f4e6e6);
+      padding:60px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:start;
+    ">
 
-<p style="margin-top:10px;">
-Un seul environnement numérique.<br>
-Un parcours structuré.<br>
-Une IA médicale supervisée.
-</p>
+      <div>
+        <h2 class="contact-title" style="
+          font-family:Fraunces,serif;
+          font-size:48px;
+          margin-bottom:20px;
+        ">
+          Nous contacter
+        </h2>
 
-<p style="margin-top:10px;">
-Libérer du temps médical et renforcer la sécurité du patient.
-</p>
+        <p style="
+          font-size:18px;
+          color:#5A6472;
+          max-width:480px;
+          line-height:1.6;
+          margin:0;
+        ">
+          Une question sur ANALOG ou sur notre solution ?
+          Envoyez-nous un message et nous vous répondrons rapidement.
+        </p>
+      </div>
 
-</div>
-</div>
+      <form
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        style="display:flex; flex-direction:column; gap:20px;"
+      >
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">NOM</label>
+          <input
+            class="contact-input"
+            type="text"
+            name="name"
+            placeholder="Votre nom"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
+              font-size:16px;
+              margin-top:6px;
+              outline:none;
+            "
+          >
+        </div>
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">EMAIL</label>
+          <input
+            class="contact-input"
+            type="email"
+            name="email"
+            placeholder="email@email.com"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
+              font-size:16px;
+              margin-top:6px;
+              outline:none;
+            "
+          >
+        </div>
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">MESSAGE</label>
+          <textarea
+            class="contact-textarea"
+            name="message"
+            rows="5"
+            placeholder="Votre message"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
+              font-size:16px;
+              margin-top:6px;
+              outline:none;
+              resize:vertical;
+            "
+          ></textarea>
+        </div>
+
+        <button
+          class="contact-btn"
+          type="submit"
+          style="
+            margin-top:10px;
+            padding:16px 28px;
+            background:#111;
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+            width:200px;
+          "
+        >
+          Envoyer le message →
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
 </section>
 
-<section>
-<div class="container">
-<div class="box pastel3">
+    <footer>
+      © <span id="y"></span> ANALOG
+    </footer>
+  </main>
 
-<div class="center">
-
-<p>ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
-
-</div>
-
-<div class="grid">
-
-<div class="item">Consultation préopératoire automatisée</div>
-
-<div class="item">IA médicale supervisée d’aide à la décision</div>
-
-<div class="item">Espace patient personnel et sécurisé</div>
-
-<div class="item">Feuille d’anesthésie intelligente</div>
-
-<div class="item">Suivi post-opératoire jusqu’au domicile</div>
-
-</div>
-
-<div class="center" style="margin-top:20px;">
-
-<p>Une seule plateforme.</p>
-
-<p><strong>Tout le parcours.</strong></p>
-
-</div>
-
-</div>
-</div>
-</section>
-
-<section>
-<div class="container">
-<div class="box pastel4 center">
-
-<p>Conçu pour la médecine moderne.</p>
-
-<p style="margin-top:12px;">
-Cloud natif<br>
-Intéropérabilité complète avec les logiciels existants<br>
-Hébergement des données souverain 100 % français<br>
-Architecture sécurisée compatible dispositifs médicaux
-</p>
-
-</div>
-</div>
-</section>
-
-<section>
-<div class="container">
-<div class="center">
-
-<p><strong>Conçu par des anesthésistes.</strong></p>
-
-<p style="margin-top:12px;">
-ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.
-</p>
-
-<p style="margin-top:10px;">
-Notre ambition : concevoir l’infrastructure numérique de l’anesthésie moderne.
-</p>
-
-</div>
-</div>
-</section>
-
-<div class="final">
-
-Le futur du parcours anesthésique commence ici.<br>
-ANALOG arrive.
-
-</div>
-
-<section>
-<div class="container">
-
-<div class="contact-box">
-
-<div>
-
-<h2 class="contact-title">Nous contacter</h2>
-
-<p>
-Une question sur ANALOG ou sur notre solution ?  
-Envoyez-nous un message et nous vous répondrons rapidement.
-</p>
-
-</div>
-
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-
-<input type="text" name="name" placeholder="Nom" required>
-
-<input type="email" name="email" placeholder="Email" required>
-
-<textarea name="message" rows="5" placeholder="Message" required></textarea>
-
-<button type="submit">Envoyer le message</button>
-
-</form>
-
-</div>
-
-</div>
-</section>
-
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
