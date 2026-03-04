@@ -305,11 +305,11 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+   <!-- CONTACT -->
 <section style="padding:80px 0;">
   <div class="container">
 
-    <div style="
+    <div class="contact-grid" style="
       border-radius:28px;
       background:linear-gradient(135deg,#f6e7e2,#e9e3f5,#f4e6e6);
       padding:60px;
@@ -319,9 +319,8 @@
       align-items:start;
     ">
 
-      <!-- LEFT -->
       <div>
-        <h2 style="
+        <h2 class="contact-title" style="
           font-family:Fraunces,serif;
           font-size:48px;
           margin-bottom:20px;
@@ -334,13 +333,13 @@
           color:#5A6472;
           max-width:480px;
           line-height:1.6;
+          margin:0;
         ">
           Une question sur ANALOG ou sur notre solution ?
           Envoyez-nous un message et nous vous répondrons rapidement.
         </p>
       </div>
 
-      <!-- FORM -->
       <form
         action="https://formspree.io/f/YOUR_FORM_ID"
         method="POST"
@@ -350,6 +349,7 @@
         <div>
           <label style="font-size:12px; letter-spacing:1px;">NOM</label>
           <input
+            class="contact-input"
             type="text"
             name="name"
             placeholder="Votre nom"
@@ -359,8 +359,10 @@
               padding:16px;
               border-radius:12px;
               border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
               font-size:16px;
               margin-top:6px;
+              outline:none;
             "
           >
         </div>
@@ -368,6 +370,7 @@
         <div>
           <label style="font-size:12px; letter-spacing:1px;">EMAIL</label>
           <input
+            class="contact-input"
             type="email"
             name="email"
             placeholder="email@email.com"
@@ -377,8 +380,10 @@
               padding:16px;
               border-radius:12px;
               border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
               font-size:16px;
               margin-top:6px;
+              outline:none;
             "
           >
         </div>
@@ -386,6 +391,7 @@
         <div>
           <label style="font-size:12px; letter-spacing:1px;">MESSAGE</label>
           <textarea
+            class="contact-textarea"
             name="message"
             rows="5"
             placeholder="Votre message"
@@ -395,14 +401,17 @@
               padding:16px;
               border-radius:12px;
               border:1px solid #ddd;
+              background: rgba(255,255,255,.65);
               font-size:16px;
               margin-top:6px;
-              resize:none;
+              outline:none;
+              resize:vertical;
             "
           ></textarea>
         </div>
 
         <button
+          class="contact-btn"
           type="submit"
           style="
             margin-top:10px;
