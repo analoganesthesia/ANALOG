@@ -9,21 +9,21 @@
   <!-- Fonts (libres) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
+      /* Page beige clair */
       --bg: #F7F5F2;
+
       --text: #101114;
       --muted: #5A6472;
-      --card: rgba(255,255,255,.72);
+
       --stroke: rgba(16,17,20,.10);
-      --accent: #0B1B2B;
-      --accent2: #1B2A6B;
 
       --radius-xl: 28px;
       --radius-lg: 18px;
-      --shadow-soft: 0 24px 70px rgba(16,17,20,.08);
+
       --shadow-subtle: 0 10px 30px rgba(16,17,20,.06);
       --container: 1180px;
     }
@@ -41,503 +41,204 @@
     }
 
     a{color:inherit; text-decoration:none}
-    button{font:inherit}
-
-    /* Background: gradients + subtle grain */
-    .bg{
-      position:fixed;
-      inset:0;
-      z-index:-2;
-      pointer-events:none;
-      background:
-        radial-gradient(900px 600px at 15% 12%, rgba(255, 168, 168, .35), transparent 60%),
-        radial-gradient(720px 520px at 60% 10%, rgba(182, 144, 255, .30), transparent 62%),
-        radial-gradient(780px 520px at 85% 22%, rgba(255, 190, 220, .28), transparent 60%),
-        radial-gradient(900px 700px at 78% 84%, rgba(255, 176, 140, .18), transparent 55%),
-        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.10));
-      filter: saturate(1.08);
-    }
-    .grain{
-      position:fixed;
-      inset:-30%;
-      z-index:-1;
-      pointer-events:none;
-      opacity:.08;
-      background-image:
-        repeating-radial-gradient(circle at 20% 20%,
-          rgba(0,0,0,.35) 0 0.5px,
-          transparent 0.5px 2.5px);
-      transform: rotate(8deg);
-      mix-blend-mode: multiply;
-    }
 
     .container{
       width:min(var(--container), calc(100% - 48px));
       margin:0 auto;
     }
 
-    /* Header */
+    /* Header: logo only (left) */
     .header{
       position:sticky;
       top:0;
       z-index:50;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: rgba(247,245,242,.72);
+      background: rgba(247,245,242,.86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(16,17,20,.06);
     }
     .header-inner{
       height:72px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:16px;
+      justify-content:flex-start;
     }
-    .brand{
+    .logo{
       display:flex;
       align-items:center;
       gap:12px;
-      letter-spacing:.08em;
-      font-weight:600;
     }
-    .brand-mark{
-      width:34px; height:34px;
-      border-radius: 12px;
-      background:
-        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.9), transparent 70%),
-        radial-gradient(24px 20px at 70% 30%, rgba(255, 190, 220, .75), transparent 70%),
-        radial-gradient(22px 22px at 60% 70%, rgba(182, 144, 255, .65), transparent 70%),
-        radial-gradient(22px 22px at 30% 70%, rgba(255, 176, 140, .65), transparent 70%),
-        linear-gradient(135deg, rgba(16,17,20,.10), rgba(16,17,20,.02));
-      border: 1px solid rgba(16,17,20,.10);
-      box-shadow: 0 10px 30px rgba(16,17,20,.08);
-    }
-    .brand-name{
-      font-size:14px;
-      text-transform:uppercase;
+    .logo img{
+      height:34px;
+      width:auto;
+      display:block;
     }
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      border-radius: 14px;
-      padding: 12px 16px;
-      border: 1px solid rgba(16,17,20,.10);
-      background: rgba(255,255,255,.75);
-      color: var(--text);
-      box-shadow: var(--shadow-subtle);
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-      cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 18px 50px rgba(16,17,20,.10);
-      background: rgba(255,255,255,.88);
-    }
-    .btn-primary{
-      background: linear-gradient(180deg, var(--accent2), var(--accent));
-      border-color: rgba(11,27,43,.20);
-      color:#fff;
-      box-shadow: 0 20px 60px rgba(11,27,43,.18);
-    }
-    .btn-primary:hover{
-      box-shadow: 0 26px 80px rgba(11,27,43,.22);
-      transform: translateY(-1px);
-    }
-    .btn-link{
-      background: transparent;
-      border-color: transparent;
-      box-shadow:none;
-      color: var(--muted);
-      padding: 12px 10px;
-    }
-    .btn-link:hover{
-      background: rgba(255,255,255,.55);
-      border-color: rgba(16,17,20,.08);
-      box-shadow: none;
-      transform:none;
-      color: var(--text);
-    }
-
-    /* Hero */
+    /* HERO: centered, simplified */
     .hero{
-      padding: 64px 0 28px;
+      padding: 72px 0 42px;
+      text-align:center;
     }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 34px;
-      align-items:center;
-      padding: 22px;
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(16,17,20,.06);
-      background: rgba(255,255,255,.35);
-      box-shadow: var(--shadow-soft);
-      position:relative;
-      overflow:hidden;
+    .brand-hero{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 300;         /* fine */
+      font-size: clamp(64px, 8vw, 140px);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      margin: 18px 0 22px;
     }
-    .hero-grid::before{
-      content:"";
-      position:absolute;
-      inset:-60px;
-      background:
-        radial-gradient(700px 420px at 18% 18%, rgba(255, 168, 168, .28), transparent 65%),
-        radial-gradient(620px 420px at 58% 12%, rgba(182, 144, 255, .24), transparent 62%),
-        radial-gradient(620px 420px at 88% 22%, rgba(255, 190, 220, .22), transparent 60%);
-      filter: blur(2px);
-      opacity: .9;
-      pointer-events:none;
-    }
-
-    .hero-left{
-      position:relative;
-      padding: 26px 26px 30px;
-    }
-    .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(16,17,20,.10);
-      background: rgba(255,255,255,.60);
-      color: rgba(16,17,20,.78);
-      font-size: 12px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-    }
-    .kicker .dot{
-      width:8px;height:8px;border-radius:99px;
-      background: linear-gradient(180deg, rgba(182,144,255,.9), rgba(255,168,168,.85));
-      box-shadow: 0 0 0 4px rgba(182,144,255,.14);
-    }
-
-    h1{
-      margin: 18px 0 12px;
+    .h1{
       font-family: Fraunces, ui-serif, Georgia, serif;
       font-weight: 700;
-      font-size: clamp(44px, 4.3vw, 78px);
-      line-height: 1.03;
+      font-size: clamp(34px, 3.8vw, 56px);
+      line-height: 1.06;
       letter-spacing: -0.02em;
-    }
-    .hero-line{
-      width: 120px;
-      height: 1px;
-      background: rgba(16,17,20,.18);
-      margin: 14px 0 16px;
+      margin: 0 0 14px;
     }
     .lead{
-      margin: 0;
+      margin: 0 auto;
+      max-width: 72ch;
       font-size: 18px;
-      line-height: 1.55;
+      line-height: 1.6;
       color: var(--muted);
-      max-width: 56ch;
-    }
-    .cta-row{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 22px;
-      align-items:center;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(16,17,20,.10);
-      background: rgba(255,255,255,.62);
-      color: rgba(16,17,20,.78);
-      font-size: 13px;
-      margin-top: 16px;
+      font-weight: 300;
     }
 
-    .hero-right{
-      position:relative;
-      padding: 26px;
-    }
-    .visual{
-      height: 430px;
-      border-radius: calc(var(--radius-xl) - 6px);
-      border: 1px solid rgba(16,17,20,.08);
-      box-shadow: 0 30px 90px rgba(16,17,20,.12);
-      overflow:hidden;
-      background:
-        radial-gradient(180px 140px at 30% 25%, rgba(255,255,255,.80), rgba(255,255,255,0) 70%),
-        radial-gradient(420px 320px at 20% 35%, rgba(255, 176, 140, .75), rgba(255,176,140,0) 65%),
-        radial-gradient(440px 340px at 70% 30%, rgba(182, 144, 255, .78), rgba(182,144,255,0) 62%),
-        radial-gradient(520px 360px at 70% 80%, rgba(255, 190, 220, .72), rgba(255,190,220,0) 64%),
-        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.20));
-      position:relative;
-    }
-    .visual::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(220px 160px at 60% 25%, rgba(255,255,255,.40), transparent 70%),
-        radial-gradient(320px 220px at 55% 60%, rgba(0,0,0,.06), transparent 70%);
-      mix-blend-mode: overlay;
-      opacity:.9;
-      pointer-events:none;
-    }
-
-    /* Sections */
+    /* Sections: ONLY these get subtle pastel backgrounds */
     section{
-      padding: 62px 0;
+      padding: 58px 0;
     }
-    .section-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom: 22px;
+
+    .section-wrap{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16,17,20,.06);
+      box-shadow: var(--shadow-subtle);
+      overflow:hidden;
     }
+    .section-pad{
+      padding: 30px 26px;
+    }
+
+    /* Pastel backgrounds per section (very light) */
+    .pastel-1{
+      background:
+        radial-gradient(820px 520px at 20% 10%, rgba(255, 176, 140, .20), transparent 60%),
+        radial-gradient(760px 520px at 70% 10%, rgba(182, 144, 255, .18), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-2{
+      background:
+        radial-gradient(820px 520px at 15% 25%, rgba(255, 190, 220, .18), transparent 62%),
+        radial-gradient(820px 520px at 85% 35%, rgba(182, 144, 255, .14), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-3{
+      background:
+        radial-gradient(820px 520px at 30% 20%, rgba(182, 144, 255, .16), transparent 62%),
+        radial-gradient(820px 520px at 80% 50%, rgba(255, 176, 140, .14), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+    .pastel-4{
+      background:
+        radial-gradient(820px 520px at 25% 35%, rgba(255, 190, 220, .16), transparent 62%),
+        radial-gradient(820px 520px at 70% 15%, rgba(255, 176, 140, .12), transparent 62%),
+        rgba(255,255,255,.40);
+    }
+
     .h2{
       font-family: Fraunces, ui-serif, Georgia, serif;
       font-weight: 700;
-      font-size: clamp(26px, 2.5vw, 42px);
+      font-size: clamp(24px, 2.4vw, 40px);
       letter-spacing: -0.01em;
-      margin:0;
+      margin:0 0 10px;
       line-height:1.1;
     }
     .sub{
       margin:0;
       color: var(--muted);
-      max-width: 70ch;
-      line-height:1.6;
+      line-height:1.65;
       font-size: 16px;
+      font-weight: 300;
     }
 
-    .center-block{
+    .center{
       text-align:center;
       max-width: 860px;
       margin: 0 auto;
     }
 
-    .punch{
-      font-family: Fraunces, ui-serif, Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(22px, 2.1vw, 34px);
-      line-height: 1.25;
-      letter-spacing:-0.01em;
-      margin: 0 0 12px;
-    }
-    .punch + .punch{ margin-top: 8px; }
-
-    .card{
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(16,17,20,.08);
-      background: var(--card);
-      box-shadow: var(--shadow-subtle);
-      overflow:hidden;
-    }
-    .card-pad{ padding: 26px; }
-
-    /* Product grid */
+    /* Product grid (kept, but still minimal) */
     .grid{
       display:grid;
-      gap: 14px;
+      gap: 12px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 16px;
     }
     .item{
-      padding: 18px 18px;
+      padding: 16px 16px;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(16,17,20,.08);
-      background: rgba(255,255,255,.60);
-      display:flex;
-      gap: 12px;
-      align-items:flex-start;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-    .item:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 16px 55px rgba(16,17,20,.10);
-      background: rgba(255,255,255,.78);
-    }
-    .icon{
-      width: 36px; height: 36px;
-      border-radius: 14px;
-      border: 1px solid rgba(16,17,20,.10);
-      background:
-        radial-gradient(18px 18px at 35% 35%, rgba(255,255,255,.85), transparent 70%),
-        radial-gradient(24px 20px at 70% 30%, rgba(255, 190, 220, .55), transparent 70%),
-        radial-gradient(22px 22px at 60% 70%, rgba(182, 144, 255, .50), transparent 70%),
-        radial-gradient(22px 22px at 30% 70%, rgba(255, 176, 140, .50), transparent 70%),
-        linear-gradient(135deg, rgba(16,17,20,.10), rgba(16,17,20,.02));
-      flex: 0 0 auto;
-    }
-    .item p{
-      margin:0;
-      color: var(--text);
-      font-weight: 500;
+      background: rgba(255,255,255,.55);
+      color: rgba(16,17,20,.92);
       line-height:1.35;
-    }
-
-    /* Tech badges */
-    .badges{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 14px;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(16,17,20,.10);
-      background: rgba(255,255,255,.62);
-      color: rgba(16,17,20,.80);
-      font-size: 14px;
-      white-space:nowrap;
-    }
-
-    /* Final CTA */
-    .final{
-      padding: 72px 0 84px;
-    }
-    .final-card{
-      position:relative;
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(16,17,20,.08);
-      background: rgba(255,255,255,.40);
-      box-shadow: var(--shadow-soft);
-      overflow:hidden;
-    }
-    .final-card::before{
-      content:"";
-      position:absolute;
-      inset:-80px;
-      background:
-        radial-gradient(700px 420px at 30% 25%, rgba(182, 144, 255, .22), transparent 62%),
-        radial-gradient(760px 520px at 78% 38%, rgba(255, 190, 220, .22), transparent 62%),
-        radial-gradient(900px 520px at 50% 92%, rgba(255, 176, 140, .18), transparent 60%);
-      pointer-events:none;
-    }
-    .final-inner{
-      position:relative;
-      padding: 38px 28px;
-      text-align:center;
-      max-width: 860px;
-      margin: 0 auto;
-    }
-    .final-title{
-      font-family: Fraunces, ui-serif, Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(30px, 2.8vw, 46px);
-      line-height: 1.1;
-      margin: 0 0 12px;
-      letter-spacing:-0.01em;
-    }
-    .final-sub{
-      margin: 0 0 22px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.6;
+      font-weight: 400;
     }
 
     footer{
       padding: 18px 0 34px;
       color: rgba(16,17,20,.55);
       font-size: 13px;
+      text-align:center;
     }
-    .footer-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 12px;
-      flex-wrap:wrap;
-    }
-    .sep{ opacity:.55; }
 
-    /* Responsive */
     @media (max-width: 980px){
-      .hero-grid{
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-      .visual{ height: 360px; }
       .grid{ grid-template-columns: 1fr; }
-      .section-head{ flex-direction:column; align-items:flex-start; }
     }
     @media (max-width: 520px){
       .container{ width: calc(100% - 28px); }
-      .hero{ padding: 44px 0 18px; }
-      .hero-left{ padding: 20px 18px 22px; }
-      .hero-right{ padding: 18px; }
-      .hero-grid{ padding: 14px; }
+      .hero{ padding: 56px 0 34px; }
+      .section-pad{ padding: 22px 18px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg"></div>
-  <div class="grain"></div>
-
   <!-- Header -->
   <header class="header">
     <div class="container">
       <div class="header-inner">
-        <a class="brand" href="#top" aria-label="ANALOG">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name">ANALOG</span>
+        <!-- Assumes logo_analog.png is in the SAME folder as index.html -->
+        <a class="logo" href="#top" aria-label="ANALOG">
+          <img src="logo_analog.png" alt="ANALOG" />
         </a>
-        <a class="btn btn-primary" href="#contact">Nous contacter</a>
       </div>
     </div>
   </header>
 
   <main id="top">
-    <!-- HERO -->
+    <!-- HERO (simplified, centered) -->
     <section class="hero">
       <div class="container">
-        <div class="hero-grid">
-          <div class="hero-left">
-            <div class="kicker"><span class="dot"></span> ANALOG</div>
+        <div class="brand-hero">ANALOG</div>
 
-            <h1>Réinventer le parcours anesthésique</h1>
-            <div class="hero-line"></div>
+        <h1 class="h1">Réinventer le parcours anesthésique</h1>
 
-            <p class="lead">
-              La première infrastructure numérique dédiée à l’orchestration intelligente du parcours péri-opératoire.
-            </p>
-            <p class="lead" style="margin-top:10px;">
-              Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.
-            </p>
-
-            <div class="badge">IA médicale supervisée</div>
-
-            <div class="cta-row">
-              <a class="btn btn-primary" href="#solution">Découvrir ANALOG</a>
-              <a class="btn btn-link" href="#contact">Demander un accès anticipé</a>
-            </div>
-          </div>
-
-          <div class="hero-right" aria-hidden="true">
-            <div class="visual"></div>
-          </div>
-        </div>
+        <p class="lead">
+          Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.
+        </p>
       </div>
     </section>
 
     <!-- PROBLÈME -->
     <section id="probleme">
       <div class="container">
-        <div class="center-block">
-          <p class="punch">L’anesthésie est encore organisée avec des outils fragmentés.</p>
-          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text); margin-top:14px;">Temps médical perdu.</p>
-          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text);">Données dispersées.</p>
-          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text);">Parcours patient peu digitalisé.</p>
-
-          <div style="height:18px;"></div>
-
-          <p class="punch">La médecine progresse.</p>
-          <p class="punch">Les outils, beaucoup moins.</p>
+        <div class="section-wrap pastel-1">
+          <div class="section-pad center">
+            <h2 class="h2">Problématique</h2>
+            <p class="sub">L’anesthésie est encore organisée avec des outils fragmentés.</p>
+            <p class="sub" style="margin-top:10px;">Temps médical perdu. Données dispersées. Parcours patient peu digitalisé.</p>
+            <p class="sub" style="margin-top:10px;">La médecine progresse. Les outils, beaucoup moins.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -545,26 +246,17 @@
     <!-- VISION -->
     <section id="vision">
       <div class="container">
-        <div class="section-head">
-          <h2 class="h2">Vision</h2>
-          <p class="sub">Un parcours structuré. Un seul environnement numérique. Une IA médicale supervisée.</p>
-        </div>
-
-        <div class="card card-pad">
-          <p class="punch" style="margin-bottom:10px;">Et si tout le parcours anesthésique devenait intelligent ?</p>
-
-          <p class="sub" style="margin:0;">
-            Un seul environnement numérique.<br>
-            Un parcours structuré.<br>
-            Une IA médicale supervisée.
-          </p>
-
-          <div style="height:14px;"></div>
-
-          <p class="sub" style="margin:0;">
-            Pour libérer du temps médical<br>
-            et renforcer la sécurité du patient.
-          </p>
+        <div class="section-wrap pastel-2">
+          <div class="section-pad center">
+            <h2 class="h2">Vision</h2>
+            <p class="sub">Et si tout le parcours anesthésique devenait intelligent ?</p>
+            <p class="sub" style="margin-top:10px;">
+              Un seul environnement numérique. Un parcours structuré. Une IA médicale supervisée.
+            </p>
+            <p class="sub" style="margin-top:10px;">
+              Pour libérer du temps médical et renforcer la sécurité du patient.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -572,50 +264,25 @@
     <!-- PRODUIT -->
     <section id="solution">
       <div class="container">
-        <div class="section-head">
-          <h2 class="h2">Solution</h2>
-          <p class="sub">ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
-        </div>
+        <div class="section-wrap pastel-3">
+          <div class="section-pad">
+            <div class="center">
+              <h2 class="h2">Solution</h2>
+              <p class="sub">ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
+            </div>
 
-        <div class="grid">
-          <div class="item"><span class="icon"></span><p>Consultation préopératoire automatisée</p></div>
-          <div class="item"><span class="icon"></span><p>IA médicale supervisée d’aide à la décision</p></div>
-          <div class="item"><span class="icon"></span><p>Espace patient personnel et sécurisé</p></div>
-          <div class="item"><span class="icon"></span><p>Feuille d’anesthésie intelligente</p></div>
-          <div class="item"><span class="icon"></span><p>Suivi post-opératoire jusqu’au domicile</p></div>
-          <div class="item"><span class="icon"></span><p>Interopérabilité avec les logiciels existants</p></div>
-        </div>
+            <div class="grid">
+              <div class="item">Consultation préopératoire automatisée</div>
+              <div class="item">IA médicale supervisée d’aide à la décision</div>
+              <div class="item">Espace patient personnel et sécurisé</div>
+              <div class="item">Feuille d’anesthésie intelligente</div>
+              <div class="item">Suivi post-opératoire jusqu’au domicile</div>
+              <div class="item">Interopérabilité avec les logiciels existants</div>
+            </div>
 
-        <div style="height:18px;"></div>
-
-        <div class="center-block" style="max-width:720px;">
-          <p class="punch" style="margin:0;">Une seule plateforme.</p>
-          <p class="punch" style="margin:6px 0 0;">Tout le parcours.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TECHNOLOGIE -->
-    <section id="technologie">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="h2">Technologie</h2>
-          <p class="sub">Conçu pour la médecine moderne.</p>
-        </div>
-
-        <div class="card card-pad">
-          <p class="sub" style="margin:0;">
-            Cloud natif<br>
-            Interopérabilité FHIR / HL7<br>
-            Hébergement souverain 100 % français<br>
-            Architecture sécurisée compatible dispositifs médicaux
-          </p>
-
-          <div class="badges">
-            <span class="chip">FHIR / HL7</span>
-            <span class="chip">Hébergement souverain</span>
-            <span class="chip">Sécurité</span>
-            <span class="chip">Cloud natif</span>
+            <div class="center" style="margin-top:16px;">
+              <p class="sub">Une seule plateforme. Tout le parcours.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -624,78 +291,23 @@
     <!-- ÉQUIPE -->
     <section id="equipe">
       <div class="container">
-        <div class="section-head">
-          <h2 class="h2">Équipe</h2>
-          <p class="sub">Conçu par des anesthésistes.</p>
-        </div>
-
-        <div class="card card-pad">
-          <p class="sub" style="margin:0;">
-            ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.
-          </p>
-
-          <div style="height:12px;"></div>
-
-          <p class="sub" style="margin:0;">
-            Notre ambition :<br>
-            concevoir l’infrastructure numérique de l’anesthésie moderne.
-          </p>
+        <div class="section-wrap pastel-4">
+          <div class="section-pad center">
+            <h2 class="h2">Équipe</h2>
+            <p class="sub">
+              ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.
+            </p>
+            <p class="sub" style="margin-top:10px;">
+              Notre ambition : concevoir l’infrastructure numérique de l’anesthésie moderne.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- FINAL CTA -->
-    <section class="final" id="contact">
-      <div class="container">
-        <div class="final-card">
-          <div class="final-inner">
-            <h3 class="final-title">Le futur du parcours anesthésique commence ici.</h3>
-            <p class="final-sub">ANALOG arrive.</p>
-
-            <div class="cta-row" style="justify-content:center;">
-              <a class="btn btn-primary" href="#contact">Demander un accès anticipé</a>
-              <a class="btn" href="#top">Retour en haut</a>
-            </div>
-
-            <!-- Zone contact (front-only) -->
-            <div style="height:22px;"></div>
-            <div class="card" style="max-width:720px; margin:0 auto;">
-              <div class="card-pad" style="text-align:left;">
-                <p class="sub" style="margin:0 0 14px;">
-                  Nous ne faisons pas un logiciel d’anesthésie.<br>
-                  Nous construisons l’infrastructure de l’anesthésie moderne.
-                </p>
-
-                <form onsubmit="event.preventDefault();" style="display:grid; gap:10px;">
-                  <div style="display:grid; gap:10px; grid-template-columns: 1fr 1fr;">
-                    <input required placeholder="Nom" style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none;">
-                    <input required type="email" placeholder="Email" style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none;">
-                  </div>
-                  <textarea required rows="4" placeholder="Message"
-                    style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none; resize:vertical;"></textarea>
-
-                  <button class="btn btn-primary" type="submit" style="justify-self:start;">
-                    Nous contacter
-                  </button>
-
-                  <p class="sub" style="margin:0; font-size:13px; color:rgba(16,17,20,.55);">
-                    (Formulaire non connecté — à brancher à ton backend plus tard.)
-                  </p>
-                </form>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <footer>
-          <div class="footer-row">
-            <div>© <span id="y"></span> ANALOG</div>
-            <div class="sep">Infrastructure numérique du parcours anesthésique</div>
-          </div>
-        </footer>
-      </div>
-    </section>
+    <footer>
+      © <span id="y"></span> ANALOG
+    </footer>
   </main>
 
   <script>
