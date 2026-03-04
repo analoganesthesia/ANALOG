@@ -1,301 +1,705 @@
-<!DOCTYPE html>
+<!-- index.html -->
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANALOG — Réinventer le parcours anesthésique</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;1,9..144,200&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANALOG — Réinventer le parcours anesthésique</title>
 
-    <style>
-        /* --- Palette et Typographies --- */
-        :root {
-            /* Palette inspirée pour un effet "luxury" */
-            --bg-global: #F7F5F2;          /* Blanc cassé très léger */
-            --text-principal: #101114;     /* Noir doux */
-            --text-secondaire: #5A6472;    /* Gris bleuté */
-            --accent-cta: #0B1B2B;         /* Bleu nuit propre */
-            --border-fin: rgba(16, 17, 20, 0.06); /* Contour très fin et discret */
-            --shadow-premium: 0 10px 30px rgba(0,0,0,0.03);
+  <!-- Fonts (libres) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-            /* Polices */
-            --font-titres: 'Fraunces', serif; /* Serif éditoriale, premium, très proche */
-            --font-texte: 'Inter', sans-serif; /* Standard startup, ultra lisible */
-        }
+  <style>
+    :root{
+      --bg: #F7F5F2;
+      --text: #101114;
+      --muted: #5A6472;
+      --card: rgba(255,255,255,.72);
+      --stroke: rgba(16,17,20,.10);
+      --accent: #0B1B2B;
+      --accent2: #1B2A6B;
 
-        /* --- Reset & Base --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { 
-            font-family: var(--font-texte); 
-            background-color: var(--bg-global); /* Fond global */
-            color: var(--text-principal); /* Texte principal */
-            line-height: 1.7; 
-            -webkit-font-smoothing: antialiased;
-            font-weight: 300; /* Texte de base fin */
-        }
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 70px rgba(16,17,20,.08);
+      --shadow-subtle: 0 10px 30px rgba(16,17,20,.06);
+      --container: 1180px;
+    }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x:hidden;
+    }
 
-        /* --- Ajout de Grain/Noise léger --- */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Bruit numérique très subtil pour l'effet "luxury" */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3C%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3%3C/svg%3%3E");
-            opacity: 0.015; /* Quasi imperceptible */
-            pointer-events: none;
-            z-index: 1000;
-        }
+    a{color:inherit; text-decoration:none}
+    button{font:inherit}
 
-        /* --- Titres affinés --- */
-        h1, h2, h3, h4 { 
-            font-family: var(--font-titres); 
-            font-weight: 200; /* Super fin pour H1 immense */
-            font-style: italic; /* Esprit éditorial */
-            letter-spacing: -1.5px;
-            color: var(--text-principal);
-        }
+    /* Background: gradients + subtle grain */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 600px at 15% 12%, rgba(255, 168, 168, .35), transparent 60%),
+        radial-gradient(720px 520px at 60% 10%, rgba(182, 144, 255, .30), transparent 62%),
+        radial-gradient(780px 520px at 85% 22%, rgba(255, 190, 220, .28), transparent 60%),
+        radial-gradient(900px 700px at 78% 84%, rgba(255, 176, 140, .18), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.10));
+      filter: saturate(1.08);
+    }
+    .grain{
+      position:fixed;
+      inset:-30%;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.08;
+      background-image:
+        repeating-radial-gradient(circle at 20% 20%,
+          rgba(0,0,0,.35) 0 0.5px,
+          transparent 0.5px 2.5px);
+      transform: rotate(8deg);
+      mix-blend-mode: multiply;
+    }
 
-        /* --- Header Flottant (verre) --- */
-        header { 
-            height: 72px; /* Hauteur : 72px */
-            position: fixed; 
-            width: 100%; 
-            top: 0; 
-            z-index: 1000; 
-            /* Fond translucide + blur léger */
-            background: rgba(247, 245, 242, 0.75); 
-            backdrop-filter: blur(10px); 
-            border-bottom: 1px solid var(--border-fin); 
-        }
-        header .container { display: flex; justify-content: space-between; align-items: center; height: 100%; }
-        
-        /* Logo ANALOG gauche */
-        .logo-box { display: flex; align-items: center; gap: 10px; }
-        .logo-img { height: 60px; mix-blend-mode: multiply; filter: contrast(1.1) brightness(0.95); }
+    .container{
+      width:min(var(--container), calc(100% - 48px));
+      margin:0 auto;
+    }
 
-        /* --- Boutons --- */
-        .btn { 
-            display: inline-block; 
-            text-decoration: none; 
-            font-family: var(--font-texte); 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            transition: 0.3s; 
-            cursor: pointer;
-        }
+    /* Header */
+    .header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(247,245,242,.72);
+      border-bottom: 1px solid rgba(16,17,20,.06);
+    }
+    .header-inner{
+      height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      letter-spacing:.08em;
+      font-weight:600;
+    }
+    .brand-mark{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.9), transparent 70%),
+        radial-gradient(24px 20px at 70% 30%, rgba(255, 190, 220, .75), transparent 70%),
+        radial-gradient(22px 22px at 60% 70%, rgba(182, 144, 255, .65), transparent 70%),
+        radial-gradient(22px 22px at 30% 70%, rgba(255, 176, 140, .65), transparent 70%),
+        linear-gradient(135deg, rgba(16,17,20,.10), rgba(16,17,20,.02));
+      border: 1px solid rgba(16,17,20,.10);
+      box-shadow: 0 10px 30px rgba(16,17,20,.08);
+    }
+    .brand-name{
+      font-size:14px;
+      text-transform:uppercase;
+    }
 
-        /* Bouton "Nous contacter" droite */
-        .btn-header { 
-            padding: 10px 20px; 
-            color: white; 
-            background-color: var(--accent-cta); /* Fond accent bleu nuit */
-            border-radius: 12px; /* Arrondi 12px */
-            /* Padding généreux déjà géré par padding */
-        }
-        .btn-header:hover { background-color: #1a2a40; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border-radius: 14px;
+      padding: 12px 16px;
+      border: 1px solid rgba(16,17,20,.10);
+      background: rgba(255,255,255,.75);
+      color: var(--text);
+      box-shadow: var(--shadow-subtle);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 50px rgba(16,17,20,.10);
+      background: rgba(255,255,255,.88);
+    }
+    .btn-primary{
+      background: linear-gradient(180deg, var(--accent2), var(--accent));
+      border-color: rgba(11,27,43,.20);
+      color:#fff;
+      box-shadow: 0 20px 60px rgba(11,27,43,.18);
+    }
+    .btn-primary:hover{
+      box-shadow: 0 26px 80px rgba(11,27,43,.22);
+      transform: translateY(-1px);
+    }
+    .btn-link{
+      background: transparent;
+      border-color: transparent;
+      box-shadow:none;
+      color: var(--muted);
+      padding: 12px 10px;
+    }
+    .btn-link:hover{
+      background: rgba(255,255,255,.55);
+      border-color: rgba(16,17,20,.08);
+      box-shadow: none;
+      transform:none;
+      color: var(--text);
+    }
 
-        .btn-hero { 
-            padding: 18px 40px; 
-            background-color: var(--text-principal); 
-            color: white; 
-            border-radius: 100px; 
-        }
-        .btn-hero:hover { background-color: var(--accent-cta); transform: translateY(-2px); }
+    /* Hero */
+    .hero{
+      padding: 64px 0 28px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 34px;
+      align-items:center;
+      padding: 22px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16,17,20,.06);
+      background: rgba(255,255,255,.35);
+      box-shadow: var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-grid::before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(700px 420px at 18% 18%, rgba(255, 168, 168, .28), transparent 65%),
+        radial-gradient(620px 420px at 58% 12%, rgba(182, 144, 255, .24), transparent 62%),
+        radial-gradient(620px 420px at 88% 22%, rgba(255, 190, 220, .22), transparent 60%);
+      filter: blur(2px);
+      opacity: .9;
+      pointer-events:none;
+    }
 
-        /* --- Hero (Max Impact, 2 colonnes) --- */
-        .hero { 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            position: relative; 
-            overflow: hidden; 
-            padding-top: 72px; /* Compensation header sticky */
-        }
+    .hero-left{
+      position:relative;
+      padding: 26px 26px 30px;
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(16,17,20,.10);
+      background: rgba(255,255,255,.60);
+      color: rgba(16,17,20,.78);
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+    .kicker .dot{
+      width:8px;height:8px;border-radius:99px;
+      background: linear-gradient(180deg, rgba(182,144,255,.9), rgba(255,168,168,.85));
+      box-shadow: 0 0 0 4px rgba(182,144,255,.14);
+    }
 
-        /* Derrière : fond dégradé très diffus */
-        .hero-bg-diffus { 
-            position: absolute; width: 100%; height: 100%; z-index: 1; 
-            /* Blobs flous low contrast, teintes pêche/lavande/rose */
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255, 127, 80, 0.12), transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.1), transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.1), transparent 60%);
-            filter: blur(100px); 
-        }
+    h1{
+      margin: 18px 0 12px;
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(44px, 4.3vw, 78px);
+      line-height: 1.03;
+      letter-spacing: -0.02em;
+    }
+    .hero-line{
+      width: 120px;
+      height: 1px;
+      background: rgba(16,17,20,.18);
+      margin: 14px 0 16px;
+    }
+    .lead{
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 56ch;
+    }
+    .cta-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 22px;
+      align-items:center;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(16,17,20,.10);
+      background: rgba(255,255,255,.62);
+      color: rgba(16,17,20,.78);
+      font-size: 13px;
+      margin-top: 16px;
+    }
 
-        .hero .container { display: flex; align-items: center; z-index: 2; gap: 60px; } /* Layout : 2 colonnes */
-        
-        /* Gauche : texte */
-        .hero-text-col { flex: 1.2; text-align: left; }
-        
-        .label-petit { 
-            font-size: 1rem; 
-            color: var(--text-secondaire); /* Texte secondaire gris bleuté */
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            margin-bottom: 20px; 
-        }
-        
-        .hero h1 { 
-            font-size: clamp(3.5rem, 6vw, 5rem); /* H1 immense, contrasté */
-            margin-bottom: 10px; 
-        }
+    .hero-right{
+      position:relative;
+      padding: 26px;
+    }
+    .visual{
+      height: 430px;
+      border-radius: calc(var(--radius-xl) - 6px);
+      border: 1px solid rgba(16,17,20,.08);
+      box-shadow: 0 30px 90px rgba(16,17,20,.12);
+      overflow:hidden;
+      background:
+        radial-gradient(180px 140px at 30% 25%, rgba(255,255,255,.80), rgba(255,255,255,0) 70%),
+        radial-gradient(420px 320px at 20% 35%, rgba(255, 176, 140, .75), rgba(255,176,140,0) 65%),
+        radial-gradient(440px 340px at 70% 30%, rgba(182, 144, 255, .78), rgba(182,144,255,0) 62%),
+        radial-gradient(520px 360px at 70% 80%, rgba(255, 190, 220, .72), rgba(255,190,220,0) 64%),
+        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.20));
+      position:relative;
+    }
+    .visual::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(220px 160px at 60% 25%, rgba(255,255,255,.40), transparent 70%),
+        radial-gradient(320px 220px at 55% 60%, rgba(0,0,0,.06), transparent 70%);
+      mix-blend-mode: overlay;
+      opacity:.9;
+      pointer-events:none;
+    }
 
-        /* Micro-détail typographique */
-        .h1-detail { 
-            display: block; width: 60px; height: 1px; /* Fine ligne horizontale sous H1 */
-            background-color: var(--accent-cta); 
-            margin-bottom: 30px; 
-        }
+    /* Sections */
+    section{
+      padding: 62px 0;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 22px;
+    }
+    .h2{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(26px, 2.5vw, 42px);
+      letter-spacing: -0.01em;
+      margin:0;
+      line-height:1.1;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      max-width: 70ch;
+      line-height:1.6;
+      font-size: 16px;
+    }
 
-        .hero-sous-texte { 
-            font-size: 1.3rem; 
-            color: var(--text-secondaire); 
-            max-width: 600px; 
-            margin-bottom: 50px; 
-            font-weight: 300; 
-        }
-        
-        .hero-ctas { display: flex; align-items: center; gap: 30px; }
-        .cta-secondaire-discret { 
-            font-size: 1rem; 
-            color: var(--text-secondaire); /* Lien discret gris bleuté */
-            font-weight: 400; 
-            text-decoration: none; 
-            border-bottom: 1px solid var(--border-fin); 
-            padding-bottom: 4px; 
-        }
-        .cta-secondaire-discret:hover { color: var(--text-principal); border-bottom-color: var(--text-principal); }
+    .center-block{
+      text-align:center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
 
-        /* Droite : visuel abstrait XXL */
-        .hero-visual-col { flex: 1; }
-        .hero-visual-card { 
-            /* Carte XXL arrondie */
-            width: 100%; aspect-ratio: 1/1; 
-            border-radius: 40px; 
-            overflow: hidden; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.06); 
-            border: 1px solid var(--border-fin); 
-        }
-        /* Style inspiré du fond diffus fourni */
-        .hero-visual-gradient { 
-            width: 100%; height: 100%; 
-            /* Dégradé pêche -> rose poudré */
-            background: linear-gradient(135deg, #FDEBD0 0%, #FADBD8 100%); 
-        }
+    .punch{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(22px, 2.1vw, 34px);
+      line-height: 1.25;
+      letter-spacing:-0.01em;
+      margin: 0 0 12px;
+    }
+    .punch + .punch{ margin-top: 8px; }
 
-        /* --- Sections Style (Jolies Encadrés XXL Modernes) --- */
-        section { padding: 120px 0; }
-        .tag-petit { 
-            font-size: 0.9rem; 
-            color: var(--text-secondaire); 
-            margin-bottom: 15px; 
-            font-weight: 600; 
-            font-family: var(--font-texte); 
-        }
-        h3 { font-size: 3rem; margin-bottom: 50px; }
+    .card{
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16,17,20,.08);
+      background: var(--card);
+      box-shadow: var(--shadow-subtle);
+      overflow:hidden;
+    }
+    .card-pad{ padding: 26px; }
 
-        /* Grille des encadrés */
-        .encadres-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
-        
-        .encadre-card { 
-            /* Fond très clair coloré (style inspiré de ton fond) */
-            padding: 50px; 
-            /* Angles arrondis modernes */
-            border-radius: 24px; 
-            /* Contour très fin à bords fins */
-            border: 1px solid var(--border-fin); 
-            box-shadow: var(--shadow-premium); 
-            transition: 0.4s; 
-            overflow: hidden; 
-            position: relative; 
-        }
+    /* Product grid */
+    .grid{
+      display:grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .item{
+      padding: 18px 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(16,17,20,.08);
+      background: rgba(255,255,255,.60);
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .item:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 55px rgba(16,17,20,.10);
+      background: rgba(255,255,255,.78);
+    }
+    .icon{
+      width: 36px; height: 36px;
+      border-radius: 14px;
+      border: 1px solid rgba(16,17,20,.10);
+      background:
+        radial-gradient(18px 18px at 35% 35%, rgba(255,255,255,.85), transparent 70%),
+        radial-gradient(24px 20px at 70% 30%, rgba(255, 190, 220, .55), transparent 70%),
+        radial-gradient(22px 22px at 60% 70%, rgba(182, 144, 255, .50), transparent 70%),
+        radial-gradient(22px 22px at 30% 70%, rgba(255, 176, 140, .50), transparent 70%),
+        linear-gradient(135deg, rgba(16,17,20,.10), rgba(16,17,20,.02));
+      flex: 0 0 auto;
+    }
+    .item p{
+      margin:0;
+      color: var(--text);
+      font-weight: 500;
+      line-height:1.35;
+    }
 
-        .encadre-card::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Grain très léger */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3C%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3%3C/svg%3%3E");
-            opacity: 0.01; /* Quasi imperceptible */
-            pointer-events: none;
-        }
+    /* Tech badges */
+    .badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 14px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(16,17,20,.10);
+      background: rgba(255,255,255,.62);
+      color: rgba(16,17,20,.80);
+      font-size: 14px;
+      white-space:nowrap;
+    }
 
-        .encadre-card:hover { border-color: #e0e0e0; transform: translateY(-5px); }
-        .encadre-title { font-size: 1.5rem; color: var(--text-principal); margin-bottom: 15px; font-weight: 600; }
-        .encadre-texte { font-size: 1.1rem; color: var(--text-secondaire); font-weight: 300; }
+    /* Final CTA */
+    .final{
+      padding: 72px 0 84px;
+    }
+    .final-card{
+      position:relative;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16,17,20,.08);
+      background: rgba(255,255,255,.40);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+    }
+    .final-card::before{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background:
+        radial-gradient(700px 420px at 30% 25%, rgba(182, 144, 255, .22), transparent 62%),
+        radial-gradient(760px 520px at 78% 38%, rgba(255, 190, 220, .22), transparent 62%),
+        radial-gradient(900px 520px at 50% 92%, rgba(255, 176, 140, .18), transparent 60%);
+      pointer-events:none;
+    }
+    .final-inner{
+      position:relative;
+      padding: 38px 28px;
+      text-align:center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .final-title{
+      font-family: Fraunces, ui-serif, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(30px, 2.8vw, 46px);
+      line-height: 1.1;
+      margin: 0 0 12px;
+      letter-spacing:-0.01em;
+    }
+    .final-sub{
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-        /* Variantes de fonds dégradés premium ultra subtils */
-        .bg-peach-poudre { background: linear-gradient(135deg, rgba(253, 235, 208, 0.15), rgba(250, 219, 216, 0.15)); }
-        .bg-lavande-mauve { background: linear-gradient(135deg, rgba(235, 222, 240, 0.15), rgba(210, 180, 222, 0.15)); }
-        .bg-rose-saumon { background: linear-gradient(135deg, rgba(250, 219, 216, 0.15), rgba(245, 203, 167, 0.15)); }
+    footer{
+      padding: 18px 0 34px;
+      color: rgba(16,17,20,.55);
+      font-size: 13px;
+    }
+    .footer-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .sep{ opacity:.55; }
 
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero .container { flex-direction: column; text-align: center; gap: 40px; }
-            .hero-text-col { text-align: center; display: flex; flex-direction: column; align-items: center; }
-            .h1-detail { margin-left: auto; margin-right: auto; }
-            .hero-ctas { justify-content: center; flex-wrap: wrap; }
-            .hero-visual-card { width: 80%; margin: 0 auto; }
-            .encadres-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .visual{ height: 360px; }
+      .grid{ grid-template-columns: 1fr; }
+      .section-head{ flex-direction:column; align-items:flex-start; }
+    }
+    @media (max-width: 520px){
+      .container{ width: calc(100% - 28px); }
+      .hero{ padding: 44px 0 18px; }
+      .hero-left{ padding: 20px 18px 22px; }
+      .hero-right{ padding: 18px; }
+      .hero-grid{ padding: 14px; }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="bg"></div>
+  <div class="grain"></div>
 
-    <header>
-        <div class="container">
-            <div class="logo-box">
-                <img src="logo_analog.png" alt="ANALOG" class="logo-img">
-            </div>
-            <a href="mailto:contact@analoganesthesia.com" class="btn btn-header">Nous contacter</a>
-        </div>
-    </header>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a class="brand" href="#top" aria-label="ANALOG">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">ANALOG</span>
+        </a>
+        <a class="btn btn-primary" href="#contact">Nous contacter</a>
+      </div>
+    </div>
+  </header>
 
+  <main id="top">
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-bg-diffus"></div> <div class="container hero-col-layout">
-            
-            <div class="hero-text-col">
-                <p class="label-petit">ANALOG</p> <h1>Réinventer le parcours anesthésique</h1> <span class="h1-detail"></span> <p class="hero-sous-texte">Infrastructure numérique dédiée à l’orchestration intelligente du parcours péri-opératoire. IA médicale supervisée.</p>
-                
-                <div class="hero-ctas">
-                    <a href="#produit" class="btn btn-hero">Découvrir ANALOG</a> <a href="mailto:contact@analoganesthesia.com" class="cta-secondaire-discret">Demander un accès anticipé</a> </div>
-            </div>
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <div class="kicker"><span class="dot"></span> ANALOG</div>
 
-            <div class="hero-visual-col">
-                <div class="hero-visual-card">
-                    <div class="hero-visual-gradient"></div> </div>
-            </div>
+            <h1>Réinventer le parcours anesthésique</h1>
+            <div class="hero-line"></div>
 
+            <p class="lead">
+              La première infrastructure numérique dédiée à l’orchestration intelligente du parcours péri-opératoire.
+            </p>
+            <p class="lead" style="margin-top:10px;">
+              Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.
+            </p>
+
+            <div class="badge">IA médicale supervisée</div>
+
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#solution">Découvrir ANALOG</a>
+              <a class="btn btn-link" href="#contact">Demander un accès anticipé</a>
+            </div>
+          </div>
+
+          <div class="hero-right" aria-hidden="true">
+            <div class="visual"></div>
+          </div>
         </div>
+      </div>
     </section>
 
+    <!-- PROBLÈME -->
     <section id="probleme">
-        <div class="container">
-            <p class="tag-petit">Section Problème</p>
-            <h3>L’anesthésie organisée avec des outils fragmentés.</h3>
-            
-            <div class="encadres-grid">
-                <div class="encadre-card bg-peach-poudre">
-                    <div class="encadre-title">Temps médical perdu.</div>
-                    <p class="encadre-texte">Tâches administratives lourdes.</p>
-                </div>
-                <div class="encadre-card bg-lavande-mauve">
-                    <div class="encadre-title">Données dispersées.</div>
-                    <p class="encadre-texte">Expérience inégale.</p>
-                </div>
-                <div class="encadre-card bg-rose-saumon">
-                    <div class="encadre-title">Parcours peu digitalisé.</div>
-                    <p class="encadre-texte">Manque de suivi fluide.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="center-block">
+          <p class="punch">L’anesthésie est encore organisée avec des outils fragmentés.</p>
+          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text); margin-top:14px;">Temps médical perdu.</p>
+          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text);">Données dispersées.</p>
+          <p class="punch" style="font-weight:600; font-family:Inter; color:var(--text);">Parcours patient peu digitalisé.</p>
+
+          <div style="height:18px;"></div>
+
+          <p class="punch">La médecine progresse.</p>
+          <p class="punch">Les outils, beaucoup moins.</p>
         </div>
+      </div>
     </section>
 
-    </body>
+    <!-- VISION -->
+    <section id="vision">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Vision</h2>
+          <p class="sub">Un parcours structuré. Un seul environnement numérique. Une IA médicale supervisée.</p>
+        </div>
+
+        <div class="card card-pad">
+          <p class="punch" style="margin-bottom:10px;">Et si tout le parcours anesthésique devenait intelligent ?</p>
+
+          <p class="sub" style="margin:0;">
+            Un seul environnement numérique.<br>
+            Un parcours structuré.<br>
+            Une IA médicale supervisée.
+          </p>
+
+          <div style="height:14px;"></div>
+
+          <p class="sub" style="margin:0;">
+            Pour libérer du temps médical<br>
+            et renforcer la sécurité du patient.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUIT -->
+    <section id="solution">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Solution</h2>
+          <p class="sub">ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
+        </div>
+
+        <div class="grid">
+          <div class="item"><span class="icon"></span><p>Consultation préopératoire automatisée</p></div>
+          <div class="item"><span class="icon"></span><p>IA médicale supervisée d’aide à la décision</p></div>
+          <div class="item"><span class="icon"></span><p>Espace patient personnel et sécurisé</p></div>
+          <div class="item"><span class="icon"></span><p>Feuille d’anesthésie intelligente</p></div>
+          <div class="item"><span class="icon"></span><p>Suivi post-opératoire jusqu’au domicile</p></div>
+          <div class="item"><span class="icon"></span><p>Interopérabilité avec les logiciels existants</p></div>
+        </div>
+
+        <div style="height:18px;"></div>
+
+        <div class="center-block" style="max-width:720px;">
+          <p class="punch" style="margin:0;">Une seule plateforme.</p>
+          <p class="punch" style="margin:6px 0 0;">Tout le parcours.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGIE -->
+    <section id="technologie">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Technologie</h2>
+          <p class="sub">Conçu pour la médecine moderne.</p>
+        </div>
+
+        <div class="card card-pad">
+          <p class="sub" style="margin:0;">
+            Cloud natif<br>
+            Interopérabilité FHIR / HL7<br>
+            Hébergement souverain 100 % français<br>
+            Architecture sécurisée compatible dispositifs médicaux
+          </p>
+
+          <div class="badges">
+            <span class="chip">FHIR / HL7</span>
+            <span class="chip">Hébergement souverain</span>
+            <span class="chip">Sécurité</span>
+            <span class="chip">Cloud natif</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÉQUIPE -->
+    <section id="equipe">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Équipe</h2>
+          <p class="sub">Conçu par des anesthésistes.</p>
+        </div>
+
+        <div class="card card-pad">
+          <p class="sub" style="margin:0;">
+            ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.
+          </p>
+
+          <div style="height:12px;"></div>
+
+          <p class="sub" style="margin:0;">
+            Notre ambition :<br>
+            concevoir l’infrastructure numérique de l’anesthésie moderne.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final" id="contact">
+      <div class="container">
+        <div class="final-card">
+          <div class="final-inner">
+            <h3 class="final-title">Le futur du parcours anesthésique commence ici.</h3>
+            <p class="final-sub">ANALOG arrive.</p>
+
+            <div class="cta-row" style="justify-content:center;">
+              <a class="btn btn-primary" href="#contact">Demander un accès anticipé</a>
+              <a class="btn" href="#top">Retour en haut</a>
+            </div>
+
+            <!-- Zone contact (front-only) -->
+            <div style="height:22px;"></div>
+            <div class="card" style="max-width:720px; margin:0 auto;">
+              <div class="card-pad" style="text-align:left;">
+                <p class="sub" style="margin:0 0 14px;">
+                  Nous ne faisons pas un logiciel d’anesthésie.<br>
+                  Nous construisons l’infrastructure de l’anesthésie moderne.
+                </p>
+
+                <form onsubmit="event.preventDefault();" style="display:grid; gap:10px;">
+                  <div style="display:grid; gap:10px; grid-template-columns: 1fr 1fr;">
+                    <input required placeholder="Nom" style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none;">
+                    <input required type="email" placeholder="Email" style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none;">
+                  </div>
+                  <textarea required rows="4" placeholder="Message"
+                    style="padding:12px 14px; border-radius:14px; border:1px solid rgba(16,17,20,.10); background:rgba(255,255,255,.70); outline:none; resize:vertical;"></textarea>
+
+                  <button class="btn btn-primary" type="submit" style="justify-self:start;">
+                    Nous contacter
+                  </button>
+
+                  <p class="sub" style="margin:0; font-size:13px; color:rgba(16,17,20,.55);">
+                    (Formulaire non connecté — à brancher à ton backend plus tard.)
+                  </p>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <footer>
+          <div class="footer-row">
+            <div>© <span id="y"></span> ANALOG</div>
+            <div class="sep">Infrastructure numérique du parcours anesthésique</div>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
