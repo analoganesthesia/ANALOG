@@ -305,6 +305,127 @@
       </div>
     </section>
 
+    <!-- CONTACT -->
+<section style="padding:80px 0;">
+  <div class="container">
+
+    <div style="
+      border-radius:28px;
+      background:linear-gradient(135deg,#f6e7e2,#e9e3f5,#f4e6e6);
+      padding:60px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:start;
+    ">
+
+      <!-- LEFT -->
+      <div>
+        <h2 style="
+          font-family:Fraunces,serif;
+          font-size:48px;
+          margin-bottom:20px;
+        ">
+          Nous contacter
+        </h2>
+
+        <p style="
+          font-size:18px;
+          color:#5A6472;
+          max-width:480px;
+          line-height:1.6;
+        ">
+          Une question sur ANALOG ou sur notre solution ?
+          Envoyez-nous un message et nous vous répondrons rapidement.
+        </p>
+      </div>
+
+      <!-- FORM -->
+      <form
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        style="display:flex; flex-direction:column; gap:20px;"
+      >
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">NOM</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Votre nom"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              font-size:16px;
+              margin-top:6px;
+            "
+          >
+        </div>
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">EMAIL</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="email@email.com"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              font-size:16px;
+              margin-top:6px;
+            "
+          >
+        </div>
+
+        <div>
+          <label style="font-size:12px; letter-spacing:1px;">MESSAGE</label>
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Votre message"
+            required
+            style="
+              width:100%;
+              padding:16px;
+              border-radius:12px;
+              border:1px solid #ddd;
+              font-size:16px;
+              margin-top:6px;
+              resize:none;
+            "
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          style="
+            margin-top:10px;
+            padding:16px 28px;
+            background:#111;
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+            width:200px;
+          "
+        >
+          Envoyer le message →
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+</section>
+
     <footer>
       © <span id="y"></span> ANALOG
     </footer>
