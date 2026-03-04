@@ -12,6 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
   <style>
     :root{
       /* Page beige clair */
@@ -201,6 +204,16 @@
       color: rgba(16,17,20,.92);
       line-height:1.35;
       font-weight: 400;
+
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .item svg{
+      width:20px;
+      height:20px;
+      stroke-width:1.8;
     }
     footer{
       padding: 18px 0 34px;
@@ -384,12 +397,35 @@
             </div>
 
             <div class="grid">
-              <div class="item">Consultation préopératoire automatisée</div>
-              <div class="item">IA médicale supervisée d’aide à la décision</div>
-              <div class="item">Espace patient personnel et sécurisé</div>
-              <div class="item">Feuille d’anesthésie intelligente</div>
-              <div class="item">Suivi post-opératoire jusqu’au domicile</div>
-              <div class="item">Interopérabilité avec les logiciels existants</div>
+              <div class="item">
+              <i data-lucide="stethoscope"></i>
+              Consultation préopératoire automatisée
+              </div>
+              
+              <div class="item">
+              <i data-lucide="brain-circuit"></i>
+              IA médicale supervisée d’aide à la décision
+              </div>
+              
+              <div class="item">
+              <i data-lucide="shield-check"></i>
+              Espace patient personnel et sécurisé
+              </div>
+              
+              <div class="item">
+              <i data-lucide="clipboard-list"></i>
+              Feuille d’anesthésie intelligente
+              </div>
+              
+              <div class="item">
+              <i data-lucide="home"></i>
+              Suivi post-opératoire jusqu’au domicile
+              </div>
+              
+              <div class="item">
+              <i data-lucide="puzzle"></i>
+              Interopérabilité avec les logiciels existants
+              </div>
             </div>
 
             <div class="center" style="margin-top:16px;">
@@ -616,6 +652,7 @@
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+    lucide.createIcons();
   </script>
 </body>
 </html>
