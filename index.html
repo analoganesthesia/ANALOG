@@ -3,260 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANALOG - L'anesthésie intelligente</title>
-    
+    <title>ANALOG — Réinventer le parcours anesthésique</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- Styles de Base (Premium & Epuré) --- */
         :root {
-            --bg-base: #f7f6f2; /* Beige clair très doux */
-            --text-main: #111111; /* Presque noir */
-            --accent-main: #ff4500; /* Orange vif */
-            --border-light: #e5e4de; 
-            --font-titles: 'Teko', sans-serif; /* Police Larken-style libre */
+            --bg: #f7f6f2; /* Beige Premium */
+            --text: #111111;
+            --accent: #ff4500;
+            --border: rgba(0,0,0,0.06);
+            --font-title: 'Teko', sans-serif;
             --font-body: 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; }
 
-        body {
-            font-family: var(--font-body);
-            background-color: var(--bg-base); /* Fond beige */
-            color: var(--text-main);
-            line-height: 1.7;
-            overflow-x: hidden;
-            font-size: 1.1rem;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+        /* Header */
+        header { padding: 20px 0; position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(247, 246, 242, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { height: 45px; mix-blend-mode: multiply; filter: contrast(1.1); }
+
+        /* Hero */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; text-align: center; }
+        .hero-bg { position: absolute; width: 100%; height: 100%; z-index: 1; 
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 127, 80, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.12), transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.15), transparent 60%);
+            filter: blur(100px);
         }
+        .hero-content { z-index: 2; }
+        .hero h1 { font-family: var(--font-title); font-size: clamp(5rem, 15vw, 10rem); line-height: 0.8; letter-spacing: -2px; margin-bottom: 20px; }
+        .hero h2 { font-size: 1.8rem; font-weight: 400; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; opacity: 0.8; }
+        .hero p { font-size: 1.4rem; max-width: 800px; margin: 0 auto 20px; font-weight: 300; }
+        .hero .sub { font-size: 1rem; opacity: 0.6; max-width: 600px; margin: 0 auto; }
 
-        a { text-decoration: none; color: inherit; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        ul { list-style: none; }
+        /* Sections Styles */
+        section { padding: 140px 0; border-bottom: 1px solid var(--border); }
+        h3 { font-family: var(--font-title); font-size: 4rem; line-height: 1; margin-bottom: 40px; text-transform: uppercase; }
+        .tag { display: inline-block; padding: 5px 15px; border: 1px solid var(--text); border-radius: 100px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
 
-        /* --- Structure & Sections --- */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 40px;
+        /* Cards Style (Inspired by your images) */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { 
+            background: white; padding: 50px; border-radius: 30px; border: 1px solid var(--border); 
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); position: relative; overflow: hidden;
         }
-
-        section { padding: 120px 0; }
-
-        h2 {
-            font-family: var(--font-titles);
-            font-size: 4rem; /* Très gros titre */
-            font-weight: 600;
-            line-height: 1;
-            margin-bottom: 20px;
-            color: var(--text-main);
-            letter-spacing: -1.5px;
-        }
-
-        .subtitle {
-            font-size: 1.5rem;
-            color: #555;
-            max-width: 700px;
-            margin-bottom: 50px;
-            font-weight: 300;
-        }
-
-        /* --- En-tête (Bandeau Simple) --- */
-        header {
-            padding: 25px 0;
-            position: fixed;
-            width: 100%;
-            background: rgba(247, 246, 242, 0.98); /* Beige légèrement transparent */
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-image {
-            height: 35px; /* Ajuste la hauteur selon ton logo */
-            margin-right: 15px;
-        }
-
-        /* --- Section Héro Percutante --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            background-color: var(--bg-base); /* */
-            overflow: hidden;
-            padding-top: 100px; /* Compensation header */
-        }
-
-        /* Fond de style avec dégradé abstrait */
-        .hero-bg-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(255, 127, 80, 0.15), transparent 50%),
-                        radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.15), transparent 50%),
-                        radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.1), transparent 80%);
-            opacity: 0.8;
-            filter: blur(70px);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 850px;
-        }
-
-        .hero h1 {
-            font-family: var(--font-titles);
-            font-size: 7.5rem; /* Immense titre hero */
-            font-weight: 700;
-            line-height: 0.9;
-            letter-spacing: -4px;
-            color: var(--text-main);
-            margin-bottom: 25px;
-        }
-
-        .hero .intro {
-            font-size: 1.8rem;
-            max-width: 700px;
-            margin: 0 auto 50px;
-            font-weight: 300;
-        }
-
-        .small-caption {
-            font-size: 1rem;
-            color: #666;
-            margin-top: 25px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* --- Styles des Encadrés Premium (Style dégradé) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-
-        .card {
-            padding: 40px;
-            border-radius: 15px; /* Bords légèrement arrondis */
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            background: white; /* Fond blanc premium */
-        }
-
-        /* Style dégradé/grain en arrière-plan discret de la carte */
-        .card-bg-subtle {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255, 127, 80, 0.03), rgba(138, 43, 226, 0.03));
-            opacity: 0.6;
-            filter: blur(20px);
-            z-index: 1;
-        }
-
-        .card-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-main);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 10px;
-        }
-
-        .feature-list li::before {
-            content: '✓';
-            color: var(--accent-main);
-            font-weight: bold;
-            display: inline-block;
-            width: 1.3em;
-            margin-left: -1.3em;
-        }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
+        .card h4 { font-size: 1.5rem; margin-bottom: 15px; }
         
-        /* --- Section Vision (Saut de couleur pour premium) --- */
-        .vision {
-            background-color: var(--text-main);
-            color: white;
-            padding: 150px 0;
-            text-align: center;
-        }
+        /* List Style */
+        .list { list-style: none; }
+        .list li { padding: 15px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; }
+        .list li::before { content: ""; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-right: 15px; }
 
-        .vision h2 { color: white; margin-bottom: 50px; font-size: 5rem;}
-        .vision .grid .card { background: rgba(255, 255, 255, 0.04); border-color: rgba(255,255,255,0.05); color: #ccc; }
-        .vision .grid .card:hover { border-color: var(--accent-main); }
-        .vision .card-title { color: white; }
-
-        /* --- Section Tech & Equipe --- */
-        .text-centered { text-align: center; max-width: 800px; margin: 0 auto; }
-        .text-centered p { font-size: 1.3rem; margin-top: 20px;}
-
-        /* --- Section Finale Premium --- */
-        .final {
-            padding: 150px 0;
-            background-color: var(--bg-base); /* */
-            text-align: center;
-        }
-        
-        .final h2 { font-size: 5rem; max-width: 900px; margin: 0 auto 50px; }
-
-        /* --- Boutons Premium --- */
-        .btn {
-            display: inline-block;
-            padding: 16px 40px;
-            background-color: var(--text-main);
-            color: white;
-            font-weight: 600;
-            border-radius: 8px; /* Bords légèrement arrondis */
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1.1rem;
-        }
-
-        .btn:hover {
-            background-color: var(--accent-main);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.2);
-        }
-
-        /* --- Responsive Design (Mobile & Tablette) --- */
-        @media (max-width: 1024px) {
-            .hero h1 { font-size: 5.5rem; letter-spacing: -3px; }
-            h2 { font-size: 3rem; }
-            .vision h2 { font-size: 3.5rem; }
-        }
+        /* Footer / Final */
+        .final { text-align: center; background: var(--text); color: var(--bg); }
+        .final h3 { color: var(--bg); font-size: 6rem; }
+        .btn { display: inline-block; padding: 20px 50px; background: var(--accent); color: white; border-radius: 100px; text-decoration: none; font-weight: 600; margin-top: 30px; transition: 0.3s; }
+        .btn:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; letter-spacing: -2px; }
-            .hero .intro { font-size: 1.4rem; }
-            section { padding: 80px 0; }
-            .container { padding: 0 20px; }
-            .final h2 { font-size: 3rem; }
-            .about-content { grid-template-columns: 1fr; text-align: center; }
+            h3 { font-size: 2.5rem; }
+            .hero h1 { font-size: 5rem; }
+            .card { padding: 30px; }
         }
     </style>
 </head>
@@ -264,130 +79,91 @@
 
     <header>
         <div class="container">
-            <div class="logo-box">
-                <img src="logo_analog.png" alt="Logo Analog" class="logo-image">
-            </div>
-            <a href="mailto:votre.email@exemple.com" class="btn">Nous Contacter</a>
+            <img src="logo_analog.png" alt="ANALOG" class="logo-img">
+            <a href="mailto:contact@analoganesthesia.com" class="btn" style="padding: 10px 25px; margin:0; font-size: 0.8rem;">NOUS CONTACTER</a>
         </div>
     </header>
 
-    <section id="accueil" class="hero">
-        <div class="hero-bg-overlay"></div> <div class="container hero-content">
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
             <h1>ANALOG</h1>
             <h2>Réinventer le parcours anesthésique</h2>
-            <p class="intro">La première infrastructure numérique dédiée à l’orchestration intelligente du parcours péri-opératoire.</p>
-            <a href="#contact" class="btn">Démarrer un Projet</a>
-            <p class="small-caption">Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.</p>
+            <p>La première infrastructure numérique dédiée à l’orchestration intelligente du parcours péri-opératoire.</p>
+            <p class="sub">Solution SaaS sécurisée qui optimise la consultation d’anesthésie grâce à une intelligence artificielle médicale supervisée.</p>
         </div>
     </section>
 
-    <section class="problem">
+    <section id="probleme">
         <div class="container">
-            <h2>Le constat actuel.</h2>
-            <p class="subtitle">L’anesthésie est encore organisée avec des outils fragmentés, au détriment du temps médical.</p>
-            <div class="grid feature-list">
-                <div class="card">
-                    <div class="card-bg-subtle"></div> <div class="card-content">
-                        <div class="card-title">Fragmentation</div>
-                        <p>Outils d'anesthésie fragmentés, créant une expérience incohérente et inefficace.</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-bg-subtle"></div> <div class="card-content">
-                        <div class="card-title">Perte de Temps</div>
-                        <p>Temps médical précieux perdu en tâches administratives et gestion manuelle des données.</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-bg-subtle"></div> <div class="card-content">
-                        <div class="card-title">Parcours Patient</div>
-                        <p>Parcours patient peu digitalisé, réduisant l'accessibilité et la clarté pour le patient.</p>
-                    </div>
-                </div>
-            </div>
-            <p style="margin-top: 60px; font-style: italic; font-size: 1.4rem; text-align: center; color: var(--accent-main);">"La médecine progresse. Les outils, beaucoup moins."</p>
-        </div>
-    </section>
-
-    <section id="propos" class="vision">
-        <div class="container">
-            <h2>Notre Vision</h2>
-            <p class="subtitle" style="color: white; margin: 0 auto 50px;">"Et si tout le parcours anesthésique devenait intelligent ?"</p>
+            <span class="tag">Le Problème</span>
+            <h3>L’anesthésie est encore organisée avec des outils fragmentés.</h3>
             <div class="grid">
-                <div class="card">
-                    <div class="card-title">Environnement Numérique</div>
-                    <p>Un seul environnement numérique, regroupant tous les outils pour un parcours structuré.</p>
-                </div>
-                <div class="card">
-                    <div class="card-title">IA Supervisée</div>
-                    <p>Une IA médicale supervisée, automatisant la consultation et soutenant la décision.</p>
-                </div>
-                <div class="card">
-                    <div class="card-title">Libérer du Temps</div>
-                    <p>Libérer du temps médical et renforcer la sécurité du patient grâce à l'efficacité numérique.</p>
-                </div>
+                <div class="card"><h4>Temps médical perdu.</h4></div>
+                <div class="card"><h4>Données dispersées.</h4></div>
+                <div class="card"><h4>Parcours patient peu digitalisé.</h4></div>
+            </div>
+            <h3 style="margin-top: 80px; text-align: center; color: var(--accent);">La médecine progresse.<br>Les outils, beaucoup moins.</h3>
+        </div>
+    </section>
+
+    <section id="vision" style="background: #111; color: #fff;">
+        <div class="container">
+            <span class="tag" style="border-color: #fff; color: #fff;">La Vision</span>
+            <h3 style="color: #fff;">Et si tout le parcours anesthésique devenait intelligent ?</h3>
+            <div class="grid">
+                <div class="card" style="background: #1a1a1a; border: none; color: #fff;"><h4>Un seul environnement numérique.</h4></div>
+                <div class="card" style="background: #1a1a1a; border: none; color: #fff;"><h4>Un parcours structuré.</h4></div>
+                <div class="card" style="background: #1a1a1a; border: none; color: #fff;"><h4>Une IA médicale supervisée.</h4></div>
+            </div>
+            <p style="text-align: center; margin-top: 60px; font-size: 1.5rem;">Libérer du temps médical et renforcer la sécurité du patient.</p>
+        </div>
+    </section>
+
+    <section id="produit">
+        <div class="container">
+            <span class="tag">Le Produit</span>
+            <h3>ANALOG digitalise et structure l’ensemble du parcours anesthésique.</h3>
+            <ul class="list">
+                <li>Consultation préopératoire automatisée</li>
+                <li>IA médicale supervisée d’aide à la décision</li>
+                <li>Espace patient personnel et sécurisé</li>
+                <li>Feuille d’anesthésie intelligente</li>
+                <li>Suivi post-opératoire jusqu’au domicile</li>
+            </ul>
+            <h3 style="margin-top: 50px; opacity: 0.5;">Une seule plateforme. Tout le parcours.</h3>
+        </div>
+    </section>
+
+    <section id="technologie">
+        <div class="container">
+            <span class="tag">Technologie</span>
+            <h3>Conçu pour la médecine moderne.</h3>
+            <div class="grid">
+                <div class="card"><h4>Cloud natif</h4></div>
+                <div class="card"><h4>Intéropérabilité complète</h4><p>Avec les logiciels existants</p></div>
+                <div class="card"><h4>Données souveraines</h4><p>Hébergement 100 % français</p></div>
+                <div class="card"><h4>Architecture sécurisée</h4><p>Compatible dispositifs médicaux</p></div>
             </div>
         </div>
     </section>
 
-    <section class="product text-centered">
-        <div class="container">
-            <h2>Un seul produit, tout le parcours.</h2>
-            <p class="subtitle" style="margin: 0 auto 50px;">ANALOG digitalise et structure l’ensemble du parcours anesthésique.</p>
-            <div class="grid feature-list" style="text-align: left;">
-                <div class="card">
-                    <div class="card-bg-subtle"></div> <div class="card-content">
-                        <ul>
-                            <li>Consultation préopératoire automatisée</li>
-                            <li>IA médicale supervisée</li>
-                            <li>Espace patient sécurisé</li>
-                            <li>Feuille d’anesthésie intelligente</li>
-                            <li>Suivi post-opératoire complet</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <section id="equipe">
+        <div class="container" style="text-align: center;">
+            <span class="tag">L'Équipe</span>
+            <h3>Conçu par des anesthésistes.</h3>
+            <p style="font-size: 1.4rem; max-width: 900px; margin: 0 auto 30px;">ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.</p>
+            <p style="font-weight: 700; font-size: 1.2rem;">Notre ambition : concevoir l’infrastructure numérique de l’anesthésie moderne.</p>
         </div>
     </section>
 
-    <section class="tech text-centered">
+    <section class="final">
         <div class="container">
-            <h2>Conçu pour la médecine moderne.</h2>
-            <div class="grid feature-list" style="text-align: left;">
-                <div class="card">
-                    <div class="card-bg-subtle"></div> <div class="card-content">
-                        <ul>
-                            <li>Cloud natif et scalable</li>
-                            <li>Interopérabilité complète</li>
-                            <li>Hébergement des données français</li>
-                            <li>Architecture sécurisée compliant</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <h3>ANALOG ARRIVE.</h3>
+            <p>Le futur du parcours anesthésique commence ici.</p>
+            <a href="mailto:contact@analoganesthesia.com" class="btn">REJOINDRE L'AVENTURE</a>
         </div>
     </section>
-
-    <section class="team text-centered" style="background: white;">
-        <div class="container">
-            <h2>Conçu par des anesthésistes.</h2>
-            <p>ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.</p>
-            <p>Notre ambition : concevoir l’infrastructure numérique de l’anesthésie moderne.</p>
-        </div>
-    </section>
-
-    <section id="contact" class="final">
-        <div class="hero-bg-overlay" style="top:auto; bottom:0; height:60%; opacity:0.6;"></div> <div class="container hero-content">
-            <h2>Le futur de l’anesthésie commence ici.</h2>
-            <a href="mailto:votre.email@exemple.com" class="btn">Parler avec Nous</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© 2026 ANALOG. Tous droits réservés.</p>
-        </div>
-    </footer>
 
 </body>
 </html>
