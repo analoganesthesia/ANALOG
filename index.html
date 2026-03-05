@@ -97,26 +97,49 @@
       display:block;
     }
 
-    /* HERO: centered, simplified */
+    /* HERO: banner full width + content centered */
     .hero{
-      padding: 72px 0 42px;
+      padding: 0 0 42px;
       text-align:center;
     }
-    .brand-hero{
-      font-family: Fraunces, ui-serif, Georgia, serif;
-      font-weight: 300;         /* fine */
-      font-size: clamp(64px, 8vw, 140px);
-      line-height: 1;
-      letter-spacing: 0.04em; /* liquid glass / Apple-ish */
-      margin: 18px 0 22px;
+
+    /* Full-bleed banner (collé au header, jusqu'aux bords) */
+    .hero-banner{
+      width:100vw;
+      height:220px;
+      overflow:hidden;
+      position:relative;
+      margin:0; /* collé */
     }
+    .hero-banner img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: blur(1.5px) saturate(.95);
+      opacity:.62;
+      transform:scale(1.05);
+      display:block;
+    }
+    /* fondu vers le beige du site */
+    .hero-banner::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(
+        to bottom,
+        rgba(247,245,242,0) 0%,
+        rgba(247,245,242,.85) 100%
+      );
+      pointer-events:none;
+    }
+
     .h1{
       font-family: Fraunces, ui-serif, Georgia, serif;
       font-weight: 700;
       font-size: clamp(34px, 3.8vw, 56px);
       line-height: 1.06;
       letter-spacing: -0.03em; /* liquid glass / Apple-ish */
-      margin: 0 0 14px;
+      margin: 34px 0 14px;
     }
     .lead{
       margin: 0 auto;
@@ -227,7 +250,8 @@
     }
     @media (max-width: 520px){
       .container{ width: calc(100% - 28px); }
-      .hero{ padding: 56px 0 34px; }
+      .hero{ padding: 0 0 34px; }
+      .hero-banner{ height:140px; }
       .section-pad{ padding: 22px 18px; }
     }
 
@@ -294,7 +318,7 @@
         radial-gradient(680px 420px at 90% 40%, rgba(255,255,255,.25), transparent 65%);
       opacity:.55;
     }
-    .contact-grid > *{ position:relative; }
+    .contact-grid > *{ position:relative; z-index:1; }
 
     .contact-input, .contact-textarea{
       border: 1px solid rgba(255,255,255,.65) !important;
@@ -341,11 +365,15 @@
   </header>
 
   <main id="top">
-    <!-- HERO (simplified, centered) -->
+    <!-- HERO (bandeau photo pleine largeur collé au header, sans ANALOG en gros) -->
     <section class="hero">
-      <div class="container">
-        <div class="brand-hero">ANALOG</div>
 
+      <!-- Image à mettre à côté de index.html et à nommer hero_banner.png -->
+      <div class="hero-banner" aria-hidden="true">
+        <img src="hero_banner.png" alt="">
+      </div>
+
+      <div class="container">
         <h1 class="h1">Réinventer le parcours anesthésique</h1>
 
         <p class="lead">
