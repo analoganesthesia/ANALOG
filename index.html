@@ -86,6 +86,28 @@
       padding: 4px;
       color: #0a0a0a;
     }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-platform {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 100px;
+      border: 1px solid rgba(0,0,0,0.14);
+      background: #fff;
+      color: #0a0a0a;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav-platform:hover { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
+    .nav-platform i { width: 16px; height: 16px; }
+    .nav-platform .np-short { display: none; }
 
     /* ── HERO ── */
     .hero {
@@ -335,9 +357,13 @@
       .contact-wrap { grid-template-columns: 1fr; gap: 48px; }
       .nav-links { display: none; }
       .nav-menu-btn { display: block; }
+      .nav-right { gap: 12px; }
     }
     @media (max-width: 580px) {
       .container { width: calc(100% - 32px); }
+      .nav-platform { padding: 8px 14px; gap: 5px; }
+      .nav-platform .np-full { display: none; }
+      .nav-platform .np-short { display: inline; }
       .feature-grid { grid-template-columns: 1fr; }
       .feature-item { border-right: none !important; }
       .feature-item:not(:last-child) { border-bottom: 1px solid rgba(0,0,0,0.08) !important; }
@@ -357,15 +383,22 @@
           <img src="logo_analog.png" alt="ANALOG">
           <span>ANALOG</span>
         </a>
-        <ul class="nav-links">
-          <li><a href="#probleme">Problématique</a></li>
-          <li><a href="#solution">Solution</a></li>
-          <li><a href="#equipe">Équipe</a></li>
-          <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
-        </ul>
-        <button class="nav-menu-btn" aria-label="Menu">
-          <i data-lucide="menu"></i>
-        </button>
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li><a href="#probleme">Problématique</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#equipe">Équipe</a></li>
+            <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
+          </ul>
+          <a class="nav-platform" href="https://test.analoganesthesia.com">
+            <span class="np-full">Accéder à la plateforme</span>
+            <span class="np-short">Plateforme</span>
+            <i data-lucide="arrow-up-right"></i>
+          </a>
+          <button class="nav-menu-btn" aria-label="Menu">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
