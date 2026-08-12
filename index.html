@@ -84,8 +84,10 @@ nav.on{border-bottom-color:var(--line);background:rgba(4,7,17,.9)}
 @media(max-width:560px){.nav-cta{font-size:11px;padding:10px 14px;letter-spacing:.05em}}
 
 /* HERO */
-.hero{padding:180px 0 152px;overflow:hidden;position:relative;background:var(--void)}
-.hero-b{padding:46px 0 76px}
+.hero{min-height:max(430px,calc(100vh - 202px));min-height:max(430px,calc(100svh - 202px));
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 0 26px;overflow:hidden;position:relative;background:var(--void);text-align:center}
+.hero-b{padding:34px 0 clamp(48px,7vh,74px)}
 .hero-b.cream{--acc:#4D8DFF;--acc-d:#2E6FE0}
 .hero-b .btn-p{color:#040711}
 .grid-bg{position:absolute;inset:0;opacity:.35;
@@ -93,21 +95,28 @@ nav.on{border-bottom-color:var(--line);background:rgba(4,7,17,.9)}
     linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
   background-size:56px 56px;
   mask-image:radial-gradient(ellipse 85% 60% at 50% 10%,#000 20%,transparent 75%)}
-.trace{position:absolute;left:0;right:0;bottom:14px;height:146px;opacity:.5;pointer-events:none;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.h1-wrap{position:relative}
+.trace{position:absolute;top:50%;left:50%;width:100vw;height:198px;
+  transform:translate(-50%,-50%);opacity:.66;pointer-events:none;z-index:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .trace svg{width:100%;height:100%;display:block}
-.trace path{fill:none;stroke:var(--acc);stroke-width:2.4;vector-effect:non-scaling-stroke;
+.trace path{fill:none;stroke:var(--acc);stroke-width:2.9;vector-effect:non-scaling-stroke;
   stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 5.2s cubic-bezier(.32,0,.12,1) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 .hero .wrap{position:relative;z-index:3}
 h1{font-size:clamp(38px,6.2vw,82px);line-height:1.04;letter-spacing:-.045em;font-weight:600;max-width:24ch;text-wrap:balance}
 h1 em{font-style:normal;color:var(--acc)}
-.hero-lede{font-size:21px;line-height:1.5;color:var(--acc);font-weight:500;
-  letter-spacing:-.012em;max-width:52ch;margin-top:30px}
-.hero-sub{font-size:19px;line-height:1.62;color:var(--t2);max-width:62ch;margin-top:0}
-.hero-btns{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.hero h1{position:relative;z-index:2;margin:0 auto;text-shadow:0 0 26px var(--void),0 0 58px var(--void),0 0 90px var(--void)}
+.hero-lede{font-size:21px;line-height:1.5;color:#F3F0E9;font-weight:500;
+  letter-spacing:-.012em;max-width:52ch;margin:clamp(26px,3.6vh,40px) auto 0;
+  text-shadow:0 0 20px var(--void),0 0 44px var(--void)}
+@media(max-width:700px){.hero{min-height:max(380px,calc(100svh - 236px));padding:78px 0 20px}
+  .hero-sub{font-size:17px}.trace{opacity:.5;height:150px}
+  .hero-lede{margin-top:26px;font-size:18px}}
+.hero-sub{font-size:18.5px;line-height:1.58;color:var(--t2);max-width:none;margin-top:0}
+.hero-btns{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:500;padding:15px 26px;
   border-radius:5px;transition:.22s;border:1px solid transparent}
 .btn-p{background:var(--acc);color:#040711;font-weight:600}
@@ -650,13 +659,15 @@ footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--sur
 
 <section class="hero" id="top">
   <div class="grid-bg"></div>
-  <div class="trace">
-    <svg viewBox="0 16 2400 160" preserveAspectRatio="none">
-      <path pathLength="1000" d="M 0 130 L 70 130 Q 96 108 122 130 L 148 130 L 157 142 L 170 30 L 182 164 L 192 130 L 222 130 Q 262 76 302 130 L 800 130 L 870 130 Q 896 108 922 130 L 948 130 L 957 142 L 970 30 L 982 164 L 992 130 L 1022 130 Q 1062 76 1102 130 L 1600 130 L 1670 130 Q 1696 108 1722 130 L 1748 130 L 1757 142 L 1770 30 L 1782 164 L 1792 130 L 1822 130 Q 1862 76 1902 130 L 2400 130"/>
-    </svg>
-  </div>
   <div class="wrap">
-    <h1>Automatiser <em>l'ensemble</em><br>du péri&#8209;opératoire.</h1>
+    <div class="h1-wrap">
+      <div class="trace">
+        <svg viewBox="0 20 2400 220" preserveAspectRatio="none">
+          <path pathLength="1000" d="M 0 130 L 60 130 Q 86 106 112 130 L 138 130 L 147 144 L 160 24 L 172 170 L 182 130 L 212 130 Q 252 72 292 130 L 370 130 Q 396 106 422 130 L 448 130 L 457 144 L 470 24 L 482 170 L 492 130 L 522 130 Q 562 72 602 130 L 1798 130 L 1798 130 Q 1824 106 1850 130 L 1876 130 L 1885 144 L 1898 24 L 1910 170 L 1920 130 L 1950 130 Q 1990 72 2030 130 L 2108 130 Q 2134 106 2160 130 L 2186 130 L 2195 144 L 2208 24 L 2220 170 L 2230 130 L 2260 130 Q 2300 72 2340 130 L 2400 130"/>
+        </svg>
+      </div>
+      <h1>Automatiser l'ensemble<br>du <em>péri&#8209;opératoire</em>.</h1>
+    </div>
     <p class="hero-lede">Une seule plateforme, conçue par des anesthésistes.</p>
   </div>
 </section>
