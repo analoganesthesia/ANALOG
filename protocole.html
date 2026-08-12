@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANALOG — Protocole de développement et de validation du profil de risque anesthésique</title>
+<style>
+:root{--ink:#0E1114;--t2:#454C54;--t3:#79818A;--line:#E4E0D7;--line2:#CFC9BC;--bg:#FBFAF7;--card:#fff;
+--acc:#1E5FD6;--acc-bg:#EAF0FC;--good:#0B7A55;--good-bg:#E6F5EE;--warn:#8A5A08;--warn-bg:#FBF0DA;
+--bad:#A32D2D;--bad-bg:#FBEAE8;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:60px 28px 130px}
+header.doc{border-bottom:2px solid var(--ink);padding-bottom:30px;margin-bottom:14px}
+.kicker{font:11.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:16px}
+h1{font-size:33px;line-height:1.2;font-weight:600;letter-spacing:-.022em;margin-bottom:16px}
+.sub{font-size:17px;color:var(--t2)}
+.idbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;border:1px solid var(--line2);
+  border-radius:8px;overflow:hidden;margin:26px 0 50px;background:var(--card)}
+.idbox div{padding:12px 15px;border-right:1px solid var(--line)}
+.idbox div:last-child{border-right:none}
+.idbox .k{font:10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.idbox .v{font-size:14px;font-weight:500}
+h2{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--acc);font-weight:600;
+  margin:62px 0 6px;padding-top:24px;border-top:1px solid var(--line);font-family:var(--mono)}
+h2:first-of-type{border-top:none;padding-top:0}
+h2+h3{margin-top:8px}
+h3{font-size:23px;font-weight:600;letter-spacing:-.014em;line-height:1.3;margin:34px 0 12px}
+h4{font-size:16.5px;font-weight:600;margin:26px 0 8px}
+p{margin-bottom:15px}ul,ol{margin:0 0 15px 22px}li{margin-bottom:8px}
+.lead{font-size:17.5px;color:var(--t2);margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:20px 23px;margin:22px 0}
+.card h4{margin-top:0}
+.acc{background:var(--acc-bg);border-color:#C3D6F6}.good{background:var(--good-bg);border-color:#A9DDC7}
+.warn{background:var(--warn-bg);border-color:#F0D089}.bad{background:var(--bad-bg);border-color:#F0C0BB}
+.tag{display:inline-block;font:10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  padding:5px 9px;border-radius:4px;background:var(--acc-bg);color:#134092;margin-bottom:11px}
+.tag.g{background:var(--good-bg);color:#08543C}.tag.w{background:var(--warn-bg);color:#6B4506}
+.tag.b{background:var(--bad-bg);color:#7E2020}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14.5px}
+th{text-align:left;font:10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3);
+  font-weight:600;border-bottom:1px solid var(--line2);padding:9px 12px 9px 0;vertical-align:bottom}
+td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+code{font:13px/1 var(--mono);background:#F0EEE8;padding:2px 6px;border-radius:4px}
+.def{border-left:2px solid var(--acc);padding:2px 0 2px 18px;margin:18px 0}
+.def .n{font:10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:7px}
+.crit{background:var(--card);border:1px solid var(--line2);border-radius:9px;overflow:hidden;margin:22px 0}
+.crit .r{display:grid;grid-template-columns:1fr 210px;border-bottom:1px solid var(--line)}
+.crit .r:last-child{border-bottom:none}
+.crit .r>div{padding:13px 16px}
+.crit .r>div:last-child{border-left:1px solid var(--line);font:13px/1.5 var(--mono);color:var(--t2)}
+.crit .h{background:#F4F2EC;font:10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.note{font-size:13.5px;color:var(--t3);margin:12px 0}
+footer.doc{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);font-size:13px;color:var(--t3)}
+@media(max-width:640px){.wrap{padding:38px 20px 80px}h1{font-size:26px}.crit .r{grid-template-columns:1fr}
+  .crit .r>div:last-child{border-left:none;border-top:1px solid var(--line)}}
+.back{font:11.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--t3);display:inline-block;margin-bottom:30px;text-decoration:none}
+.back:hover{color:var(--acc)}
+.doclinks{margin-top:14px}
+.doclinks a{color:var(--acc);text-decoration:none}
+.doclinks a:hover{text-decoration:underline}
+</style></head><body><div class="wrap">
+<a class="back" href="index.html">← Retour à l'accueil</a>
+<header class="doc">
+<p class="kicker">ANALOG SAS · Protocole de recherche</p>
+<h1>Développement et validation d'un modèle de prédiction du risque péri-opératoire applicable en consultation pré-anesthésique</h1>
+<p class="sub">Protocole pré-spécifié, rédigé et figé avant tout accès aux données. Aligné sur les recommandations TRIPOD+AI, auto-évalué selon PROBAST+AI, évaluation clinique précoce rapportée selon DECIDE-AI.</p>
+</header>
+<div class="idbox">
+<div><div class="k">Acronyme</div><div class="v">ANALOG-RISK</div></div>
+<div><div class="k">Version</div><div class="v">0.1 — projet</div></div>
+<div><div class="k">Date</div><div class="v">Août 2026</div></div>
+<div><div class="k">Promoteur</div><div class="v">ANALOG SAS</div></div>
+<div><div class="k">Type d'étude</div><div class="v">Développement et validation d'un modèle pronostique</div></div>
+<div><div class="k">Données</div><div class="v">Rétrospectives, secondaires, anonymisées</div></div>
+</div>
+<div class="card warn"><span class="tag w">Statut de ce document</span>
+<p style="margin-bottom:0">Version <strong>0.1</strong> : projet de travail soumis à relecture des investigateurs. Les versions successives seront numérotées 0.2, 0.3 et suivantes ; le numéro <strong>1.0</strong> est réservé à la version signée, horodatée et gelée. Les points marqués <strong>« à arbitrer »</strong> appellent une décision explicite avant le gel. Une fois la version 1.0 signée et horodatée, <strong>aucune modification rétroactive ne sera apportée</strong> ; toute évolution fera l'objet d'un amendement daté et motivé, consigné à la section 15.</p></div>
+<h2>1 — Contexte et justification</h2>
+<h3>Le problème clinique</h3>
+<p>L'évaluation du risque en consultation pré-anesthésique repose aujourd'hui, en pratique française courante, sur la classification ASA — subjective, à quatre niveaux utiles, dont la reproductibilité inter-observateurs est médiocre — complétée au cas par cas par des scores d'organe utilisés isolément.</p>
+<p>Il existe des instruments validés et performants. Le <strong>POSPOM</strong>, dérivé par Le Manach et coll. sur 5 507 834 chirurgies françaises issues du PMSI et publié dans <em>Anesthesiology</em> en 2016, atteint une c-statistique de 0,944 en dérivation et 0,929 en validation pour la mortalité hospitalière. Le <strong>RCRI</strong> et l'<strong>ARISCAT</strong> couvrent respectivement le risque cardiaque et pulmonaire. Le calculateur de l'<em>American College of Surgeons</em> (NSQIP) propose une approche multi-complications, mais construite sur une population et un système de soins américains.</p>
+<p>Trois limites persistent, et ce sont elles qui justifient ce travail :</p>
+<ul>
+<li>Ces scores sont <strong>mono-critère</strong> ou fondés sur des données administratives de sortie, et non sur l'information disponible <em>au moment de la consultation</em>.</li>
+<li>Aucun ne produit un <strong>profil multi-complications cohérent</strong> exploitable en une seule lecture par le praticien.</li>
+<li>Aucun n'est <strong>relié à une action</strong> : un risque identifié n'entraîne aucune conduite à tenir formalisée.</li>
+</ul>
+<h3>Ce que ce protocole ajoute</h3>
+<p>Le présent travail vise un modèle prédictif <strong>multi-critères</strong>, calculé exclusivement à partir des données disponibles à la fin de la consultation pré-anesthésique, comparé aux scores de référence sur les mêmes patients, et rapporté selon les standards méthodologiques en vigueur.</p>
+<div class="card acc"><h4>Positionnement par rapport à la littérature</h4>
+<p style="margin-bottom:0">Wingert et coll. (<em>Br J Anaesth</em> 2026) ont démontré la faisabilité d'un modèle d'apprentissage automatique de mortalité intégré en temps réel au dossier patient informatisé, sur 177 227 interventions d'un centre unique. Ce travail établit un <strong>précédent d'architecture</strong>, non un précédent de performance : il porte sur un critère unique, dans un seul centre, sur une population nord-américaine. Le présent protocole s'en distingue par son caractère multi-critères, sa validation externe et son ancrage européen.</p></div>
+
+<h2>2 — Usage prévu</h2>
+<p class="lead">Cette section définit l'<em>intended use</em> au sens du règlement (UE) 2017/745. Elle conditionne la classification réglementaire du dispositif et lie l'ensemble du protocole.</p>
+<div class="def"><div class="n">Question clinique</div>
+<p style="margin:0">Quelle est la probabilité, pour ce patient et cette intervention, de survenue de chacune des complications péri-opératoires retenues ?</p></div>
+<div class="def"><div class="n">Population visée</div>
+<p style="margin:0">Patients adultes vus en consultation pré-anesthésique en vue d'une intervention chirurgicale non cardiaque programmée.</p></div>
+<div class="def"><div class="n">Utilisateur</div>
+<p style="margin:0">Médecin anesthésiste-réanimateur, exclusivement. Le système n'est ni destiné au patient, ni à un professionnel non médecin.</p></div>
+<div class="def"><div class="n">Moment d'utilisation</div>
+<p style="margin:0">À l'issue de la consultation pré-anesthésique, une fois le recueil clinique complété.</p></div>
+<div class="def"><div class="n">Décision éclairée</div>
+<p style="margin:0">Orientation vers une optimisation préopératoire, choix du niveau de surveillance postopératoire, information du patient sur son risque individuel.</p></div>
+<div class="card bad"><span class="tag b">Ce que le système ne fait pas</span>
+<ul style="margin-bottom:0">
+<li>Il <strong>ne pose aucun diagnostic</strong>.</li>
+<li>Il <strong>ne recommande aucun acte, aucune thérapeutique et aucune contre-indication</strong>. La sortie est une probabilité, jamais une conduite à tenir.</li>
+<li>Il <strong>ne se substitue pas à l'évaluation clinique</strong> et ne conditionne aucune décision de manière automatique.</li>
+<li>Il <strong>n'est pas destiné à une décision de couverture, de tarification ou d'orientation administrative</strong>.</li>
+</ul></div>
+<p class="note">Cette frontière est délibérée. Une sortie directive — recommander une prophylaxie, statuer sur l'éligibilité à l'ambulatoire — modifierait la classification au titre de la règle 11 du règlement 2017/745 et relèverait d'un protocole distinct.</p>
+<h2>3 — Objectifs</h2>
+<h4>Objectif principal</h4>
+<p>Développer et valider un modèle prédictif de la <strong>mortalité toutes causes à 30 jours</strong> après une chirurgie non cardiaque programmée, calculé à partir des seules données disponibles en consultation pré-anesthésique, et démontrer sa supériorité de discrimination sur le POSPOM calculé sur les mêmes patients.</p>
+<h4>Objectifs secondaires</h4>
+<ol>
+<li>Développer et valider un modèle pour chacun des trois autres critères principaux définis en section 6.</li>
+<li>Comparer chaque modèle au score de référence correspondant : ASA-PS pour l'ensemble, RCRI pour le critère cardiaque, ARISCAT pour le critère pulmonaire.</li>
+<li>Évaluer la calibration et l'utilité clinique nette de chaque modèle.</li>
+<li>Évaluer l'équité de performance entre sous-groupes pré-définis.</li>
+</ol>
+<h4>Objectif exploratoire</h4>
+<p>Construire un <strong>score global de risque de 0 à 100</strong>, défini comme le percentile de risque du patient au sein de sa population d'intervention, dérivé des modèles par critère, et décomposé en une part incompressible et une part modifiable. Cet objectif est exploratoire : il ne fait pas l'objet d'un critère de succès pré-spécifié et ne sera pas revendiqué comme validé à l'issue de ce protocole.</p>
+
+<h2>4 — Conception de l'étude</h2>
+<p class="lead">Étude pronostique en trois temps : développement, validation externe, puis évaluation de la transportabilité sur population française.</p>
+<table><thead><tr><th style="width:15%">Phase</th><th style="width:26%">Source de données</th><th>Objet</th></tr></thead><tbody>
+<tr><td><strong>A — Développement</strong></td><td>INSPIRE v1.4.2 (PhysioNet)<br><span class="note">~130 000 interventions, CHU national de Séoul, 2011-2020</span></td><td>Construction des modèles, sélection des hyperparamètres, calibration. Séparation temporelle stricte entre développement et test.</td></tr>
+<tr><td><strong>B — Validation externe</strong></td><td>MIMIC-IV (PhysioNet)<br><span class="note">sous-cohorte chirurgicale</span></td><td>Évaluation des modèles gelés sur une population et un système de soins différents, sans réajustement.</td></tr>
+<tr><td><strong>C — Transportabilité</strong></td><td>Cohorte prospective ANALOG<br><span class="note">consultations recueillies en conditions réelles</span></td><td>Mesure de la calibration sur population française et recalibration si nécessaire. <strong>Aucun réentraînement.</strong></td></tr>
+</tbody></table>
+<div class="card warn"><span class="tag w">Restriction d'usage des données publiques</span>
+<p style="margin-bottom:0">L'accord d'utilisation d'INSPIRE (<em>Korea Credentialed Health Data License</em>, article 4.1) impose un usage <strong>exclusivement de recherche</strong> et interdit toute redistribution. Les phases A et B relèvent donc de la recherche académique et donneront lieu à publication. <strong>Aucun modèle entraîné sur ces données ne sera intégré à un produit commercial</strong> : le modèle destiné au déploiement sera entraîné sur des données dont ANALOG détient les droits d'usage, par transfert de méthode et non de paramètres.</p></div>
+
+<h2>5 — Population</h2>
+<h4>Critères d'inclusion</h4>
+<ul>
+<li>Âge ≥ 18 ans à la date de l'intervention.</li>
+<li>Intervention chirurgicale <strong>programmée</strong>, réalisée sous anesthésie générale, locorégionale ou sédation surveillée.</li>
+<li>Existence d'une évaluation pré-anesthésique documentée.</li>
+</ul>
+<h4>Critères d'exclusion</h4>
+<ul>
+<li>Chirurgie cardiaque sous circulation extracorporelle — population disposant de scores dédiés et de déterminants du risque distincts.</li>
+<li>Transplantation d'organe.</li>
+<li>Chirurgie en urgence, définie comme une intervention non programmée à l'avance. <span class="note">Justification : les déterminants du risque diffèrent structurellement et la disponibilité des données préopératoires est incomplète. Extension prévue dans un protocole ultérieur.</span></li>
+<li>Obstétrique.</li>
+<li>Données manquantes sur le critère de jugement principal.</li>
+</ul>
+<h4>Unité d'analyse</h4>
+<p>L'<strong>intervention</strong>, et non le patient. Un patient opéré plusieurs fois contribue plusieurs observations. Pour éviter toute fuite d'information entre jeux de développement et de test, <strong>toutes les interventions d'un même patient sont assignées au même jeu</strong>.</p>
+<p class="note"><strong>À arbitrer</strong> — l'exclusion de la chirurgie en urgence restreint la population à environ deux tiers de l'activité réelle. Elle est méthodologiquement fondée, mais réduit la portée commerciale immédiate du modèle.</p>
+<h2>6 — Critères de jugement</h2>
+<p class="lead">Chaque critère est défini de manière opérationnelle, avec sa fenêtre temporelle, sa source et son algorithme de construction. Ces définitions sont figées avant tout accès aux données et ne seront pas modifiées après consultation des résultats.</p>
+<h3>Critères principaux</h3>
+<table><thead><tr><th style="width:22%">Critère</th><th style="width:14%">Fenêtre</th><th>Définition opérationnelle</th></tr></thead><tbody>
+<tr><td><strong>C1 — Mortalité toutes causes</strong></td><td>30 jours postopératoires</td><td>Décès quelle qu'en soit la cause dans les 30 jours suivant l'incision. Source : champ de mortalité toutes causes de la table <code>operations</code>. Décès hospitalier utilisé en analyse de sensibilité.</td></tr>
+<tr><td><strong>C2 — Admission non programmée en réanimation</strong></td><td>Postopératoire immédiat</td><td>Admission en unité de réanimation dans les 24 heures suivant la fin de l'intervention, non prévue au programme opératoire. Source : champs <code>icuin_time</code> / <code>icuout_time</code>.</td></tr>
+<tr><td><strong>C3 — Durée de séjour prolongée</strong></td><td>Séjour index</td><td>Durée totale d'hospitalisation supérieure au 75<sup>e</sup> percentile observé pour le même groupe d'intervention (CIM-10-PCS, quatre premiers caractères) dans la cohorte de développement. Seuil calculé sur le seul jeu de développement, puis appliqué tel quel au jeu de test.</td></tr>
+<tr><td><strong>C4 — Complication pulmonaire postopératoire</strong></td><td>30 jours</td><td>Critère composite : au moins un des éléments suivants — diagnostic de pneumopathie, d'insuffisance respiratoire aiguë ou de syndrome de détresse respiratoire (CIM-10, trois caractères, liste pré-définie), ou ventilation mécanique postopératoire de plus de 48 heures, ou réintubation. Algorithme de construction publié en annexe avant le gel du protocole.</td></tr>
+</tbody></table>
+<h3>Critères secondaires</h3>
+<table><thead><tr><th style="width:22%">Critère</th><th style="width:14%">Fenêtre</th><th>Définition opérationnelle</th></tr></thead><tbody>
+<tr><td><strong>C5 — Transfusion péri-opératoire</strong></td><td>Per-opératoire à J+7</td><td>Administration d'au moins un concentré de globules rouges entre l'incision et le 7<sup>e</sup> jour postopératoire, identifiée par les enregistrements de la table <code>medications</code> (codes ATC groupe B05A) ou par la variation d'hémoglobine associée.</td></tr>
+<tr><td><strong>C6 — Complication cardiaque majeure</strong></td><td>30 jours</td><td>Critère composite : infarctus du myocarde, arrêt cardiaque ressuscité, ou décès de cause cardiovasculaire. Construction par codes CIM-10 pré-définis.</td></tr>
+</tbody></table>
+<div class="card warn"><span class="tag w">Limite assumée sur les critères construits</span>
+<p style="margin-bottom:0">Les critères C4, C5 et C6 ne sont pas directement disponibles dans INSPIRE et doivent être <strong>construits</strong> à partir des diagnostics, des médicaments et de la biologie. La troncature de la CIM-10 aux trois premiers caractères limite la précision de cette construction. Chaque algorithme sera publié intégralement, et une <strong>validation par revue manuelle sur un échantillon aléatoire de 200 cas</strong> sera réalisée pour estimer la sensibilité et la valeur prédictive positive de chaque définition. Les critères dont la valeur prédictive positive estimée sera inférieure à 0,80 seront rétrogradés en analyse exploratoire.</p></div>
+
+<h2>7 — Prédicteurs candidats</h2>
+<h3>La règle qui gouverne tout</h3>
+<div class="card acc"><h4>Règle de disponibilité temporelle</h4>
+<p style="margin-bottom:0">Une variable n'est éligible que si elle est <strong>disponible et documentée avant la fin de la consultation pré-anesthésique</strong> — qu'elle provienne du questionnaire préopératoire rempli par le patient, de l'examen clinique, du dossier patient informatisé ou des examens complémentaires déjà réalisés. Toute variable per-opératoire, postopératoire, ou dont l'horodatage est postérieur à l'incision est <strong>exclue par construction</strong>, sans exception. Cette règle est vérifiée par un contrôle automatisé sur l'ensemble du jeu de variables avant tout entraînement, et le résultat de ce contrôle est archivé.</p></div>
+
+<h3>Liste des prédicteurs candidats</h3>
+<table><thead><tr><th style="width:24%">Domaine</th><th>Variables</th></tr></thead><tbody>
+<tr><td><strong>Démographie et morphologie</strong></td><td>Âge, sexe, poids, taille, indice de masse corporelle</td></tr>
+<tr><td><strong>Mode de vie</strong></td><td>Tabagisme actif ou sevré, quantifié en paquets-années, avec date de sevrage ; consommation d'alcool et sa fréquence — quotidienne, hebdomadaire, mensuelle, occasionnelle, nulle ; profession, exposition professionnelle à risque, maladie professionnelle reconnue ; usage de substances</td></tr>
+<tr><td><strong>Autonomie et capacité fonctionnelle</strong></td><td>Groupe iso-ressources (GIR) ; autonomie au domicile ; présence d'un aidant ; capacité fonctionnelle en équivalents métaboliques (METs), avec le seuil de 4 METs</td></tr>
+<tr><td><strong>État nutritionnel</strong></td><td>Grade nutritionnel ; perte de poids récente et son ampleur ; albuminémie croisée à l'indice de masse corporelle</td></tr>
+<tr><td><strong>Antécédents et comorbidités</strong></td><td>Coronaropathie, insuffisance cardiaque et sa classe fonctionnelle, fibrillation atriale et son score CHA₂DS₂-VASc, valvulopathie, artériopathie, antécédent vasculaire cérébral, hypertension et son contrôle, BPCO, asthme, syndrome d'apnées du sommeil et son appareillage, insuffisance rénale et son stade, hépatopathie, diabète et son traitement, néoplasie évolutive, immunodépression, antécédents anesthésiques et complications antérieures</td></tr>
+<tr><td><strong>Traitements en cours</strong></td><td>Antiagrégants, anticoagulants et leur fenêtre d'arrêt, bêtabloquants, inhibiteurs du système rénine-angiotensine, diurétiques, statines, insuline, antidiabétiques oraux, corticoïdes, immunosuppresseurs, opioïdes au long cours, traitements psychotropes</td></tr>
+<tr><td><strong>Examen clinique</strong></td><td>Pression artérielle systolique et diastolique, fréquence cardiaque, saturation en air ambiant, fréquence respiratoire, température ; signes d'insuffisance cardiaque ou de bas débit, souffle, œdèmes, anomalies auscultatoires ; critères d'intubation difficile — Mallampati, ouverture buccale, distance thyro-mentonnière, mobilité cervicale, état dentaire</td></tr>
+<tr><td><strong>Biologie préopératoire</strong></td><td>Hémoglobine, plaquettes, leucocytes, créatinine et débit de filtration estimé, albumine, protides, natrémie, kaliémie, HbA1c, bilan hépatique, TP, TCA, INR, CRP, bilan martial — ferritine et coefficient de saturation, troponine et BNP lorsque disponibles</td></tr>
+<tr><td><strong>Examens complémentaires</strong></td><td>Échographie cardiaque préopératoire — réalisation, fraction d'éjection, pressions pulmonaires, valvulopathie ; électrocardiogramme préopératoire — rythme, fréquence, QTc, troubles de conduction, signes d'ischémie ; épreuves fonctionnelles respiratoires ; radiographie thoracique ; autres examens réalisés en vue de l'intervention</td></tr>
+<tr><td><strong>Intervention</strong></td><td>Groupe d'intervention, spécialité chirurgicale, voie d'abord — ouverte, cœlioscopique, endoscopique, percutanée ; niveau de risque chirurgical selon la classification européenne de cardiologie ; type d'anesthésie prévu ; durée prévisible ; caractère hémorragique attendu</td></tr>
+<tr><td><strong>Recours antérieur aux soins</strong></td><td>Nombre d'hospitalisations et d'interventions dans les douze mois précédents ; antécédent d'admission en réanimation</td></tr>
+</tbody></table>
+<p class="note">La disponibilité effective de chaque variable diffère selon la source de données mobilisée : les cohortes publiques utilisées en phases A et B sont moins complètes que le recueil de consultation de la phase C, notamment sur le mode de vie, l'autonomie et les examens complémentaires. Une <strong>table de correspondance variable par variable et source par source</strong>, avec le taux de complétude constaté, est établie et publiée en annexe avant le gel du protocole. Les modèles des phases A et B sont construits sur le sous-ensemble effectivement disponible, ce qui est explicitement rapporté.</p>
+<p>Toute variable dont le taux de recueil serait inférieur à <strong>70 %</strong> dans la cohorte prospective sera écartée du modèle principal et traitée en analyse exploratoire : une variable renseignée de façon trop hétérogène dégrade un modèle plutôt qu'elle ne l'améliore.</p>
+
+<h3>Variables exclues en entrée</h3>
+<div class="card warn"><span class="tag w">Règle du comparateur indépendant</span>
+<p>Un score utilisé comme comparateur ne peut pas figurer parmi les prédicteurs : la comparaison deviendrait circulaire et sans valeur. Sont donc exclus en entrée, et <strong>uniquement</strong> ceux-là :</p>
+<ul style="margin-bottom:0">
+<li><strong>Classification ASA</strong> — comparateur transversal de tous les critères.</li>
+<li><strong>Score de Lee (RCRI)</strong> — comparateur du critère cardiaque.</li>
+<li><strong>ARISCAT</strong> — comparateur du critère pulmonaire.</li>
+</ul></div>
+<p>Leurs <strong>variables constitutives figurent en revanche intégralement dans la liste ci-dessus</strong> — coronaropathie, insuffisance cardiaque, antécédent vasculaire cérébral, diabète insulinorequérant, créatinine, risque chirurgical pour le RCRI ; âge, saturation, infection respiratoire récente, anémie, site et durée chirurgicale pour l'ARISCAT. Le modèle dispose donc de toute l'information sous-jacente et établit ses propres pondérations sur la population d'intérêt, ce qui est méthodologiquement supérieur à la reprise d'une pondération figée établie ailleurs.</p>
+<p>Sont par ailleurs exclues les variables d'<strong>origine, d'appartenance ethnique, de langue et de couverture sociale</strong>, réservées à l'analyse d'équité en sous-groupes. La profession fait exception en tant qu'elle documente une exposition à risque : elle est codée en catégories d'exposition, non en catégories socio-professionnelles.</p>
+
+<h3>Données manquantes</h3>
+<p>La manquance est considérée comme <strong>potentiellement informative</strong> : en pratique clinique réelle, l'absence d'un dosage ou d'un examen traduit une décision médicale.</p>
+<ul>
+<li><strong>Aucune imputation par valeur clinique par défaut.</strong> Attribuer une valeur normale à un examen non fait introduirait un biais systématique.</li>
+<li>Les modèles à arbres traitent nativement la manquance ; un indicateur binaire de manquance est ajouté pour toute variable dont le taux de manquance dépasse 5 %.</li>
+<li>Pour les examens complémentaires, la <strong>non-réalisation est codée comme une modalité à part entière</strong>, distincte d'un résultat normal — une échographie non demandée n'est pas une échographie normale, et cette distinction porte une information clinique réelle.</li>
+<li>Le taux de manquance de chaque variable est rapporté dans la publication.</li>
+<li><strong>Analyse de sensibilité</strong> par imputation multiple par équations chaînées.</li>
+<li>Une variable dont le taux de manquance dépasse <strong>60 %</strong> dans la cohorte de développement est écartée, sauf justification clinique explicite consignée avant l'analyse.</li>
+</ul>
+
+<h2>8 — Taille d'échantillon</h2>
+<p>Aucun calcul d'effectif au sens classique n'est applicable : la cohorte de développement est fixée par la taille du jeu de données disponible. Le protocole vérifie en revanche que cet effectif est <strong>suffisant</strong> selon les critères de Riley et coll., qui remplacent la règle empirique des dix événements par variable.</p>
+<table><thead><tr><th style="width:34%">Vérification</th><th style="width:22%">Seuil</th><th>Action si non atteint</th></tr></thead><tbody>
+<tr><td>Nombre d'événements par variable candidate</td><td>≥ 20</td><td>Réduction du nombre de variables candidates par regroupement clinique préalable, décidée avant toute analyse</td></tr>
+<tr><td>Rétrécissement attendu des coefficients</td><td>≥ 0,90</td><td>Pénalisation renforcée, documentée</td></tr>
+<tr><td>Nombre absolu d'événements</td><td>≥ 100 par critère</td><td>Le critère est rétrogradé en analyse exploratoire</td></tr>
+</tbody></table>
+<p class="note">Ordre de grandeur attendu : sur environ 130 000 interventions et une mortalité de l'ordre de 1 %, le nombre d'événements attendu pour le critère principal se situe autour de 1 300, compatible avec une cinquantaine de variables candidates. Les critères rares seront les plus contraints — d'où le seuil de rétrogradation.</p>
+
+<h2>9 — Méthodes statistiques</h2>
+<h3>Modèles candidats</h3>
+<ol>
+<li><strong>Régression logistique pénalisée</strong> (elastic net) — modèle de référence, interprétable, imposé comme comparateur interne. Un gain de performance des méthodes d'apprentissage doit être démontré <em>contre lui</em>, et non contre l'absence de modèle.</li>
+<li><strong>Arbres de gradient boosting</strong> — modèle principal, pour sa gestion native de la manquance et des interactions.</li>
+</ol>
+<p>Aucun réseau de neurones profond n'est retenu à ce stade : sur données tabulaires de cette nature, le bénéfice attendu ne justifie pas la perte d'interprétabilité et la lourdeur d'audit.</p>
+<h3>Stratégie de validation</h3>
+<ul>
+<li><strong>Séparation temporelle</strong> du jeu INSPIRE : développement sur les années antérieures, test sur les années les plus récentes. Le découpage exact est fixé avant l'analyse et consigné.</li>
+<li><strong>Validation croisée</strong> à cinq blocs à l'intérieur du seul jeu de développement, pour le choix des hyperparamètres. Le jeu de test n'est ouvert qu'une seule fois, à la fin.</li>
+<li><strong>Groupement par patient</strong> : toutes les interventions d'un même patient restent dans le même bloc.</li>
+<li><strong>Validation externe</strong> sur MIMIC-IV, modèles gelés, sans aucun réajustement.</li>
+</ul>
+<h3>Calibration</h3>
+<p>Les probabilités brutes sont calibrées par <strong>régression isotonique</strong>, ajustée sur le seul jeu de développement. La calibration est évaluée séparément sur le jeu de test.</p>
+<h3>Métriques rapportées</h3>
+<table><thead><tr><th style="width:26%">Dimension</th><th>Mesures</th></tr></thead><tbody>
+<tr><td>Discrimination</td><td>AUROC avec intervalle de confiance à 95 % par bootstrap (2 000 rééchantillonnages) ; <strong>AUPRC</strong> systématiquement rapportée pour tout critère de prévalence inférieure à 10 %, avec la prévalence de base en référence</td></tr>
+<tr><td>Calibration</td><td>Courbe de calibration lissée, pente de calibration, ordonnée à l'origine (<em>calibration-in-the-large</em>), indice de calibration intégré, score de Brier</td></tr>
+<tr><td>Utilité clinique</td><td>Analyse de courbe de décision, bénéfice net comparé aux stratégies « traiter tout le monde » et « ne traiter personne », sur une plage de seuils pré-spécifiée et justifiée cliniquement</td></tr>
+<tr><td>Équité</td><td>Toutes les métriques ci-dessus, déclinées par sexe, tranche d'âge, spécialité chirurgicale et classe ASA</td></tr>
+</tbody></table>
+<h3>Comparateurs</h3>
+<p>Chaque score de référence est <strong>recalculé sur les mêmes patients</strong> à partir de sa formule publiée, jamais repris d'une performance rapportée ailleurs.</p>
+<table><thead><tr><th style="width:22%">Critère</th><th>Comparateurs</th></tr></thead><tbody>
+<tr><td>C1 — Mortalité</td><td><strong>POSPOM</strong> (comparateur principal), ASA-PS</td></tr>
+<tr><td>C2 — Réanimation</td><td>ASA-PS</td></tr>
+<tr><td>C3 — Durée de séjour</td><td>ASA-PS</td></tr>
+<tr><td>C4 — Pulmonaire</td><td><strong>ARISCAT</strong>, ASA-PS</td></tr>
+<tr><td>C6 — Cardiaque</td><td><strong>RCRI</strong>, ASA-PS</td></tr>
+</tbody></table>
+<p class="note">Limite reconnue : le POSPOM repose sur des codes diagnostiques et des groupes d'actes français. Son calcul sur données coréennes exige une transposition, dont la méthode sera publiée et dont l'imperfection sera explicitement discutée. C'est la raison pour laquelle la phase C, sur données françaises, est indispensable à une comparaison pleinement valide.</p>
+
+<h2>10 — Critères de succès pré-spécifiés</h2>
+<p class="lead">Ces seuils sont fixés avant toute analyse. Un modèle qui ne les atteint pas sera rapporté comme tel, sans réajustement post hoc des critères.</p>
+<div class="crit">
+<div class="r h"><div>Critère de succès</div><div>Seuil</div></div>
+<div class="r"><div><strong>Principal</strong> — supériorité de discrimination sur le POSPOM pour la mortalité à 30 jours, sur le jeu de test</div><div>Borne inférieure de l'IC 95 % de la différence d'AUROC &gt; 0</div></div>
+<div class="r"><div>Calibration du modèle principal</div><div>Pente ∈ [0,80 ; 1,20]<br>|ordonnée| &lt; 0,15</div></div>
+<div class="r"><div>Discrimination de chaque critère principal secondaire</div><div>AUROC ≥ 0,75</div></div>
+<div class="r"><div>Utilité clinique</div><div>Bénéfice net supérieur aux deux stratégies par défaut sur toute la plage de seuils pré-spécifiée</div></div>
+<div class="r"><div>Équité</div><div>Écart d'AUROC entre sous-groupes &lt; 0,05 ; tout écart supérieur est rapporté et discuté</div></div>
+<div class="r"><div>Validation externe</div><div>Perte d'AUROC &lt; 0,05 par rapport au jeu de test interne</div></div>
+</div>
+<div class="card bad"><span class="tag b">Engagement de publication</span>
+<p style="margin-bottom:0">Les résultats seront publiés <strong>que les critères de succès soient atteints ou non</strong>. Un modèle qui ne bat pas le POSPOM est un résultat scientifique légitime et sera rapporté comme tel.</p></div>
+<h2>11 — Score global de risque</h2>
+<p class="lead">Objectif exploratoire. Sa construction est spécifiée ici pour être opposable, mais il ne fait l'objet d'aucun critère de succès et ne sera pas revendiqué comme validé à l'issue de ce protocole.</p>
+<h3>Définition</h3>
+<div class="def"><div class="n">Score ANALOG</div>
+<p style="margin:0">Entier de 0 à 100 correspondant au <strong>percentile de risque du patient au sein de sa population d'intervention</strong> de référence. Un score de 68 signifie que 68 % des patients opérés du même groupe d'intervention présentent un risque agrégé inférieur.</p></div>
+<p>Ce choix évite l'écueil des index composites à pondération arbitraire : le score n'est pas une probabilité et ne prétend pas en être une, mais sa signification est univoque et vérifiable sur les données.</p>
+<h3>Construction</h3>
+<ol>
+<li>Calcul des probabilités calibrées pour chaque critère principal.</li>
+<li>Agrégation en un indice de risque unique. <strong>La méthode de pondération sera fixée et publiée avant l'analyse</strong> — pondération par gravité clinique établie par consensus d'experts, ou pondération par années de vie ajustées. <span class="note">À arbitrer.</span></li>
+<li>Transformation en percentile au sein du groupe d'intervention, sur la distribution observée dans le jeu de développement.</li>
+</ol>
+<h3>Décomposition en part modifiable</h3>
+<p>Le score est scindé en deux composantes, par une analyse contrefactuelle : recalcul du score en portant chaque facteur modifiable à sa valeur cible, toutes choses égales par ailleurs.</p>
+<table><thead><tr><th style="width:30%">Composante</th><th>Contenu</th></tr></thead><tbody>
+<tr><td><strong>Part incompressible</strong></td><td>Âge, sexe, groupe d'intervention, antécédents non réversibles</td></tr>
+<tr><td><strong>Part modifiable</strong></td><td>Anémie, déséquilibre glycémique, tabagisme actif, dénutrition, hypertension non contrôlée, SAOS non appareillé</td></tr>
+</tbody></table>
+<div class="card warn"><span class="tag w">Réserve méthodologique majeure</span>
+<p style="margin-bottom:0">Un modèle pronostique établit des <strong>associations</strong>, non des relations causales. La part modifiable calculée ne garantit donc <strong>pas</strong> qu'une intervention sur le facteur produira la réduction de risque annoncée. Cette composante sera présentée comme une <strong>hypothèse de travail servant à prioriser l'optimisation préopératoire</strong>, jamais comme une promesse de résultat. Sa validation causale relèverait d'un essai interventionnel distinct.</p></div>
+
+<h2>12 — Maîtrise du risque de biais</h2>
+<p>Le protocole est auto-évalué selon <strong>PROBAST+AI</strong> sur ses quatre domaines. Chaque risque identifié est associé à la mesure de maîtrise correspondante.</p>
+<table><thead><tr><th style="width:20%">Domaine</th><th style="width:38%">Risque</th><th>Mesure de maîtrise</th></tr></thead><tbody>
+<tr><td><strong>Participants</strong></td><td>Sélection non représentative de la population cible</td><td>Critères d'inclusion et d'exclusion figés avant accès aux données ; diagramme de flux publié ; comparaison des caractéristiques aux données nationales</td></tr>
+<tr><td><strong>Prédicteurs</strong></td><td>Fuite d'information par variable postérieure à la prédiction</td><td>Règle de disponibilité temporelle, contrôle automatisé archivé, exclusion par construction</td></tr>
+<tr><td><strong>Critère de jugement</strong></td><td>Définition ajustée après consultation des résultats</td><td>Définitions figées et horodatées ; validation par revue manuelle sur 200 cas ; seuil de rétrogradation pré-établi</td></tr>
+<tr><td><strong>Analyse</strong></td><td>Surapprentissage, optimisme, choix post hoc</td><td>Jeu de test ouvert une seule fois ; validation croisée groupée par patient ; critères de succès pré-spécifiés ; publication quel que soit le résultat</td></tr>
+</tbody></table>
+
+<h2>13 — Évaluation clinique précoce</h2>
+<p class="lead">Cette phase est distincte du développement. Elle porte sur l'usage réel du système par des cliniciens et sera rapportée selon <strong>DECIDE-AI</strong>.</p>
+<p>Elle s'appuie sur l'étude multicentrique en cours au sein d'ANALOG, conduite en conditions réelles. Les éléments suivants sont recueillis prospectivement.</p>
+<table><thead><tr><th style="width:26%">Domaine</th><th>Éléments recueillis</th></tr></thead><tbody>
+<tr><td>Système</td><td>Version de l'algorithme, de la plateforme et du matériel ; journal daté et motivé de toute modification survenue en cours d'étude</td></tr>
+<tr><td>Utilisateurs</td><td>Nombre, ancienneté, familiarité numérique préalable, formation reçue avant utilisation</td></tr>
+<tr><td>Intégration</td><td>Moment et forme d'affichage de la sortie, actions possibles pour le clinicien</td></tr>
+<tr><td><strong>Facteurs humains</strong></td><td>Temps d'utilisation, charge cognitive perçue, taux d'adhésion aux informations affichées, <strong>fréquence et motifs des désaccords</strong> entre le praticien et le modèle</td></tr>
+<tr><td>Sécurité</td><td>Registre tenu au fil de l'eau de tout événement indésirable, erreur du système ou comportement inattendu, y compris sans conséquence clinique</td></tr>
+</tbody></table>
+<div class="card bad"><span class="tag b">Point critique</span>
+<p style="margin-bottom:0">Les éléments relatifs aux facteurs humains <strong>ne sont pas reconstituables rétrospectivement</strong>. Leur recueil doit être opérationnel dès la mise en service, faute de quoi cette section du protocole devient inexécutable.</p></div>
+<h2>14 — Éthique, réglementation, données</h2>
+<h4>Nature des données</h4>
+<p>Phases A et B : données rétrospectives, secondaires, anonymisées, mises à disposition par PhysioNet sous accréditation individuelle et accord d'utilisation signé. Ces jeux ont fait l'objet d'une approbation par le comité d'éthique de l'établissement d'origine, avec dispense de consentement au titre du caractère rétrospectif et anonyme.</p>
+<p>Phase C : données issues de l'activité clinique, traitées conformément au règlement général sur la protection des données et au cadre national applicable, avec information des personnes et hébergement chez un hébergeur agréé pour les données de santé.</p>
+<h4>Engagements d'usage</h4>
+<ul>
+<li>Aucune tentative de réidentification.</li>
+<li>Aucune redistribution ni partage avec un tiers non accrédité.</li>
+<li>Stockage sur infrastructure chiffrée à accès contrôlé et journalisé.</li>
+<li>Accès restreint aux seuls investigateurs nommément accrédités.</li>
+</ul>
+<h4>Position réglementaire</h4>
+<p>Le présent protocole relève de la <strong>recherche</strong>. Il ne constitue ni une évaluation de dispositif marqué, ni une mise sur le marché. La sortie du système est une probabilité et demeure non directive, ce qui conditionne la classification visée au titre du règlement (UE) 2017/745. Les obligations du règlement (UE) 2024/1689 sur l'intelligence artificielle applicables aux dispositifs médicaux s'appliqueront à l'échéance prévue et sont intégrées à la trajectoire de conformité.</p>
+
+<h2>15 — Gouvernance et transparence</h2>
+<h4>Investigateurs et rôles</h4>
+<table><thead><tr><th style="width:30%">Rôle</th><th>Responsabilité</th></tr></thead><tbody>
+<tr><td>Investigateur principal</td><td>Conception, définition clinique des critères, arbitrage méthodologique, garant du gel du protocole</td></tr>
+<tr><td>Co-investigateur</td><td>Validation clinique indépendante des définitions, revue manuelle des cas d'adjudication</td></tr>
+<tr><td>Analyse des données</td><td>Mise en œuvre du plan d'analyse, sans latitude de modification des critères pré-spécifiés</td></tr>
+<tr><td>Partenaire hospitalier</td><td>Appui méthodologique, regard extérieur sur la pertinence clinique</td></tr>
+</tbody></table>
+<h4>Déclaration de liens d'intérêts</h4>
+<div class="card warn"><p style="margin-bottom:0">Les investigateurs sont <strong>fondateurs et actionnaires d'ANALOG SAS</strong>, société qui développe un produit susceptible d'intégrer les résultats de ce travail. Ce lien d'intérêt est déclaré sans réserve et sera mentionné dans toute publication. Trois garde-fous en découlent : critères de succès pré-spécifiés et publiés avant analyse, engagement de publication quel que soit le résultat, et sollicitation d'un regard méthodologique extérieur au promoteur.</p></div>
+<h4>Gestion des amendements</h4>
+<p>Toute modification postérieure au gel fait l'objet d'un amendement <strong>numéroté, daté, motivé</strong>, précisant s'il est antérieur ou postérieur à l'ouverture du jeu de test. Le protocole initial reste accessible dans sa version d'origine.</p>
+<table><thead><tr><th style="width:14%">Version</th><th style="width:16%">Date</th><th>Objet</th></tr></thead><tbody>
+<tr><td>0.1</td><td>Août 2026</td><td>Projet initial soumis à relecture des investigateurs</td></tr>
+<tr><td>0.2 … 0.n</td><td>—</td><td>Révisions successives avant gel</td></tr>
+<tr><td>1.0</td><td>—</td><td>Version gelée, signée et horodatée avant tout accès aux données</td></tr>
+</tbody></table>
+
+<h2>16 — Diffusion</h2>
+<div class="card good"><h4>Pré-enregistrement</h4>
+<p style="margin-bottom:0">La version 1.0 sera <strong>déposée publiquement avec horodatage et identifiant pérenne</strong> avant tout accès aux données, sur une plateforme de pré-enregistrement ouverte. C'est le dispositif de crédibilité le plus puissant du projet, il est gratuit, et il rend vérifiable par quiconque le fait que les critères de succès ont été fixés à l'aveugle.</p></div>
+<ul>
+<li><strong>Publication</strong> — soumission à une revue à comité de lecture d'anesthésie-réanimation ou d'informatique médicale, rapportage TRIPOD+AI intégral, quel que soit le résultat.</li>
+<li><strong>Code</strong> — code d'analyse rendu public sous licence ouverte, permettant la reproduction sur les mêmes jeux de données.</li>
+<li><strong>Fiche de modèle</strong> — pour chaque modèle : usage prévu, population de développement, effectifs et nombre d'événements, performances avec intervalles de confiance, calibration, analyses en sous-groupes, limites et contre-indications d'usage.</li>
+<li><strong>Résumé public</strong> — version accessible destinée au site institutionnel et aux partenaires.</li>
+</ul>
+
+<h2>17 — Calendrier</h2>
+<table><thead><tr><th style="width:12%">Phase</th><th style="width:30%">Jalon</th><th>Condition de passage</th></tr></thead><tbody>
+<tr><td>T0</td><td>Gel du protocole et pré-enregistrement</td><td>Signature des investigateurs, dépôt horodaté</td></tr>
+<tr><td>T0 + 1 mois</td><td>Accès effectif aux données</td><td>Accréditation PhysioNet, formation validée, accord signé</td></tr>
+<tr><td>T0 + 2 mois</td><td>Reproduction du modèle publié de référence</td><td>Écart d'AUROC inférieur à 0,01 par rapport au résultat publié</td></tr>
+<tr><td>T0 + 4 mois</td><td>Modèles développés, jeu de test encore fermé</td><td>Plan d'analyse intégralement exécuté sur le seul jeu de développement</td></tr>
+<tr><td>T0 + 5 mois</td><td>Ouverture unique du jeu de test</td><td>Aucune modification ultérieure des modèles</td></tr>
+<tr><td>T0 + 6 mois</td><td>Validation externe et rapport complet</td><td>Modèles gelés</td></tr>
+<tr><td>T0 + 9 mois</td><td>Analyse de transportabilité française</td><td>Fin du recueil prospectif</td></tr>
+</tbody></table>
+
+<h2>18 — Limites reconnues</h2>
+<p class="lead">Les énoncer par avance est une exigence méthodologique, pas une faiblesse. Elles seront reprises telles quelles dans la discussion de la publication.</p>
+<ol>
+<li><strong>Population de développement non européenne.</strong> Le case-mix, les pratiques anesthésiques et le codage diffèrent. La transportabilité est une hypothèse à démontrer, non un acquis — d'où la phase C.</li>
+<li><strong>Anonymisation contraignante.</strong> Âges par tranches de cinq ans, valeurs biologiques discrétisées, diagnostics tronqués : la performance obtenue constitue vraisemblablement une <strong>borne inférieure</strong> de ce qu'un modèle atteindrait sur données non dégradées.</li>
+<li><strong>Critères composites construits.</strong> C4, C5 et C6 reposent sur des algorithmes de définition dont la validité est estimée sur échantillon, non parfaite.</li>
+<li><strong>Comparateurs transposés.</strong> Le POSPOM appliqué à des données coréennes est nécessairement approximatif.</li>
+<li><strong>Absence de démonstration d'impact clinique.</strong> Un modèle performant n'améliore pas nécessairement le devenir des patients. Cette démonstration relèverait d'un essai interventionnel, hors du champ de ce protocole.</li>
+<li><strong>Nature associative et non causale</strong> de la part modifiable du score global.</li>
+</ol>
+
+<footer class="doc">
+ANALOG SAS · 22 rue des Bernardins, 75005 Paris · Protocole ANALOG-RISK v0.1 — projet, août 2026.<br>
+Références méthodologiques : Collins et coll., <em>BMJ</em> 2024 (TRIPOD+AI) · Moons et coll. (PROBAST+AI) · Vasey et coll., <em>Nat Med</em> 2022 (DECIDE-AI) · Riley et coll. (taille d'échantillon) · Le Manach et coll., <em>Anesthesiology</em> 2016 (POSPOM) · Wingert et coll., <em>Br J Anaesth</em> 2026 · Lim &amp; Lee, PhysioNet 2026 (INSPIRE v1.4.2).
+<div class="doclinks"><a href="index.html">Accueil</a> · <a href="confidentialite.html">Protection des données</a> · <a href="mailto:analoganesthesia@gmail.com">Nous contacter</a></div>
+</footer>
+</div></body></html>

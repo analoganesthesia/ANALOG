@@ -1,588 +1,1476 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ANALOG — Réinventer le parcours anesthésique.</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: #fff;
-      color: #0a0a0a;
-      font-family: Inter, system-ui, -apple-system, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANALOG — Automatiser l'ensemble du péri-opératoire</title>
+<meta name="description" content="Plateforme SaaS de médecine péri-opératoire. Consultation d'anesthésie automatisée, parcours de soins adaptés, profil de risque anesthésique, planning de bloc, cotation et suivi jusqu'au domicile.">
+<link rel="canonical" href="https://analoganesthesia.com/">
+<meta name="theme-color" content="#040711">
+<meta name="author" content="ANALOG SAS">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ANALOG">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://analoganesthesia.com/">
+<meta property="og:title" content="ANALOG — Automatiser l'ensemble du péri-opératoire">
+<meta property="og:description" content="Une seule plateforme, conçue par des anesthésistes. Consultation automatisée, profil de risque anesthésique, parcours de soins adaptés, planification opératoire, cotation et suivi jusqu'au domicile.">
+<meta property="og:image" content="https://analoganesthesia.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ANALOG — Automatiser l'ensemble du péri-opératoire">
+<meta name="twitter:description" content="Une seule plateforme, conçue par des anesthésistes.">
+<meta name="twitter:image" content="https://analoganesthesia.com/assets/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#040711; --surf:#080D18; --surf2:#0C1424; --surf3:#111B2E;
+  --line:#1A2436; --line2:#26344C; --glass:rgba(255,255,255,.025);
+  --t1:#E8EEF7; --t2:#8695AC; --t3:#586780;
+  --acc:#4D8DFF; --acc-d:#2E6FE0; --acc-glow:rgba(77,141,255,.16);
+  --cy:#22D3EE; --cy-glow:rgba(34,211,238,.14);
+  --good:#34D399; --good-glow:rgba(52,211,153,.18);
+  --amb:#FBBF24; --amb-bg:rgba(251,191,36,.1);
+  --red:#FF6B6B;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --w:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--t1);font-family:var(--sans);font-size:16.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 32px}
+a{color:inherit;text-decoration:none}
+section{position:relative;scroll-margin-top:96px}
+.pad{padding:118px 0}
+.pad-s{padding:84px 0}
 
-    .container {
-      width: min(1120px, calc(100% - 48px));
-      margin: 0 auto;
-    }
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--acc);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--acc);opacity:.6}
+h2.big{font-size:clamp(32px,4.2vw,52px);line-height:1.08;letter-spacing:-.035em;font-weight:600}
+h3{font-size:19px;font-weight:600;line-height:1.35;letter-spacing:-.015em}
+p.lead{font-size:18.5px;color:var(--t2);line-height:1.62;max-width:66ch}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-    }
-    .nav-inner {
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .nav-logo img { height: 32px; width: auto; }
-    .nav-logo span {
-      font-family: Fraunces, serif;
-      font-weight: 400;
-      font-size: 18px;
-      letter-spacing: 0.07em;
-      color: #0a0a0a;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      font-weight: 400;
-      color: #666;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: #0a0a0a; }
-    .nav-cta {
-      background: #0a0a0a !important;
-      color: #fff !important;
-      padding: 9px 20px;
-      border-radius: 100px;
-      font-weight: 500 !important;
-      transition: opacity 0.2s !important;
-    }
-    .nav-cta:hover { opacity: 0.75 !important; }
-    .nav-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      color: #0a0a0a;
-    }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .nav-platform {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 9px 18px;
-      border-radius: 100px;
-      border: 1px solid rgba(0,0,0,0.14);
-      background: #fff;
-      color: #0a0a0a;
-      font-size: 14px;
-      font-weight: 500;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-    .nav-platform:hover { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
-    .nav-platform i { width: 16px; height: 16px; }
-    .nav-platform .np-short { display: none; }
+.badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;padding:5px 10px;border-radius:3px;white-space:nowrap;
+  background:var(--acc-glow);color:var(--acc);border:1px solid rgba(77,141,255,.22)}
+.badge.dev{background:var(--amb-bg);color:var(--amb);border-color:rgba(251,191,36,.22)}
+.badge.plan{background:rgba(255,255,255,.035);color:var(--t3);border-color:var(--line)}
+.badge i{width:5px;height:5px;border-radius:50%;background:currentColor;display:block}
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px 24px 100px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: url('hero_banner.png') center center / cover no-repeat;
-      opacity: 0.06;
-      pointer-events: none;
-    }
-    .hero > *:not(.hero-bg) { position: relative; z-index: 1; }
-    .eyebrow {
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #999;
-      font-weight: 500;
-      margin-bottom: 32px;
-    }
-    .hero-title {
-      font-family: Fraunces, serif;
-      font-weight: 700;
-      font-size: clamp(48px, 7vw, 96px);
-      line-height: 1.0;
-      letter-spacing: -0.04em;
-      max-width: 14ch;
-      margin: 0 auto 28px;
-    }
-    .hero-sub {
-      font-size: clamp(16px, 1.6vw, 19px);
-      line-height: 1.7;
-      color: #666;
-      font-weight: 300;
-      max-width: 50ch;
-      margin: 0 auto 52px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #0a0a0a;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 500;
-      font-family: inherit;
-      padding: 15px 30px;
-      border-radius: 100px;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-      text-decoration: none;
-    }
-    .btn:hover { opacity: 0.75; transform: translateY(-1px); }
-    .btn svg { width: 15px; height: 15px; stroke-width: 2; }
-    .btn-outline {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(4,7,17,.72);
+  backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid transparent;transition:.4s}
+nav.on{border-bottom-color:var(--line);background:rgba(4,7,17,.9)}
+.nav-in{max-width:var(--w);margin:0 auto;padding:0 32px;height:80px;display:flex;align-items:center;gap:34px}
+.logo{font-weight:700;font-size:32px;letter-spacing:.07em;display:inline-flex;align-items:center;line-height:1}
+.logo-a{height:.88em;width:auto;margin:0 .3em 0 .27em;align-self:center;
+  transform:translateY(.04em);opacity:.94;transition:opacity .25s}
+.logo:hover .logo-a{opacity:1}
+.f-logo{display:flex;width:fit-content;align-items:center;line-height:1;color:var(--t1);font-weight:700;
+  letter-spacing:.07em;margin-bottom:16px;font-size:28px}
+.f-logo img{height:.88em;width:auto;margin:0 .3em 0 .27em;align-self:center;transform:translateY(.04em)}
+@media(max-width:640px){.logo{font-size:24px}}
+.nav-cta{margin-left:auto;font-family:var(--mono);font-size:12px;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:500;padding:11px 20px;border-radius:4px;
+  background:var(--acc);color:#040711;transition:.22s;white-space:nowrap}
+.nav-cta:hover{opacity:.88}
+@media(max-width:560px){.nav-cta{font-size:11px;padding:10px 14px;letter-spacing:.05em}}
 
-    /* ── DIVIDER ── */
-    .rule { width: 100%; height: 1px; background: rgba(0,0,0,0.07); }
+/* HERO */
+.hero{padding:180px 0 152px;overflow:hidden;position:relative;background:var(--void)}
+.hero-b{padding:46px 0 76px}
+.hero-b.cream{--acc:#4D8DFF;--acc-d:#2E6FE0}
+.hero-b .btn-p{color:#040711}
+.grid-bg{position:absolute;inset:0;opacity:.35;
+  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 85% 60% at 50% 10%,#000 20%,transparent 75%)}
+.trace{position:absolute;left:0;right:0;bottom:14px;height:146px;opacity:.5;pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.trace svg{width:100%;height:100%;display:block}
+.trace path{fill:none;stroke:var(--acc);stroke-width:2.4;vector-effect:non-scaling-stroke;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 5.2s cubic-bezier(.32,0,.12,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero .wrap{position:relative;z-index:3}
+h1{font-size:clamp(38px,6.2vw,82px);line-height:1.04;letter-spacing:-.045em;font-weight:600;max-width:24ch;text-wrap:balance}
+h1 em{font-style:normal;color:var(--acc)}
+.hero-lede{font-size:21px;line-height:1.5;color:var(--acc);font-weight:500;
+  letter-spacing:-.012em;max-width:52ch;margin-top:30px}
+.hero-sub{font-size:19px;line-height:1.62;color:var(--t2);max-width:62ch;margin-top:0}
+.hero-btns{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:500;padding:15px 26px;
+  border-radius:5px;transition:.22s;border:1px solid transparent}
+.btn-p{background:var(--acc);color:#040711;font-weight:600}
+.btn-p:hover{opacity:.88}
+.btn-s{border-color:var(--line2);color:var(--t1);background:var(--glass)}
+.btn-s:hover{border-color:var(--acc);color:var(--acc)}
 
-    /* ── SECTIONS ── */
-    section { padding: 120px 0; }
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.stat{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:32px 28px;
+  transition:border-color .25s}
+.stat:hover{border-color:var(--line2)}
+.stat .n{font-size:54px;line-height:1;letter-spacing:-.04em;font-weight:600;color:var(--t1)}
+.stat .n span{font-size:28px;color:var(--acc)}
+.stat .l{font-size:15px;color:var(--t2);margin-top:16px;line-height:1.55}
+.stat .s{font-family:var(--mono);font-size:10.5px;color:var(--t3);margin-top:18px;padding-top:14px;
+  border-top:1px solid var(--line);letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:880px){.stats{grid-template-columns:1fr}}
 
-    .label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #aaa;
-      font-weight: 500;
-      margin-bottom: 18px;
-    }
-    .section-title {
-      font-family: Fraunces, serif;
-      font-weight: 700;
-      font-size: clamp(30px, 3.6vw, 52px);
-      letter-spacing: -0.025em;
-      line-height: 1.1;
-      margin-bottom: 0;
-    }
-    .section-body {
-      font-size: 17px;
-      line-height: 1.75;
-      color: #555;
-      font-weight: 300;
-    }
-    .section-body + .section-body { margin-top: 14px; }
+/* CHRONO */
+.chrono{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:78px;position:relative}
+.chrono::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line2)}
+.rail{position:absolute;top:-.5px;left:0;height:2px;background:var(--acc);width:0;border-radius:2px;
+  transition:width 2.2s cubic-bezier(.22,1,.36,1)}
+.chrono.in .rail{width:100%}
+.cstep{padding:0 30px 46px 0;position:relative}
+.cstep:last-child{padding-right:0}
+.cstep::before{content:'';position:absolute;top:-5.5px;left:0;width:11px;height:11px;border-radius:50%;
+  background:var(--acc);opacity:0;transform:scale(.3);
+  transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+.chrono.in .cstep::before{opacity:1;transform:none}
+.cstep:nth-child(3)::before{transition-delay:.3s}
+.cstep:nth-child(4)::before{transition-delay:.6s}
+.cstep:nth-child(5)::before{transition-delay:.9s}
+.cstep:nth-child(6)::before{transition-delay:1.2s}
+.cstep:nth-child(7)::before{transition-delay:1.5s}
+.cstep::after{content:'';position:absolute;top:9px;left:5px;width:1px;height:34px;
+  background:linear-gradient(var(--line2),transparent)}
+.cstep .num{font-size:clamp(40px,3.8vw,58px);font-weight:600;letter-spacing:-.055em;line-height:1;
+  color:var(--line2);margin:52px 0 16px;transition:color .35s;font-variant-numeric:tabular-nums}
+.cstep:hover .num{color:var(--acc)}
+.cstep .ti{font-size:19px;font-weight:600;letter-spacing:-.024em;margin-bottom:20px;color:var(--t1)}
+.cl{list-style:none;border-top:1px solid var(--line)}
+.cl li{font-size:12.5px;color:var(--t2);line-height:1.45;padding:10px 0;
+  border-bottom:1px solid var(--line);transition:color .2s}
+.cstep:hover .cl li{color:var(--t1)}
+@media(max-width:1000px){.chrono{grid-template-columns:repeat(3,1fr);row-gap:44px}
+  .cstep{padding-right:26px}.cstep .num{margin-top:44px}}
+@media(max-width:660px){.chrono{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.chrono{grid-template-columns:1fr}}
 
-    /* split layout */
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .split-text { display: flex; flex-direction: column; gap: 20px; }
+/* TRAJECTOIRE */
+.traj{padding:126px 0 132px;background:var(--surf)}
+.traj-head{max-width:780px;margin-bottom:64px}
+.tcase{border:1px solid var(--line2);border-radius:16px;background:var(--void);overflow:hidden}
+.tcase-top{display:flex;align-items:center;gap:18px;padding:16px 26px;border-bottom:1px solid var(--line);
+  flex-wrap:wrap;background:var(--surf2)}
+.tcase-top .pt{font-size:14px;font-weight:600}
+.tcase-top .pd{font-family:var(--mono);font-size:11.5px;color:var(--t3);letter-spacing:.03em}
+.tcase-top .syn{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amb);border:1px solid rgba(251,191,36,.25);
+  padding:4px 10px;border-radius:3px;background:var(--amb-bg)}
+.tline{display:grid;grid-template-columns:1fr 1fr}
+.tcol{padding:36px 32px;position:relative}
+.tcol+.tcol{border-left:1px solid var(--line)}
+.tcol .when{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:9px}
+.tcol .what{font-size:14px;color:var(--t2);margin-bottom:30px}
+.score{display:flex;align-items:baseline;gap:14px}
+.score .v{font-size:86px;line-height:.88;letter-spacing:-.05em;font-weight:600;color:var(--red);
+  font-variant-numeric:tabular-nums}
+.score .v.good{color:var(--good)}
+.score .o{font-family:var(--mono);font-size:14px;color:var(--t3)}
+.bar{height:4px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:24px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:3px;background:var(--red);width:0;
+  transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+.bar span.good{background:var(--good)}
+.tlist{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+.tl{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--t2);line-height:1.45}
+.tl .d{width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:7px;flex:none}
+.tl .d.g{background:var(--good)}
+.tl b{color:var(--t1);font-weight:500}
+.delta{margin-top:30px;padding:16px 20px;background:var(--good-glow);
+  border:1px solid rgba(52,211,153,.25);border-radius:8px;font-size:14px;color:var(--good);line-height:1.55}
+.delta b{color:#8FF0CB;font-weight:600}
+.tfoot{border-top:1px solid var(--line);padding:22px 26px;display:flex;gap:44px;flex-wrap:wrap;
+  background:var(--surf2)}
+.tf{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase}
+.tf b{color:var(--acc);font-family:var(--sans);font-weight:600;display:block;font-size:16px;
+  margin-bottom:4px;letter-spacing:-.02em;text-transform:none}
+.tnote{margin-top:28px;font-size:12.5px;color:var(--t3);line-height:1.65;max-width:none;width:100%;text-align:justify;text-wrap:pretty}
+@media(max-width:880px){.tline{grid-template-columns:1fr}.tcol+.tcol{border-left:none;border-top:1px solid var(--line)}}
 
-    /* ── SOLUTION GRID ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 64px;
-    }
-    .feature-item {
-      padding: 36px 32px;
-      border-right: 1px solid rgba(0,0,0,0.08);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      transition: background 0.2s;
-    }
-    .feature-item:hover { background: #f9f9f9; }
-    .feature-item:nth-child(3n) { border-right: none; }
-    .feature-item:nth-child(4),
-    .feature-item:nth-child(5),
-    .feature-item:nth-child(6) { border-bottom: none; }
-    .feature-icon {
-      width: 38px;
-      height: 38px;
-      background: #f2f2f2;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .feature-icon svg { width: 17px; height: 17px; stroke-width: 1.6; }
-    .feature-name {
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.45;
-      color: #0a0a0a;
-    }
+.traj .lead b{color:var(--t1);font-weight:600}
+.lead-k{display:inline-block;margin-top:14px;color:var(--acc);font-weight:600}
 
-    /* ── STATEMENT ── */
-    .statement {
-      background: #0a0a0a;
-      color: #fff;
-      padding: 140px 0;
-      text-align: center;
-    }
-    .statement-title {
-      font-family: Fraunces, serif;
-      font-weight: 700;
-      font-size: clamp(38px, 5.5vw, 78px);
-      letter-spacing: -0.035em;
-      line-height: 1.08;
-      max-width: 18ch;
-      margin: 0 auto 48px;
-    }
+/* PROFIL DE RISQUE — deux fenêtres */
+.rpw{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1000px;margin:0 auto}
+.rw{background:#F1EFEA;border:1px solid rgba(11,16,22,.08);border-radius:14px;padding:12px;
+  box-shadow:0 26px 52px -26px rgba(4,7,17,.55)}
+.rw-c{background:#fff;border:1px solid #E6E2DA;border-radius:9px;overflow:hidden;margin-bottom:9px}
+.rw-c:last-child{margin-bottom:0}
+.rw-id{display:flex;align-items:center;gap:14px;padding:13px 14px}
+.rw-ring{position:relative;width:84px;height:84px;flex:none}
+.rw-ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.rw-ring .arc{stroke-dasharray:226;stroke-dashoffset:226;transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)}
+.rp.in .rw.a .arc{stroke-dashoffset:72}
+.rp.in .rw.b .arc{stroke-dashoffset:140}
+.rw-ring .v{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rw-ring .n{font-size:25px;font-weight:600;letter-spacing:-.035em;line-height:1}
+.rw-ring .d{font-family:var(--mono);font-size:9px;color:#A6ACB3;margin-top:2px}
+.rw-p{min-width:0}
+.rw-p .nm{font-size:13.5px;font-weight:600;color:#0B1016;line-height:1.3}
+.rw-p .sub{font-size:11.5px;color:#7E858C;line-height:1.45;margin-top:3px}
+.rw-p .tier{display:inline-block;font-size:11px;padding:4px 10px;border-radius:5px;border:1px solid;margin-top:8px}
+.rw-h{background:#0C1016;color:#EEF2F6;padding:8px 13px;font-size:11.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rw-h em{font-style:normal;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.13);padding:3px 6px;border-radius:3px;font-weight:400}
+.rw-when{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:#9AA1A8;padding:0 0 9px 3px}
+.rr{padding:10px 13px;border-top:1px solid #F0EDE6}
+.rr:first-of-type{border-top:none}
+.rr-l{display:flex;align-items:baseline;gap:9px;margin-bottom:6px}
+.rr-x{font-size:19px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.rr-n{font-size:12.5px;flex:1;color:#1B2229;min-width:0}
+.rr-p{font-family:var(--mono);font-size:11px;color:#8A9099}
+.rr-b{position:relative;height:6px;background:#EFECE5;border-radius:3px;margin-bottom:5px}
+.rr-b .band{position:absolute;height:100%;background:#DAD5CB;border-radius:3px}
+.rr-b .me{position:absolute;top:-2.5px;width:3px;height:11px;border-radius:2px}
+.rr-s{font-size:10.5px;color:#8A9099;line-height:1.4}
+.rw-fold{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E6E2DA;border-radius:9px;
+  padding:9px 9px 9px 13px;margin-bottom:9px;font-size:11.5px;color:#6E767E}
+.rw-more{margin-left:auto;display:inline-flex;align-items:center;gap:7px;flex:none;cursor:pointer;
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:#fff;background:#0C1016;border:1px solid #0C1016;border-radius:999px;padding:7px 13px;
+  transition:background .25s,border-color .25s,box-shadow .25s,transform .25s}
+.rw-more:hover{background:#1E5FD6;border-color:#1E5FD6;transform:translateY(-1px);
+  box-shadow:0 8px 18px -8px rgba(30,95,214,.75)}
+.rw-more .chev{display:inline-block;font-size:12px;line-height:1;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.rw-more[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.rw-all{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.22,1,.36,1),
+  opacity .35s,margin-bottom .35s;opacity:0;margin-bottom:0}
+.rw-all.open{max-height:1600px;opacity:1;margin-bottom:9px}
+.rw-all .in-c{background:#fff;border:1px solid #E6E2DA;border-radius:9px;overflow:hidden}
+.rw-grp{background:#F6F4EF;border-top:1px solid #EDE9E1;padding:5px 13px;font-family:var(--mono);
+  font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#9AA1A8}
+.rw-grp:first-child{border-top:none}
+.ro{display:flex;align-items:center;gap:9px;padding:7px 13px;border-top:1px solid #F4F1EA;font-size:11.5px}
+.ro-n{flex:1;color:#3A424B;min-width:0}
+.ro-p{font-family:var(--mono);font-size:10px;color:#9AA1A8;flex:none}
+.ro-x{font-family:var(--mono);font-size:11.5px;font-weight:600;flex:none;width:38px;text-align:right}
+.ro.wait .ro-n{color:#9AA1A8}
+.ro-w{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:#9AA1A8;border:1px solid #E6E2DA;
+  border-radius:4px;padding:2px 6px;flex:none}
+@media(max-width:900px){.rw-all.open{max-height:2400px}}
+.rw-lh{background:#FBF0DA;color:#8A5A08;padding:8px 13px;display:flex;align-items:center;gap:10px}
+.rw-lh .t{flex:1;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase}
+.rw-lh .mini{position:relative;width:34px;height:34px;flex:none}
+.rw-lh .mini svg{width:34px;height:34px;transform:rotate(-90deg)}
+.rw-lh .mini span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:#8A5A08}
+.rl{display:grid;grid-template-columns:16px 1fr 40px;gap:9px;align-items:center;padding:9px 13px;
+  border-top:1px solid #F0EDE6;font-size:12px;color:#1B2229}
+.rl .tk{width:14px;height:14px;border-radius:50%;border:1.5px solid #D2CCC1;position:relative}
+.rl.ok .tk{background:#0B7A55;border-color:#0B7A55}
+.rl.ok .tk::after{content:'';position:absolute;left:4px;top:1.5px;width:4px;height:7px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.rl .sb{color:#8A9099;font-size:10.5px}
+.rl .pt{font-family:var(--mono);font-size:11.5px;font-weight:600;color:#0B7A55;text-align:right}
+.rp-val{display:flex;gap:40px;flex-wrap:wrap;justify-content:center;max-width:1000px;margin:26px auto 0;
+  padding-top:22px;border-top:1px solid var(--line)}
+.rp-val .f{text-align:center}
+.rp-val .f b{display:block;font-size:19px;font-weight:600;color:var(--acc);letter-spacing:-.02em;margin-bottom:3px}
+.rp-val .f span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+@media(max-width:820px){.rpw{grid-template-columns:1fr}}
 
-    /* ── TRUST ── */
-    .trust { padding: 80px 0; text-align: center; }
-    .trust .label { margin-bottom: 52px; }
-    .trust-logos {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 72px;
-      flex-wrap: wrap;
-    }
-    .trust-logos img {
-      height: 120px;
-      width: auto;
-      opacity: 0.85;
-      transition: opacity 0.25s;
-    }
-    .trust-logos img:hover { opacity: 1; }
+/* MODULES */
+.chain{margin-top:56px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surf)}
+.mod{display:grid;grid-template-columns:64px 1fr 260px;border-bottom:1px solid var(--line);transition:.25s;
+  position:relative}
+.mod:last-child{border-bottom:none}
+.mod::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);
+  opacity:0;transition:.25s}
+.mod:hover{background:var(--surf2)}
+.mod:hover::before{opacity:1}
+.mod .mn{padding:28px 0 28px 26px;font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.1em}
+.mod:hover .mn{color:var(--acc)}
+.mod .mb{padding:28px 26px 28px 0}
+.mod .mb h3{margin-bottom:7px}
+.mod .mb p{font-size:14.5px;color:var(--t2);line-height:1.55;max-width:58ch}
+.mod .mr{padding:28px 26px;border-left:1px solid var(--line);display:flex;flex-direction:column;
+  gap:11px;justify-content:center}
+.mod .mr .who{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.04em}
+@media(max-width:880px){.mod{grid-template-columns:1fr}.mod .mn{padding:22px 26px 0}
+  .mod .mb{padding:8px 26px 20px}.mod .mr{border-left:none;border-top:1px solid var(--line);
+  flex-direction:row;align-items:center;padding:15px 26px}}
+.chainline{margin-top:36px;padding:24px 28px;border:1px dashed var(--line2);border-radius:10px;
+  font-size:15px;color:var(--t2);line-height:1.75;background:var(--glass)}
+.chainline b{color:var(--acc);font-weight:500}
 
-    /* ── CONTACT ── */
-    .contact-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 96px;
-      align-items: start;
-    }
-    .contact-info { display: flex; flex-direction: column; gap: 20px; }
-    .contact-form { display: flex; flex-direction: column; gap: 18px; }
-    .field { display: flex; flex-direction: column; gap: 7px; }
-    .field-label {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #aaa;
-      font-weight: 500;
-    }
-    .field-input, .field-textarea {
-      width: 100%;
-      padding: 13px 15px;
-      border: 1px solid rgba(0,0,0,0.13);
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      background: #fff;
-      color: #0a0a0a;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .field-input:focus, .field-textarea:focus { border-color: #0a0a0a; }
-    .field-textarea { resize: vertical; min-height: 130px; }
+/* ===== DECK PLATEFORME ===== */
+.deck-nav{display:flex;gap:8px;justify-content:flex-end;margin-top:-46px;margin-bottom:10px;position:relative;z-index:4}
+.dnav{width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:var(--surf);
+  color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:.2s;font-size:17px;line-height:1}
+.dnav:hover{border-color:var(--acc);color:var(--acc)}
+.deck{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;
+  margin:0 -32px;padding:46px 32px 70px;scrollbar-width:none;-ms-overflow-style:none}
+.deck::-webkit-scrollbar{display:none}
+.dcard{flex:0 0 720px;max-width:88vw;scroll-snap-align:center;border-radius:20px;overflow:hidden;
+  background:#FFFDFA;border:1px solid rgba(11,16,22,.07);
+  box-shadow:0 32px 64px -24px rgba(8,14,26,.30),0 8px 20px -8px rgba(8,14,26,.10);
+  transform-origin:center center;transition:box-shadow .4s;will-change:transform}
+.dc-top{padding:32px 34px 26px}
+.dc-top h3{font-size:25px;font-weight:600;letter-spacing:-.028em;margin:0 0 10px;color:#0A0F16}
+.dc-top p{font-size:14.5px;line-height:1.55;color:#525C66;max-width:56ch}
 
-    /* ── FOOTER ── */
-    footer {
-      padding: 36px 0;
-      border-top: 1px solid rgba(0,0,0,0.07);
-      text-align: center;
-      color: #bbb;
-      font-size: 13px;
-    }
+/* --- maquettes d'interface --- */
+.mk{background:#F1EFEA;border-top:1px solid rgba(11,16,22,.07);padding:16px;height:474px;
+  overflow:hidden;position:relative}
+.mk::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46px;
+  background:linear-gradient(transparent,#F1EFEA)}
+.mkin{background:#fff;border:1px solid #E9E5DC;border-radius:7px;padding:9px;font-size:10px;color:#AEB4BA}
+.mkmeas{display:flex;border:1px solid #E9E5DC;border-radius:7px;overflow:hidden;margin-bottom:6px}
+.mkmeas>div{flex:1;padding:6px 8px;border-right:1px solid #EFECE5;font-family:var(--mono);
+  font-size:7.5px;letter-spacing:.1em;color:#9AA1A8;text-transform:uppercase;display:flex;
+  align-items:baseline;gap:4px;justify-content:center;white-space:nowrap}
+.mkmeas>div:last-child{border-right:none}
+.mkmeas b{font-family:var(--sans);font-size:12px;color:#0B1016;font-weight:600;letter-spacing:0}
+.mkmeas s{text-decoration:none;color:#C7CCD1}
+.mkorg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mkorg>div{border:1px solid #E9E5DC;border-radius:7px;padding:7px 8px}
+.mkorg .n{font-size:9.5px;font-weight:600;color:#0B1016;display:flex;justify-content:space-between;
+  align-items:center;gap:5px}
+.mkorg .n em{font-style:normal;font-size:7px;background:#F1EFE9;color:#8A9099;padding:2px 5px;
+  border-radius:3px;font-weight:400}
+.mkorg .p{font-size:8.5px;color:#BCC1C7;margin-top:6px}
+.mkbar{display:flex;gap:8px;background:#fff;border:1px solid #E6E2DA;border-radius:9px;
+  padding:9px 12px;margin-bottom:12px}
+.mkf{flex:1;min-width:0}
+.mkf .k{font-family:var(--mono);font-size:7.5px;letter-spacing:.15em;color:#98A0A9;text-transform:uppercase}
+.mkf .v{font-size:11.5px;color:#0B1016;margin-top:3px;font-weight:500;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.mkbtn{background:#0C1016;color:#fff;font-size:10.5px;font-weight:600;padding:7px 13px;
+  border-radius:6px;align-self:center;white-space:nowrap}
+.mkcols{display:grid;gap:12px}
+.mkc{background:#fff;border:1px solid #E6E2DA;border-radius:10px;overflow:hidden}
+.mkh{background:#0C1016;color:#EEF2F6;padding:8px 12px;font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mkh em{font-style:normal;font-family:var(--mono);font-size:8px;letter-spacing:.1em;
+  background:rgba(255,255,255,.13);padding:2px 6px;border-radius:3px;text-transform:uppercase;font-weight:400}
+.mkb{padding:10px 12px}
+.mkchip{background:#F7F6F2;border:1px solid #EBE7DE;border-radius:7px;padding:6px 9px;
+  font-size:10.5px;color:#2C333A;margin-bottom:5px;display:flex;justify-content:space-between}
+.mkchip b{font-weight:500}
+.mkchip i{font-style:normal;color:#AFB5BC}
+.mklbl{font-size:9.5px;color:#727A83;margin:7px 0 4px}
+.mkpills{display:flex;gap:4px}
+.mkp{flex:1;text-align:center;font-size:10px;padding:6px 3px;border-radius:6px;
+  background:#F4F2ED;color:#9BA2AA;border:1px solid transparent}
+.mkp.on{background:#0C1016;color:#fff;font-weight:600}
+.mkrow{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #EFECE5;font-size:10.5px}
+.mkrow:first-child{border-top:none}
+.mkrow .d{width:6px;height:6px;border-radius:50%;flex:none}
+.mkrow .g{flex:1;color:#2C333A}
+.mkrow .m{font-family:var(--mono);font-size:9.5px;color:#8A9099}
+.mkrow .t{font-family:var(--mono);font-size:10px;color:#0B1016;font-weight:500}
+.mktag{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
+.mktag.ok{background:#E6F5EE;color:#0B7A55}
+.mktag.wa{background:#FDF1DC;color:#8A5A08}
+.mktag.bl{background:#E8F0FE;color:#1E5FD6}
+.mkmini{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:#98A0A9;margin-bottom:8px}
+@media(max-width:820px){.dcard{flex:0 0 90vw}.dc-top h3{font-size:21px}.mk{height:300px}}
 
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+.mksec{background:#fff;border:1px solid #E9E5DC;border-radius:9px;margin-bottom:7px;overflow:hidden}
+.mksec-h{display:flex;align-items:center;gap:9px;padding:8px 10px}
+.mksec-h .ic{width:21px;height:21px;border-radius:6px;flex:none}
+.mksec-h .tx{min-width:0}
+.mksec-h .ti{font-size:11px;font-weight:600;color:#0B1016;line-height:1.25}
+.mksec-h .su{font-size:8.5px;color:#9AA1A8;margin-top:2px;line-height:1.3}
+.mksec-h .pr{margin-left:auto;width:21px;height:21px;border:1px solid #EAE6DD;border-radius:5px;flex:none;
+  background:linear-gradient(#fff,#FAF9F6)}
+.mksec-b{background:#FAF9F6;border-top:1px solid #EFECE5;padding:9px 10px}
+.mkgcol .gh{font-family:var(--mono);font-size:6.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:#9AA1A8;padding-bottom:5px;border-bottom:1px solid #EAE6DD;margin-bottom:5px;white-space:nowrap}
+.mkck{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E9E5DC;border-radius:6px;
+  padding:4px 7px;font-size:8.8px;color:#2C333A;margin-bottom:4px;white-space:nowrap;overflow:hidden}
+.mkck .b{width:9px;height:9px;border-radius:2.5px;border:1px solid #C9CED3;flex:none;position:relative}
+.mkck.on .b{background:#0C1016;border-color:#0C1016}
+.mkck.on .b::after{content:'';position:absolute;left:2.7px;top:.7px;width:2.4px;height:5px;
+  border:solid #fff;border-width:0 1.4px 1.4px 0;transform:rotate(42deg)}
+.mkck s{text-decoration:none;color:#B4BAC0;font-size:8px}
+.mkflow{display:flex;flex-wrap:wrap;gap:5px}
+.mkflow .mkck{margin:0}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 860px) {
-      section { padding: 80px 0; }
-      .split { grid-template-columns: 1fr; gap: 40px; }
-      .feature-grid { grid-template-columns: 1fr 1fr; }
-      .feature-item:nth-child(3n) { border-right: 1px solid rgba(0,0,0,0.08); }
-      .feature-item:nth-child(2n) { border-right: none; }
-      .feature-item:nth-child(4),
-      .feature-item:nth-child(5),
-      .feature-item:nth-child(6) { border-bottom: 1px solid rgba(0,0,0,0.08); }
-      .feature-item:nth-child(5),
-      .feature-item:nth-child(6) { border-bottom: none; }
-      .contact-wrap { grid-template-columns: 1fr; gap: 48px; }
-      .nav-links { display: none; }
-      .nav-menu-btn { display: block; }
-      .nav-right { gap: 12px; }
-    }
-    @media (max-width: 580px) {
-      .container { width: calc(100% - 32px); }
-      .nav-platform { padding: 8px 14px; gap: 5px; }
-      .nav-platform .np-full { display: none; }
-      .nav-platform .np-short { display: inline; }
-      .feature-grid { grid-template-columns: 1fr; }
-      .feature-item { border-right: none !important; }
-      .feature-item:not(:last-child) { border-bottom: 1px solid rgba(0,0,0,0.08) !important; }
-      .feature-item:last-child { border-bottom: none !important; }
-      .trust-logos { gap: 40px; }
-      .statement { padding: 100px 0; }
-    }
-  </style>
+.mk.flush{padding:0}
+.mkpat{background:#141B2E;color:#EAF0F7;padding:9px 13px;display:flex;align-items:center;gap:11px}
+.mkpat .av{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.13);flex:none}
+.mkpat .nm{font-size:11px;font-weight:600;line-height:1.2}
+.mkpat .id{font-size:8px;color:#98A5B7;margin-top:2px}
+.mkpat .pl{display:flex;gap:5px;margin-left:12px}
+.mkpat .pl span{font-size:8px;font-weight:600;padding:3px 8px;border-radius:20px;background:#fff;white-space:nowrap}
+.mkpat .x{margin-left:auto;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.11);flex:none}
+.mkbody{display:flex;height:calc(100% - 44px)}
+.mkside{width:138px;flex:none;background:#FBFAF7;border-right:1px solid #E9E5DC;padding:11px 9px}
+.mkside .lb{font-family:var(--mono);font-size:6.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:#9AA1A8;margin-bottom:8px;padding-left:5px}
+.mkside .it{display:flex;align-items:center;gap:7px;padding:7px;border-radius:8px;font-size:10px;
+  color:#2C333A;margin-bottom:3px}
+.mkside .it.on{background:#EDECFB;color:#3C3489;font-weight:600}
+.mkside .it .d{width:7px;height:7px;border-radius:50%;flex:none}
+.mkside .it em{margin-left:auto;font-style:normal;font-size:7.5px;background:#E8F0FE;color:#1E5FD6;
+  padding:2px 6px;border-radius:10px;font-weight:500}
+.mkside .it.on em{background:#DEDCF8;color:#3C3489}
+.mkmain{flex:1;padding:13px 15px;min-width:0}
+.mkti{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+.mkti .dp{width:11px;height:14px;border-radius:0 0 50% 50%/0 0 60% 60%;background:#D14343;flex:none;margin-top:2px;
+  clip-path:polygon(50% 0,100% 62%,84% 96%,16% 96%,0 62%)}
+.mkti h4{font-size:14px;font-weight:600;color:#0B1016;letter-spacing:-.02em;line-height:1.2}
+.mkti p{font-size:9px;color:#8A9099;margin-top:4px}
+.mkti .bt{margin-left:auto;font-size:8.5px;font-weight:500;color:#1E5FD6;background:#E8F0FE;
+  padding:5px 10px;border-radius:16px;white-space:nowrap;flex:none}
+.mkleg{display:flex;gap:11px;margin-left:auto}
+.mkleg span{font-family:var(--mono);font-size:6.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:#7A828B;display:flex;align-items:center;gap:4px}
+.mkleg i{width:6px;height:6px;border-radius:50%;display:block}
+
+.mkplan{display:grid;grid-template-columns:38px repeat(4,1fr);gap:4px;margin-bottom:5px}
+.mkplan .rh{background:#0C1016;color:#EEF2F6;border-radius:6px;padding:5px 8px}
+.mkplan .rh b{font-size:9px;font-weight:600;display:block}
+.mkplan .rh span{display:block;font-family:var(--mono);font-size:6px;color:#93A0AE;
+  letter-spacing:.12em;margin-top:2px;text-transform:uppercase}
+.mkgrid2{display:grid;grid-template-columns:38px repeat(4,1fr);grid-auto-rows:21px;gap:4px}
+.mkhr{font-family:var(--mono);font-size:6.5px;color:#A8AEB5;text-align:right;padding-right:6px;
+  transform:translateY(-3px);background:none;border:0;border-radius:0;padding-top:0;padding-bottom:0}
+.pcase{border-radius:6px;padding:5px 7px;overflow:hidden;background:#fff;border:1px solid #E9E5DC;
+  border-left:3px solid #0B7A55;display:flex;flex-direction:column;gap:1px;min-width:0}
+.pcase.wa{border-left-color:#D9920B}
+.pcase.bk{border-left-color:#C0392B}
+.pcase .nm{font-size:8.5px;font-weight:600;color:#0B1016;display:flex;justify-content:space-between;
+  gap:4px;align-items:center;white-space:nowrap;overflow:hidden}
+.pcase .nm em{font-style:normal;font-size:6px;font-weight:500;padding:2px 5px;border-radius:10px;flex:none}
+.pcase.ok .nm em{background:#E6F5EE;color:#0B7A55}
+.pcase.wa .nm em{background:#FDF1DC;color:#8A5A08}
+.pcase.bk .nm em{background:#FBE7E5;color:#B03A2E}
+.pcase .mt{font-family:var(--mono);font-size:6px;color:#9AA1A8;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.pcase .iv{font-size:8px;color:#2C333A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.pcase .sg{font-size:7px;color:#98A0A9}
+
+.mkbill{border:1px solid #E9E5DC;border-radius:9px;background:#fff;overflow:hidden}
+.mkbh,.mkbr{display:grid;grid-template-columns:1.45fr 2.45fr .95fr .85fr .95fr 1.3fr;gap:9px;
+  padding:8px 11px;align-items:center}
+.mkbh{background:#FAF9F6;border-bottom:1px solid #EFECE5;font-family:var(--mono);font-size:6.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:#9AA1A8}
+.mkbr{border-bottom:1px solid #F3F0EA;font-size:9px}
+.mkbr:last-child{border-bottom:none}
+.mkbr .pn{font-size:9.5px;font-weight:600;color:#0B1016;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkbr .pd,.mkbr .ac{font-family:var(--mono);font-size:6.5px;color:#9AA1A8;margin-top:2px}
+.mkbr .al{font-size:9px;color:#2C333A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mkbr .mkmod{display:flex;gap:3px;border:0}
+.mkbr .mkmod span{font-family:var(--mono);font-size:6.5px;background:#EEF1F5;color:#5B646E;
+  padding:2px 5px;border-radius:3px}
+.mkbr .eu{font-family:var(--mono);font-size:8px;color:#98A0A9;text-align:right}
+.mkbr .tt{font-family:var(--mono);font-size:10px;font-weight:600;color:#0B1016;text-align:right}
+.mkst{display:flex;align-items:center;gap:5px;justify-content:flex-end}
+.pill-ok{font-size:7.5px;font-weight:600;background:#E6F5EE;color:#0B7A55;padding:3px 8px;border-radius:12px;white-space:nowrap}
+.btn-enc{font-size:7.5px;font-weight:600;background:#E27A0C;color:#fff;padding:3.5px 10px;border-radius:5px;white-space:nowrap}
+.mksrc{font-family:var(--mono);font-size:6px;color:#AEB4BA;margin-top:7px;letter-spacing:.05em}
+
+.mkscale{display:flex;gap:3px}
+.mkscale span{flex:1;text-align:center;font-size:8.5px;padding:6px 0;border:1px solid #E9E5DC;
+  border-radius:5px;color:#A0A6AD;background:#fff}
+.mkscale span.on{background:#0C1016;color:#fff;border-color:#0C1016;font-weight:600}
+.mkends{display:flex;justify-content:space-between;font-size:7px;color:#AEB4BA;margin:5px 0 4px}
+.mkdrop{border:1px dashed #D6D1C6;border-radius:7px;padding:13px;text-align:center;
+  font-size:8.5px;color:#A0A6AD;background:#FBFAF7}
+.mktrend{display:flex;align-items:flex-end;gap:14px;height:46px;margin-top:15px}
+.mktrend i{flex:1;background:#CFD9E8;border-radius:3px 3px 0 0;font-style:normal;position:relative}
+.mktrend i b{position:absolute;top:-13px;left:0;right:0;text-align:center;font-family:var(--mono);
+  font-size:7.5px;font-weight:600;color:#5B646E}
+.mktrend i.al b{color:#B0700C}
+.mktrend i.al{background:#E8A33D}
+.mkdays{display:flex;gap:4px;margin-top:4px}
+.mkdays span{flex:1;text-align:center;font-family:var(--mono);font-size:6px;color:#A8AEB5}
+.mkphoto{display:flex;gap:5px}
+.mkphoto div{flex:1;height:42px;border-radius:6px;background:#E9E4DC;border:1px solid #E0DAD0;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;
+  font-family:var(--mono);font-size:6px;color:#8A9099}
+.mkgauge{display:flex;align-items:center;gap:8px;margin-top:5px}
+.mkgauge .bar2{flex:1;height:5px;border-radius:3px;background:#EDE9E2;overflow:hidden}
+.mkgauge .bar2 i{display:block;height:100%;border-radius:3px;background:#0B7A55}
+.mkgauge b{font-family:var(--mono);font-size:8.5px;color:#0B1016}
+
+.mksec2{padding:11px 13px;border-top:1px solid #F1EEE7}
+.mksec2:first-of-type{border-top:none}
+.mkrw{display:flex;align-items:center;gap:9px;margin-top:7px}
+.mkrw:first-of-type{margin-top:8px}
+.mkrw .d{font-family:var(--mono);font-size:7px;color:#A8AEB5;width:22px;flex:none}
+.mkrw .n{font-size:8.5px;color:#5B646E;width:104px;flex:none;line-height:1.2}
+.mkrw .tr{flex:1;height:6px;border-radius:4px;background:#EFECE5;overflow:hidden}
+.mkrw .tr i{display:block;height:100%;border-radius:4px;background:#93A6BE}
+.mkrw .tr i.al{background:#E0A030}
+.mkrw .tr i.gd{background:#4E9E7E}
+.mkrw b{font-family:var(--mono);font-size:8.5px;color:#0B1016;width:42px;text-align:right;flex:none}
+.mkrw b.al{color:#B0700C}
+.mkph{display:flex;gap:6px;margin-top:8px}
+.mkph div{flex:1;height:44px;border-radius:7px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#EAE5DC 0%,#F3EFE8 48%,#E4DED4 100%);border:1px solid #E2DCD2}
+.mkph div span{position:absolute;left:5px;bottom:4px;font-family:var(--mono);font-size:6px;
+  color:#7E858C;background:rgba(255,255,255,.82);padding:1px 4px;border-radius:3px}
+
+/* CIRCLES */
+.circles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.circ{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:30px;transition:.3s}
+.circ:hover{border-color:var(--line2)}
+.circ .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.circ .ct{font-size:16px;font-weight:600}
+.circ p{font-size:14.5px;color:var(--t2);line-height:1.6}
+.circ ul{list-style:none;margin-top:16px}
+.circ li{font-size:13.5px;color:var(--t2);padding:9px 0;border-top:1px solid var(--line);line-height:1.45}
+@media(max-width:880px){.circles{grid-template-columns:1fr}}
+.reg{margin-top:52px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surf)}
+.reg-r{display:grid;grid-template-columns:140px 1fr;border-bottom:1px solid var(--line)}
+.reg-r:last-child{border-bottom:none}
+.reg-r .d{padding:20px 24px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--acc);
+  background:var(--surf2);border-right:1px solid var(--line);display:flex;align-items:center}
+.reg-r .c{padding:20px 24px;font-size:14.5px;color:var(--t2);line-height:1.6}
+.reg-r .c b{color:var(--t1);font-weight:500}
+
+/* MATURITE */
+.mat{margin-top:48px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surf)}
+.mat-r{display:grid;grid-template-columns:1fr 200px;border-bottom:1px solid var(--line);align-items:center}
+.mat-r:last-child{border-bottom:none}
+.mat-r:hover{background:var(--surf2)}
+.mat-r .a{padding:18px 26px;font-size:15px;color:var(--t1)}
+.mat-r .b{padding:18px 26px;text-align:right}
+@media(max-width:640px){.mat-r{grid-template-columns:1fr}.mat-r .b{text-align:left;padding-top:0}}
+.partners{display:flex;gap:36px;align-items:center;flex-wrap:wrap;margin-top:44px;padding-top:30px;
+  border-top:1px solid var(--line)}
+.partners .pl{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
+.partners .pn{font-size:15px;color:var(--t2);font-weight:500}
+
+/* ECO */
+.eco{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.ec{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:32px 28px;transition:.3s}
+.ec:hover{border-color:rgba(77,141,255,.3)}
+.ec .n{font-size:46px;line-height:1;letter-spacing:-.04em;font-weight:600;color:var(--acc)}
+.ec .t{font-size:15px;font-weight:600;margin-top:16px}
+.ec .d{font-size:14px;color:var(--t2);margin-top:8px;line-height:1.55}
+@media(max-width:880px){.eco{grid-template-columns:1fr}}
+
+.trust{margin-top:56px;padding-top:34px;border-top:1px solid var(--line)}
+.trust .tl{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:28px}
+.trust-row{display:flex;align-items:center;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.trust-row img{height:52px;width:auto;object-fit:contain;opacity:.78;
+  filter:grayscale(1);transition:opacity .3s,filter .3s}
+.trust-row img:hover{opacity:1;filter:none}
+.trust-row img.tall{height:76px}
+@media(max-width:760px){.trust-row{gap:34px;justify-content:flex-start}
+  .trust-row img{height:40px}.trust-row img.tall{height:58px}}
+
+/* CONTACT FORM */
+.ctg{display:grid;grid-template-columns:1fr 1.08fr;gap:70px;align-items:start;margin-top:8px}
+.ctf{display:flex;flex-direction:column;gap:18px}
+.ctf .fld label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--t3);margin-bottom:9px}
+.ctf input,.ctf textarea{width:100%;background:var(--surf);border:1px solid var(--line);
+  border-radius:10px;padding:14px 16px;font-family:var(--sans);font-size:15.5px;color:var(--t1);
+  outline:none;transition:border-color .22s;resize:vertical}
+.ctf input::placeholder,.ctf textarea::placeholder{color:var(--t3)}
+.ctf input:focus,.ctf textarea:focus{border-color:var(--acc)}
+.ctf textarea{min-height:132px}
+.ctf button{align-self:flex-start;font-family:var(--mono);font-size:12px;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:500;padding:11px 20px;border:0;border-radius:4px;
+  background:#4D8DFF;color:#040711;cursor:pointer;transition:.22s;white-space:nowrap}
+.ctf button:hover{opacity:.88}
+@media(max-width:860px){.ctg{grid-template-columns:1fr;gap:40px}}
+
+/* DOORS */
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+.door{border:1px solid var(--line);border-radius:12px;padding:32px;display:block;
+  background:var(--surf);position:relative;transition:border-color .25s}
+.door:hover{border-color:var(--line2)}
+.door>*{position:relative;z-index:2}
+.door .dt{font-size:19px;font-weight:600;margin-bottom:10px;letter-spacing:-.02em}
+.door .dd{font-size:14.5px;color:var(--t2);line-height:1.55;margin-bottom:22px}
+.door .da{font-family:var(--mono);font-size:12px;color:var(--acc);letter-spacing:.06em}
+@media(max-width:880px){.doors{grid-template-columns:1fr}}
+
+footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--surf)}
+.f-in{display:flex;justify-content:space-between;gap:34px;flex-wrap:wrap;font-size:13.5px;
+  line-height:1.8;color:var(--t3)}
+.f-in a{transition:.2s}
+.f-in a:hover{color:var(--acc)}
+.disc{margin-top:38px;padding-top:26px;border-top:1px solid var(--line);font-size:11.5px;
+  line-height:1.75;color:#414D63;max-width:90ch}
+/* ===== SECTIONS CLAIRES ===== */
+.light{
+  --void:#FBFAF7; --surf:#FFFFFF; --surf2:#F5F3EE; --surf3:#EEEBE3;
+  --line:#E6E2D9; --line2:#D3CEC2; --glass:rgba(0,0,0,.016);
+  --t1:#070C13; --t2:#4C5763; --t3:#78838F;
+  --acc:#1E5FD6; --acc-d:#164BAB; --acc-glow:rgba(30,95,214,.075);
+  --good:#0B8F65; --good-glow:rgba(11,143,101,.1);
+  --amb:#8A5A08; --amb-bg:rgba(251,191,36,.16);
+  background:var(--void);color:var(--t1)}
+.light.cream{--void:#F3F0E9;--surf:#FFFDFA;--surf2:#F0ECE3;--line:#E2DDD3;--line2:#CFC9BC}
+.light+.light{border-top:1px solid #E4E0D6}
+.light .btn-p{color:#fff}
+.light .btn-p:hover{box-shadow:0 8px 26px rgba(30,95,214,.2)}
+.light .btn-s{border-color:var(--line2)}
+.light .badge{border-color:rgba(30,95,214,.24)}
+.light .badge.dev{border-color:rgba(138,90,8,.24)}
+.light .badge.plan{background:rgba(0,0,0,.04);border-color:var(--line2)}
+.light .badge i,.light .cstep.on::before,.light .mod:hover::before,
+.light .tm .in{box-shadow:none}
+.light .ec .n{text-shadow:none}
+.light .stat{transition:.3s}
+.light .stat:hover{box-shadow:0 3px 20px rgba(0,0,0,.045)}
+.light .circ:hover,.light .ec:hover{box-shadow:0 3px 20px rgba(0,0,0,.045)}
+.light .tm .in{background:var(--acc-glow);border-color:rgba(30,95,214,.22)}
+.light .door{background:var(--surf)}
+.light .chainline{background:var(--surf);border-color:var(--line2)}
+.reveal{opacity:0;transform:translateY(14px);
+  transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="container">
-      <div class="nav-inner">
-        <a class="nav-logo" href="#top">
-          <img src="logo_analog.png" alt="ANALOG">
-          <span>ANALOG</span>
-        </a>
-        <div class="nav-right">
-          <ul class="nav-links">
-            <li><a href="#probleme">Problématique</a></li>
-            <li><a href="#solution">Solution</a></li>
-            <li><a href="#equipe">Équipe</a></li>
-            <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
-          </ul>
-          <a class="nav-platform" href="https://test.analoganesthesia.com">
-            <span class="np-full">Accéder à la plateforme</span>
-            <span class="np-short">Plateforme</span>
-            <i data-lucide="arrow-up-right"></i>
-          </a>
-          <button class="nav-menu-btn" aria-label="Menu">
-            <i data-lucide="menu"></i>
-          </button>
-        </div>
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#top" class="logo" aria-label="ANALOG, accueil">AN<img src="assets/logo-a-letter-light.png?v=2" class="logo-a" alt="A">LOG</a>
+    <a href="https://test.analoganesthesia.com/" class="nav-cta">Accéder à la plateforme</a>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="grid-bg"></div>
+  <div class="trace">
+    <svg viewBox="0 16 2400 160" preserveAspectRatio="none">
+      <path pathLength="1000" d="M 0 130 L 70 130 Q 96 108 122 130 L 148 130 L 157 142 L 170 30 L 182 164 L 192 130 L 222 130 Q 262 76 302 130 L 800 130 L 870 130 Q 896 108 922 130 L 948 130 L 957 142 L 970 30 L 982 164 L 992 130 L 1022 130 Q 1062 76 1102 130 L 1600 130 L 1670 130 Q 1696 108 1722 130 L 1748 130 L 1757 142 L 1770 30 L 1782 164 L 1792 130 L 1822 130 Q 1862 76 1902 130 L 2400 130"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <h1>Automatiser <em>l'ensemble</em><br>du péri&#8209;opératoire.</h1>
+    <p class="hero-lede">Une seule plateforme, conçue par des anesthésistes.</p>
+  </div>
+</section>
+
+<section class="hero-b light cream">
+  <div class="wrap">
+    <p class="hero-sub">De la consultation d'anesthésie au retour à domicile : analyse exhaustive du dossier, consultation automatisée de A à Z, parcours de soins adaptés, profil de risque anesthésique, planning de bloc, cotation et suivi.</p>
+    <div class="hero-btns">
+      <a href="#profil" class="btn btn-p">Découvrir le profil risque anesthésique d'ANALOG →</a>
+    </div>
+  </div>
+</section>
+
+<section class="pad light" id="constat">
+  <div class="wrap reveal">
+    <p class="eyebrow">Le constat</p>
+    <h2 class="big">L'anesthésie évolue</h2>
+    <p class="lead" style="margin-top:26px">La spécialité a changé de périmètre : optimisation préopératoire élargie, parcours de soins coordonnés, suivi jusqu'au domicile.</p>
+    <p class="lead" style="margin-top:14px">Les logiciels historiques, eux, sont restés à la feuille de bloc.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="n">44<span>%</span></div>
+        <div class="l">des établissements n'ont aucune solution numérique dédiée à l'anesthésie. Support papier.</div>
+        <div class="s">Atlas des SIH 2020</div>
+      </div>
+      <div class="stat">
+        <div class="n">30-40<span>%</span></div>
+        <div class="l">du temps médical absorbé par des tâches administratives sans valeur clinique.</div>
+      </div>
+      <div class="stat">
+        <div class="n">74<span>%</span></div>
+        <div class="l">des anesthésistes se déclarent insatisfaits des solutions numériques actuelles.</div>
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-bg"></div>
-    <p class="eyebrow fade-up">IA médicale supervisée</p>
-    <h1 class="hero-title fade-up" style="transition-delay:.08s">
-      Réinventer le parcours anesthésique.
-    </h1>
-    <p class="hero-sub fade-up" style="transition-delay:.16s">
-      Solution SaaS sécurisée qui optimise la consultation d'anesthésie et structure l'ensemble du parcours, du préopératoire au domicile.
-    </p>
-    <a href="#contact" class="btn fade-up" style="transition-delay:.24s">
-      Nous contacter
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </section>
+<section class="pad light cream">
+  <div class="wrap reveal">
+    <p class="eyebrow">La chronologie</p>
+    <h2 class="big">Orchestrer le péri-opératoire,<br>de bout en bout.</h2>
+    <div class="chrono">
+      <span class="rail"></span>
+      <div class="cstep"><div class="num">01</div><div class="ti">Patient</div>
+        <ul class="cl"><li>Espace personnel sécurisé</li><li>Questionnaire préconsultation</li><li>Dépôt de documents</li><li>Interopérable <i>Mon espace santé</i></li></ul></div>
+      <div class="cstep"><div class="num">02</div><div class="ti">Analyse</div>
+        <ul class="cl"><li>Analyse IA exhaustive du dossier médical</li><li>Comptes rendus</li><li>Biologie</li><li>Imagerie</li><li>Ordonnances</li></ul></div>
+      <div class="cstep"><div class="num">03</div><div class="ti">Consultation</div>
+        <ul class="cl"><li>Consultation pré-anesthésique automatisée de A à Z</li><li>Fiche de synthèse générée</li><li>Téléconsultation</li></ul></div>
+      <div class="cstep"><div class="num">04</div><div class="ti">Évaluation</div>
+        <ul class="cl"><li>Profil risque anesthésique</li><li>Parcours de soins adaptés</li><li>Protocoles personnalisés</li><li>Aide à la prescription</li></ul></div>
+      <div class="cstep"><div class="num">05</div><div class="ti">Bloc opératoire</div>
+        <ul class="cl"><li>Feuille d'anesthésie intelligente</li><li>Prescriptions assistées</li><li>Compte rendu automatisé</li><li>Planning de bloc</li></ul></div>
+      <div class="cstep"><div class="num">06</div><div class="ti">SSPI et domicile</div>
+        <ul class="cl"><li>Salle de réveil</li><li>PROMs et PREMs</li><li>Alertes et suivi jusqu'au domicile</li></ul></div>
+    </div>
+  </div>
+</section>
 
-  <div class="rule"></div>
+<section class="traj" id="profil">
+  <div class="wrap">
+    <div class="traj-head reveal">
+      <p class="eyebrow">Profil de risque anesthésique par ANALOG</p>
+      <h2 class="big">Chez ANALOG, on préfère<br>ne pas prendre de risque.</h2>
+      <p class="lead" style="margin-top:26px">Plus de <b>110 données patient</b> analysées.<br><b>22 risques péri-opératoires</b> identifiés dès la consultation d'anesthésie.<br><span class="lead-k">Anticiper, c'est notre métier.</span></p>
+    </div>
 
-  <!-- PROBLEM -->
-  <section id="probleme">
-    <div class="container">
-      <div class="split">
-        <div class="fade-up">
-          <p class="label">Problématique</p>
-          <h2 class="section-title">Des outils fragmentés pour une spécialité exigeante.</h2>
+    <div class="rp reveal" id="rp">
+      <div class="rpw">
+      <div class="rw a">
+        <div class="rw-when">J−45 · consultation</div>
+        <div class="rw-c"><div class="rw-id"><div class="rw-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#EFECE5" stroke-width="8"/><circle class="arc" cx="42" cy="42" r="36" fill="none" stroke="#D85A30" stroke-width="8" stroke-linecap="round"/></svg><div class="v"><span class="n" data-to="68" style="color:#D85A30">68</span><span class="d">/ 100</span></div></div>
+          <div class="rw-p"><div class="nm">Martine LEFEBVRE, 67 ans</div><div class="sub">PTH droite programmée le 26.10.2026<br>sous anesthésie générale</div><span class="tier" style="color:#D85A30;border-color:#D85A30">risque élevé</span></div>
+        </div></div>
+        <div class="rw-c"><div class="rw-h"><span>4 risques majorés</span><em>sur 22</em></div>
+        <div class="rr">
+          <div class="rr-l"><span class="rr-x" style="color:#C0392B">×3,2</span>
+            <span class="rr-n">Transfusion péri-opératoire</span><span class="rr-p">34 %</span></div>
+          <div class="rr-b"><span class="band" style="left:4%;width:38%"></span>
+            <span class="me" style="left:78%;background:#C0392B"></span></div>
+          <div class="rr-s">Seuil établissement : commande de culots au-delà de 20 %</div></div>
+        <div class="rr">
+          <div class="rr-l"><span class="rr-x" style="color:#C0392B">×2,9</span>
+            <span class="rr-n">Infection du site opératoire</span><span class="rr-p">4,8 %</span></div>
+          <div class="rr-b"><span class="band" style="left:6%;width:32%"></span>
+            <span class="me" style="left:72%;background:#C0392B"></span></div>
+          <div class="rr-s">Portée par le déséquilibre glycémique, l’anémie et le tabagisme</div></div>
+        <div class="rr">
+          <div class="rr-l"><span class="rr-x" style="color:#B0700C">×2,3</span>
+            <span class="rr-n">Délirium postopératoire</span><span class="rr-p">14 %</span></div>
+          <div class="rr-b"><span class="band" style="left:8%;width:36%"></span>
+            <span class="me" style="left:63%;background:#B0700C"></span></div>
+          <div class="rr-s">Seuil établissement : dépistage au-delà de 10 %</div></div>
+        <div class="rr">
+          <div class="rr-l"><span class="rr-x" style="color:#B0700C">×1,8</span>
+            <span class="rr-n">Durée de séjour prolongée</span><span class="rr-p">41 %</span></div>
+          <div class="rr-b"><span class="band" style="left:10%;width:40%"></span>
+            <span class="me" style="left:66%;background:#B0700C"></span></div>
+          <div class="rr-s">Médiane attendue 5 jours · estimation 8 jours</div></div>
         </div>
-        <div class="split-text fade-up" style="transition-delay:.12s">
-          <p class="section-body">L'anesthésie est encore organisée avec des outils éparpillés, inadaptés au rythme médical moderne.</p>
-          <p class="section-body">Temps médical perdu. Données dispersées. Parcours patient peu digitalisé.</p>
-          <p class="section-body">La médecine progresse. Les outils, beaucoup moins.</p>
+        <div class="rw-fold"><span>17 autres critères · 1 en attente</span><button class="rw-more" type="button" aria-expanded="false"><span class="lbl">Tout afficher</span><span class="chev">›</span></button></div>
+        <div class="rw-all"><div class="in-c">
+          <div class="rw-grp">Général</div>
+          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-p">1,2 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-p">2,4 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-p">18 %</span><span class="ro-x" style="color:#B0700C">×2,0</span></div>
+          <div class="rw-grp">Infectieux</div>
+          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-p">1,6 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#C0392B">×2,4</span></div>
+          <div class="rw-grp">Hémostase et transfusion</div>
+          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-x" style="color:#3A424B">1,8 u</span></div>
+          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
+          <div class="rw-grp">Respiratoire</div>
+          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-p">9 %</span><span class="ro-x" style="color:#B0700C">×2,1</span></div>
+          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#B0700C">×1,7</span></div>
+          <div class="rw-grp">Cardiovasculaire</div>
+          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-w">en attente · ECG</span></div>
+          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="rw-grp">Rénal et métabolique</div>
+          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-p">5,4 %</span><span class="ro-x" style="color:#B0700C">×1,8</span></div>
+          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-p">22 %</span><span class="ro-x" style="color:#C0392B">×2,6</span></div>
+          <div class="rw-grp">Neurologique et confort</div>
+          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-p">27 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-p">31 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="rw-grp">Parcours et organisation</div>
+          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-p">4 %</span><span class="ro-x" style="color:#6E767E">×1,1</span></div>
+          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-p">8,6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+        </div></div>
+        <div class="rw-c"><div class="rw-lh"><span class="t">30 points récupérables</span>
+          <span style="font-size:10px">score cible</span>
+          <div class="mini"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="rgba(138,90,8,.16)" stroke-width="4"/><circle cx="17" cy="17" r="13" fill="none" stroke="#B0700C" stroke-width="4" stroke-linecap="round" stroke-dasharray="31 82"/></svg><span style="color:#B0700C">38</span></div></div>
+        <div class="rl"><span class="tk"></span><span>Anémie <span class="sb">— Hb 9,8 g/dL</span></span><span class="pt">−13</span></div>
+        <div class="rl"><span class="tk"></span><span>Déséquilibre glycémique <span class="sb">— HbA1c 8,4 %</span></span><span class="pt">−9</span></div>
+        <div class="rl"><span class="tk"></span><span>Tabagisme actif <span class="sb">— 30 paquets-années</span></span><span class="pt">−8</span></div>
         </div>
+      </div>
+      <div class="rw b">
+        <div class="rw-when">J−7 · après parcours de soins</div>
+        <div class="rw-c"><div class="rw-id"><div class="rw-ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#EFECE5" stroke-width="8"/><circle class="arc" cx="42" cy="42" r="36" fill="none" stroke="#0B7A55" stroke-width="8" stroke-linecap="round"/></svg><div class="v"><span class="n" data-to="38" style="color:#0B7A55">38</span><span class="d">/ 100</span></div></div>
+          <div class="rw-p"><div class="nm">Martine LEFEBVRE, 67 ans</div><div class="sub">PTH droite programmée le 26.10.2026<br>sous anesthésie générale</div><span class="tier" style="color:#0B7A55;border-color:#0B7A55">risque faible</span></div>
+        </div></div>
+        <div class="rw-c"><div class="rw-h"><span>1 risque majoré</span><em>sur 22</em></div>
+        <div class="rr">
+          <div class="rr-l"><span class="rr-x" style="color:#B0700C">×1,8</span>
+            <span class="rr-n">Durée de séjour prolongée</span><span class="rr-p">41 %</span></div>
+          <div class="rr-b"><span class="band" style="left:10%;width:40%"></span>
+            <span class="me" style="left:66%;background:#B0700C"></span></div>
+          <div class="rr-s">Médiane attendue 5 jours · estimation 8 jours</div></div>
+        </div>
+        <div class="rw-fold"><span>20 autres critères · 1 en attente</span><button class="rw-more" type="button" aria-expanded="false"><span class="lbl">Tout afficher</span><span class="chev">›</span></button></div>
+        <div class="rw-all"><div class="in-c">
+          <div class="rw-grp">Général</div>
+          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-p">0,9 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-p">1,8 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-p">12 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="rw-grp">Infectieux</div>
+          <div class="ro"><span class="ro-n">Infection du site opératoire</span><span class="ro-p">2,0 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-p">1,1 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-p">1,0 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="rw-grp">Hémostase et transfusion</div>
+          <div class="ro"><span class="ro-n">Transfusion péri-opératoire</span><span class="ro-p">12 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-x" style="color:#3A424B">0,4 u</span></div>
+          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
+          <div class="rw-grp">Respiratoire</div>
+          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-p">6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-p">1,4 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="rw-grp">Cardiovasculaire</div>
+          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-w">en attente · ECG</span></div>
+          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="rw-grp">Rénal et métabolique</div>
+          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-p">4,3 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-p">11 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="rw-grp">Neurologique et confort</div>
+          <div class="ro"><span class="ro-n">Délirium postopératoire</span><span class="ro-p">7 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-p">27 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-p">31 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="rw-grp">Parcours et organisation</div>
+          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-p">4 %</span><span class="ro-x" style="color:#6E767E">×1,1</span></div>
+          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-p">7,0 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+        </div></div>
+        <div class="rw-c"><div class="rw-lh"><span class="t">30 points récupérés</span>
+          <span style="font-size:10px">atteint</span>
+          <div class="mini"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="rgba(11,122,85,.16)" stroke-width="4"/><circle cx="17" cy="17" r="13" fill="none" stroke="#0B7A55" stroke-width="4" stroke-linecap="round" stroke-dasharray="31 82"/></svg><span style="color:#0B7A55">38</span></div></div>
+        <div class="rl ok"><span class="tk"></span><span>Parcours PBM <span class="sb">— fer IV, Hb à 12,1 g/dL</span></span><span class="pt">−13</span></div>
+        <div class="rl ok"><span class="tk"></span><span>Parcours diabète <span class="sb">— HbA1c à 7,1 %</span></span><span class="pt">−9</span></div>
+        <div class="rl ok"><span class="tk"></span><span>Sevrage tabagique <span class="sb">— substitution nicotinique</span></span><span class="pt">−8</span></div>
+        </div>
+      </div>
+      </div>
+    <div class="rp-val">
+      <div class="f"><b>3 parcours</b><span>déclenchés automatiquement</span></div>
+      <div class="f"><b>−30 points</b><span>de risque évitable</span></div>
+    </div>
+    </div>
+
+    <p class="tnote">Cas de démonstration construit à partir de profils cliniques types. Les valeurs affichées illustrent le fonctionnement de l'outil et ne constituent pas un résultat de performance. Le profil de risque anesthésique ANALOG est en développement : il fait l'objet d'un programme de validation clinique dont la méthode et les critères d'acceptation sont publiés dans le protocole ci-dessous. Démonstrateur de recherche, non destiné à l'usage clinique — il ne doit fonder aucune décision de prise en charge.</p>
+
+    <div style="margin-top:44px" class="reveal">
+      <a href="protocole.html" target="_blank" rel="noopener" class="btn btn-p">Accéder au protocole →</a>
+    </div>
+  </div>
+</section>
+
+<section class="pad light" id="plateforme">
+  <div class="wrap reveal">
+    <p class="eyebrow">La plateforme</p>
+    <h2 class="big">Tout le péri-opératoire.<br>Sans effets secondaires.</h2>
+    <div class="deck-nav">
+      <button class="dnav" id="dprev" aria-label="Module précédent">‹</button>
+      <button class="dnav" id="dnext" aria-label="Module suivant">›</button>
+    </div>
+    <div class="deck" id="deck">
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Consultation d'anesthésie automatisée</h3>
+          <p>Le questionnaire patient et l'analyse du dossier remplissent la consultation. Le praticien valide.</p>
+        </div>
+        <div class="mk">
+  <div class="mkbar">
+    <div class="mkf"><div class="k">Date CPA</div><div class="v">11/08/2026</div></div>
+    <div class="mkf"><div class="k">Anesthésiste</div><div class="v">BERNARD</div></div>
+    <div class="mkf"><div class="k">Date intervention</div><div class="v">13/08/2026</div></div>
+    <div class="mkf"><div class="k">Chirurgien</div><div class="v">MARTIN</div></div>
+    <div class="mkf"><div class="k">Intervention</div><div class="v">PTG DROITE</div></div>
+    <div class="mkbtn">Enregistrer</div>
+  </div>
+  <div class="mkcols" style="grid-template-columns:1fr 1.02fr 1.14fr;align-items:start">
+    <div style="display:grid;gap:10px">
+      <div class="mkc"><div class="mkh">Histoire de la maladie</div><div class="mkb">
+        <div class="mkin">Décrivez l'histoire de la maladie du patient…</div></div></div>
+      <div class="mkc"><div class="mkh">Allergies</div><div class="mkb">
+        <div class="mkchip"><b>Pénicilline</b><i>×</i></div>
+        <div class="mkin" style="margin-top:2px">Ajouter une allergie…</div></div></div>
+      <div class="mkc"><div class="mkh">Antécédents médicaux</div><div class="mkb">
+        <div class="mkchip"><b>AVC ischémique 2022 (non séquellaire)</b><i>×</i></div>
+        <div class="mkchip"><b>HTA</b><i>×</i></div>
+        <div class="mkchip"><b>Diabète type 2</b><i>×</i></div>
+        <div class="mkchip" style="margin-bottom:0"><b>Hypercholestérolémie</b><i>×</i></div></div></div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <div class="mkc"><div class="mkh">Mode de vie<em>Normal</em></div><div class="mkb">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+          <div class="mkchip" style="margin:0"><b>Fumeur actif — 30 PA</b></div>
+          <div class="mkchip" style="margin:0"><b>Jamais</b></div>
+          <div class="mkchip" style="margin:0"><b>Retraité (Comptable)</b></div>
+          <div class="mkchip" style="margin:0"><b>Marche · ≥ 4 MET</b></div></div>
+        <div class="mkchip" style="margin:5px 0 0"><b>Autonome à domicile · Épouse présente</b></div></div></div>
+      <div class="mkc"><div class="mkh">Critères d'intubation difficile<em>Normal</em></div><div class="mkb">
+        <div class="mklbl" style="margin-top:0">Mallampati</div>
+        <div class="mkpills"><div class="mkp on">I</div><div class="mkp">II</div><div class="mkp">III</div><div class="mkp">IV</div></div>
+        <div class="mklbl">ATCD de Cormack</div>
+        <div class="mkpills"><div class="mkp on">I</div><div class="mkp">II</div><div class="mkp">III</div><div class="mkp">IV</div></div>
+        <div class="mklbl">Ouverture buccale</div>
+        <div class="mkpills"><div class="mkp on">&gt; 35 mm</div><div class="mkp">20-35</div><div class="mkp">&lt; 20</div></div>
+        <div class="mklbl">Distance thyro-mentonnière</div>
+        <div class="mkpills"><div class="mkp on">&gt; 65 mm</div><div class="mkp">&lt; 65 mm</div></div></div></div>
+    </div>
+    <div class="mkc"><div class="mkh">Examen clinique</div><div class="mkb">
+      <div class="mkmeas"><div>Taille <b>172</b> cm</div><div>Poids <b>78</b> kg</div><div>IMC <b>26.4</b></div></div>
+      <div class="mkmeas"><div>SpO₂ <s>—</s></div><div>TA <s>—</s></div><div>FC <s>—</s></div><div>EN <s>—</s></div></div>
+      <div class="mkorg">
+        <div><div class="n">Cardio-vasculaire<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+        <div><div class="n">Pulmonaire<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+        <div><div class="n">Hémostase<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+        <div><div class="n">Neurologique<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+        <div><div class="n">Abdominal<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+        <div><div class="n">Abord veineux<em>Normal</em></div><div class="p">Saisir des observations…</div></div>
+      </div>
+      <div style="border:1px solid #E9E5DC;border-radius:7px;padding:7px 8px;margin-top:6px">
+        <div class="n" style="font-size:9.5px;font-weight:600;color:#0B1016">Autres</div>
+        <div class="p" style="font-size:8.5px;color:#BCC1C7;margin-top:6px">Saisir des observations…</div></div>
+    </div></div>
+  </div>
+</div>
+      </article>
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Prescriptions et protocoles personnalisés</h3>
+          <p>Bilan biologique, examens complémentaires, traitements de parcours et prémédication s'assemblent à partir du dossier du patient et des recommandations en vigueur. Il n'y a plus qu'à signer.</p>
+        </div>
+        <div class="mk">
+  <div class="mksec">
+    <div class="mksec-h"><span class="ic" style="background:#FBE6E6"></span>
+      <span class="tx"><span class="ti">Bilan biologique pré-opératoire</span></span><span class="pr"></span></div>
+    <div class="mksec-b">
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:9px">
+        <div class="mkgcol"><div class="gh">NFS / hémato</div>
+          <div class="mkck on"><span class="b"></span>NFS</div>
+          <div class="mkck on"><span class="b"></span>Plaquettes</div></div>
+        <div class="mkgcol"><div class="gh">Hémostase</div>
+          <div class="mkck on"><span class="b"></span>Coag <s>TP, TCA</s></div>
+          <div class="mkck on"><span class="b"></span>Anti Xa</div></div>
+        <div class="mkgcol"><div class="gh">Iono / rein</div>
+          <div class="mkck on"><span class="b"></span>Ionogramme</div>
+          <div class="mkck on"><span class="b"></span>Urée</div>
+          <div class="mkck on"><span class="b"></span>Créatinine</div>
+          <div class="mkck on"><span class="b"></span>DFG</div></div>
+        <div class="mkgcol"><div class="gh">Cardio / métabo</div>
+          <div class="mkck"><span class="b"></span>Troponine</div>
+          <div class="mkck"><span class="b"></span>BNP</div>
+          <div class="mkck on"><span class="b"></span>Glycémie</div>
+          <div class="mkck on"><span class="b"></span>HbA1c</div></div>
+        <div class="mkgcol"><div class="gh">Martial</div>
+          <div class="mkck"><span class="b"></span>CRP</div>
+          <div class="mkck on"><span class="b"></span>Albumine</div>
+          <div class="mkck on"><span class="b"></span>Ferritine</div>
+          <div class="mkck on"><span class="b"></span>CST</div></div>
+        <div class="mkgcol"><div class="gh">Groupe / RAI</div>
+          <div class="mkck on"><span class="b"></span>1<sup>re</sup> déterm.</div>
+          <div class="mkck on"><span class="b"></span>2<sup>e</sup> déterm.</div>
+          <div class="mkck on"><span class="b"></span>RAI</div></div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <div class="rule"></div>
+  <div class="mksec">
+    <div class="mksec-h"><span class="ic" style="background:#E4ECFB"></span>
+      <span class="tx"><span class="ti">Examens complémentaires et consultations externes</span></span><span class="pr"></span></div>
+    <div class="mksec-b"><div class="mkflow">
+      <div class="mkck on"><span class="b"></span>ECG</div>
+      <div class="mkck"><span class="b"></span>Radio thorax</div>
+      <div class="mkck on"><span class="b"></span>Consultation cardiologue</div>
+      <div class="mkck on"><span class="b"></span>Consultation tabacologue</div>
+      <div class="mkck"><span class="b"></span>Consultation pneumologue</div>
+      <div class="mkck"><span class="b"></span>Écho Doppler MI</div>
+    </div></div>
+  </div>
 
-  <!-- VISION -->
-  <section id="vision">
-    <div class="container">
-      <div class="split">
-        <div class="split-text fade-up" style="transition-delay:.12s">
-          <p class="section-body">Un seul environnement numérique. Un parcours structuré. Une IA médicale supervisée.</p>
-          <p class="section-body">Pour libérer du temps médical et renforcer la sécurité du patient.</p>
+  <div class="mksec">
+    <div class="mksec-h"><span class="ic" style="background:#E3F4E8"></span>
+      <span class="tx"><span class="ti">Parcours tabac — substituts nicotiniques</span>
+      <span class="su">Patch nicotine 21 mg/24 h dès J-2 · sevrage accompagné jusqu'à l'intervention</span></span>
+      <span class="pr"></span></div>
+  </div>
+
+  <div class="mksec">
+    <div class="mksec-h"><span class="ic" style="background:#FBE0E0"></span>
+      <span class="tx"><span class="ti">Parcours PBM — fer carboxymaltose (Ferinject)</span>
+      <span class="su">1000 mg IV en perfusion unique · dilué dans 250 mL NaCl 0,9 % sur 15 min · anémie ferriprive Hb 11 g/dL préop</span></span>
+      <span class="pr"></span></div>
+  </div>
+
+  <div class="mksec">
+    <div class="mksec-h"><span class="ic" style="background:#FBF0D8"></span>
+      <span class="tx"><span class="ti">Prémédication pré-opératoire (J0, H-1)</span></span><span class="pr"></span></div>
+    <div class="mksec-b"><div class="mkflow">
+      <div class="mkck on"><span class="b"></span>Paracétamol 1 g PO</div>
+      <div class="mkck on"><span class="b"></span>Acupan 30 mg PO</div>
+      <div class="mkck on"><span class="b"></span>Kétoprofène 100 mg PO</div>
+      <div class="mkck"><span class="b"></span>Hydrocortisone 100 mg IVL <s>sur 10 min</s></div>
+    </div></div>
+  </div>
+</div>
+      </article>
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Parcours de soins adaptés</h3>
+          <p>En proposant des parcours de soins adaptés au patient et une prise en charge spécifique dès la consultation, on diminue les complications per et post-opératoires. Le patient arrive prêt.</p>
         </div>
-        <div class="fade-up" style="order:-1">
-          <p class="label">Vision</p>
-          <h2 class="section-title">Et si tout le parcours anesthésique devenait intelligent ?</h2>
+        <div class="mk flush">
+  <div class="mkpat">
+    <span class="av"></span>
+    <span><span class="nm">DUPONT Jean</span><span class="id" style="display:block">IPP 1264877 · Né le 15/10/1957 · 68 ans · A+ · RAI négative</span></span>
+    <span class="pl"><span style="color:#C0392B">Allergie : Pénicilline</span><span style="color:#8A5A08">ASA 3</span><span style="color:#0B7A55">Cormack 1</span></span>
+    <span class="x"></span>
+  </div>
+  <div class="mkbody">
+    <aside class="mkside">
+      <div class="lb">Parcours actifs</div>
+      <div class="it on"><span class="d" style="background:#D14343"></span>PBM<em>Suivi</em></div>
+      <div class="it"><span class="d" style="background:#8A5A08"></span>Tabac<em>Suivi</em></div>
+      <div class="it"><span class="d" style="background:#1E5FD6"></span>Diabète<em>Suivi</em></div>
+    </aside>
+    <div class="mkmain">
+      <div class="mkti"><span class="dp"></span>
+        <span><h4>PBM — Patient Blood Management</h4>
+        <p>Gestion du capital sanguin · Chirurgie orthopédique · Recommandations HAS/SFAR 2022</p></span>
+        <span class="bt">Suivi post-opératoire</span></div>
+      <div class="mkc"><div class="mkb" style="padding:11px 12px">
+        <div style="display:flex;align-items:center">
+          <span class="mkmini" style="margin:0">Évolution de l'hémoglobine — parcours péri-opératoire</span>
+          <span class="mkleg"><span><i style="background:#1E5FD6"></i>Hb g/dL</span>
+          <span><i style="background:#D97706"></i>Ferritine</span><span><i style="background:#0E9AA7"></i>CST %</span></span>
         </div>
-      </div>
+        <svg viewBox="0 0 520 235" style="width:100%;height:250px;display:block;margin-top:8px">
+          <rect x="86" y="30" width="420" height="145" fill="#FAFAFE"/>
+          <g stroke="#EFEDF6" stroke-width="1">
+            <line x1="86" y1="56" x2="506" y2="56"/><line x1="86" y1="82" x2="506" y2="82"/>
+            <line x1="86" y1="108" x2="506" y2="108"/><line x1="86" y1="134" x2="506" y2="134"/>
+            <line x1="86" y1="160" x2="506" y2="160"/></g>
+          <line x1="86" y1="40" x2="506" y2="40" stroke="#E9836F" stroke-width="1" stroke-dasharray="5 4"/>
+          <text x="92" y="36" font-size="8" fill="#D97066" font-family="monospace">Seuil PBM 13</text>
+          <line x1="86" y1="30" x2="86" y2="175" stroke="#1E5FD6" stroke-width="1.2"/>
+          <g font-size="8.5" fill="#1E5FD6" font-family="monospace" text-anchor="end">
+            <text x="80" y="43">13</text><text x="80" y="69">12</text><text x="80" y="95">11</text>
+            <text x="80" y="121">10</text><text x="80" y="147">9</text><text x="80" y="173">8</text></g>
+          <g stroke="#C9C4DE" stroke-width="1" stroke-dasharray="3 3">
+            <line x1="140" y1="30" x2="140" y2="175"/><line x1="352" y1="30" x2="352" y2="175"/></g>
+          <g stroke="#A7D8BC" stroke-width="1" stroke-dasharray="3 3">
+            <line x1="182" y1="30" x2="182" y2="175"/><line x1="396" y1="30" x2="396" y2="175"/></g>
+          <polyline points="140,92 252,66 352,122 442,105" fill="none" stroke="#1E5FD6" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#fff" stroke="#1E5FD6" stroke-width="2.4">
+            <circle cx="140" cy="92" r="5.5"/><circle cx="252" cy="66" r="5.5"/>
+            <circle cx="352" cy="122" r="5.5"/><circle cx="442" cy="105" r="5.5"/></g>
+          <g font-size="9.5" font-weight="600" fill="#0B1016" font-family="monospace" text-anchor="middle">
+            <text x="140" y="80">11.2</text><text x="252" y="54">12.0</text>
+            <text x="352" y="140">9.8</text><text x="442" y="93">10.5</text></g>
+          <g fill="#fff" stroke="#D97706" stroke-width="2.2">
+            <circle cx="148" cy="166" r="5"/><circle cx="452" cy="60" r="5"/></g>
+          <g font-size="9" fill="#D97706" font-family="monospace"><text x="157" y="169">18</text><text x="461" y="63">145</text></g>
+          <g fill="#fff" stroke="#0E9AA7" stroke-width="2.2">
+            <circle cx="152" cy="140" r="5"/><circle cx="446" cy="80" r="5"/></g>
+          <g font-size="9" fill="#0E9AA7" font-family="monospace" text-anchor="end">
+            <text x="145" y="143">14%</text><text x="439" y="83">32%</text></g>
+          <g font-size="8" font-family="monospace">
+            <text x="140" y="190" fill="#7C6BC9" transform="rotate(-34 140 190)">CPA · 10 avr.</text>
+            <text x="182" y="190" fill="#2E8B57" transform="rotate(-34 182 190)">Fer IV · 11 avr.</text>
+            <text x="352" y="190" fill="#7C6BC9" transform="rotate(-34 352 190)">Chirurgie · 18 avr.</text>
+            <text x="396" y="190" fill="#2E8B57" transform="rotate(-34 396 190)">Fer IV · 19 avr.</text></g>
+        </svg>
+      </div></div>
     </div>
-  </section>
-
-  <div class="rule"></div>
-
-  <!-- SOLUTION -->
-  <section id="solution">
-    <div class="container">
-      <div class="fade-up" style="text-align:center; max-width:600px; margin:0 auto;">
-        <p class="label">Solution</p>
-        <h2 class="section-title">Une plateforme.<br>Tout le parcours.</h2>
-      </div>
-      <div class="feature-grid fade-up" style="transition-delay:.15s">
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="stethoscope"></i></div>
-          <p class="feature-name">Consultation préopératoire automatisée</p>
+  </div>
+</div>
+      </article>
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Planification opératoire intelligente</h3>
+          <p>Chaque dossier est contrôlé automatiquement dès la programmation : bilan manquant, consultation non réalisée, consentement absent. Les anomalies remontent des semaines à l'avance. Moins d'annulations de dernière minute, moins de surprises au bloc.</p>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="brain-circuit"></i></div>
-          <p class="feature-name">IA médicale supervisée d'aide à la décision</p>
+        <div class="mk">
+  <div class="mkbar">
+    <div class="mkf"><div class="k">Journée</div><div class="v">Lundi 24 août 2026</div></div>
+    <div class="mkf"><div class="k">Salles ouvertes</div><div class="v">4</div></div>
+    <div class="mkf"><div class="k">Interventions</div><div class="v">10</div></div>
+    <div class="mkf"><div class="k">Occupation</div><div class="v">91 %</div></div>
+    <div class="mkf"><div class="k">Dossiers à compléter</div><div class="v" style="color:#B0700C">4</div></div>
+  </div>
+  <div class="mkplan">
+    <div></div>
+    <div class="rh"><b>Salle 1</b><span>Orthopédie</span></div>
+    <div class="rh"><b>Salle 2</b><span>Viscéral</span></div>
+    <div class="rh"><b>Salle 3</b><span>ORL · Endocrino</span></div>
+    <div class="rh"><b>Salle 4</b><span>Urologie</span></div>
+  </div>
+  <div class="mkgrid2">
+    <div class="mkhr" style="grid-column:1;grid-row:1">07:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:2">08:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:3">08:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:4">09:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:5">09:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:6">10:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:7">10:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:8">11:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:9">11:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:10">12:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:11">12:30</div>
+    <div class="mkhr" style="grid-column:1;grid-row:12">13:00</div>
+    <div class="mkhr" style="grid-column:1;grid-row:13">13:30</div>
+    <div class="pcase ok" style="grid-column:2;grid-row:1/span 5"><div class="nm">DUPONT Jean<em>Prêt</em></div><div class="mt">68 ans · né(e) le 15/10/1957 · ASA 3</div><div class="iv">PTG droite</div><div class="sg">Dr MARTIN</div></div>
+    <div class="pcase wa" style="grid-column:2;grid-row:6/span 4"><div class="nm">BERNARD Alice<em>Bilan martial</em></div><div class="mt">74 ans · né(e) le 03/02/1952 · ASA 3</div><div class="iv">PTH gauche</div><div class="sg">Dr MARTIN</div></div>
+    <div class="pcase ok" style="grid-column:2;grid-row:10/span 4"><div class="nm">LEROY Paul<em>Prêt</em></div><div class="mt">56 ans · né(e) le 22/07/1969 · ASA 2</div><div class="iv">Arthroscopie du genou</div><div class="sg">Dr MEYER</div></div>
+    <div class="pcase ok" style="grid-column:3;grid-row:2/span 3"><div class="nm">MOREAU Claire<em>Prêt</em></div><div class="mt">41 ans · né(e) le 11/09/1984 · ASA 1</div><div class="iv">Cholécystectomie</div><div class="sg">Dr ROUX</div></div>
+    <div class="pcase ok" style="grid-column:3;grid-row:5/span 3"><div class="nm">GIRARD Hugo<em>Prêt</em></div><div class="mt">33 ans · né(e) le 05/12/1992 · ASA 1</div><div class="iv">Hernie inguinale</div><div class="sg">Dr ROUX</div></div>
+    <div class="pcase bk" style="grid-column:3;grid-row:8/span 5"><div class="nm">FONTAINE Marc<em>Consult. cardio</em></div><div class="mt">62 ans · né(e) le 18/04/1963 · ASA 3</div><div class="iv">Sigmoïdectomie</div><div class="sg">Dr ROUX</div></div>
+    <div class="pcase ok" style="grid-column:4;grid-row:2/span 4"><div class="nm">PETIT Nadia<em>Prêt</em></div><div class="mt">49 ans · né(e) le 27/03/1977 · ASA 2</div><div class="iv">Thyroïdectomie totale</div><div class="sg">Dr ALIX</div></div>
+    <div class="pcase wa" style="grid-column:4;grid-row:7/span 4"><div class="nm">GARNIER Léa<em>Consentement</em></div><div class="mt">29 ans · né(e) le 14/06/1996 · ASA 1</div><div class="iv">Amygdalectomie</div><div class="sg">Dr ALIX</div></div>
+    <div class="pcase ok" style="grid-column:5;grid-row:1/span 4"><div class="nm">RENAUD Michel<em>Prêt</em></div><div class="mt">71 ans · né(e) le 02/01/1955 · ASA 3</div><div class="iv">Résection de prostate</div><div class="sg">Dr COLIN</div></div>
+    <div class="pcase wa" style="grid-column:5;grid-row:6/span 4"><div class="nm">BLANC Yves<em>ECG manquant</em></div><div class="mt">66 ans · né(e) le 30/08/1959 · ASA 2</div><div class="iv">Néphrectomie partielle</div><div class="sg">Dr COLIN</div></div>
+  </div>
+</div>
+      </article>
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Cotation et tarification sur mesure</h3>
+          <p>Le bon code CCAM et les bons modificateurs, appliqués automatiquement à chaque intervention. Grâce au suivi des règlements rien n'est oublié, rien n'est sous-coté. Le compte est bon.</p>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="shield-check"></i></div>
-          <p class="feature-name">Espace patient personnel et sécurisé</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="clipboard-list"></i></div>
-          <p class="feature-name">Feuille d'anesthésie intelligente</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="home"></i></div>
-          <p class="feature-name">Suivi post-opératoire jusqu'au domicile</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><i data-lucide="puzzle"></i></div>
-          <p class="feature-name">Interopérabilité avec les logiciels existants</p>
-        </div>
-      </div>
+        <div class="mk">
+  <div class="mkbar">
+    <div class="mkf"><div class="k">Période</div><div class="v">Août 2026</div></div>
+    <div class="mkf"><div class="k">Actes cotés</div><div class="v">8</div></div>
+    <div class="mkf"><div class="k">Honoraires générés</div><div class="v">1 997,92 €</div></div>
+    <div class="mkf"><div class="k">Encaissé</div><div class="v" style="color:#0B7A55">1 133,04 €</div></div>
+    <div class="mkf"><div class="k">Reste à encaisser</div><div class="v" style="color:#C0392B">864,88 €</div></div>
+  </div>
+  <div class="mkbill">
+    <div class="mkbh">
+      <div>Patient</div><div>Acte CCAM</div><div>Modificateurs</div>
+      <div style="text-align:right">Base</div><div style="text-align:right">Total</div>
+      <div style="text-align:right">Règlement</div>
     </div>
-  </section>
+    <div class="mkbr">
+      <div><div class="pn">DUPONT Jean</div><div class="pd">68 ans · 24/08</div></div>
+      <div><div class="al">Prothèse totale de genou</div><div class="ac">NFKA007 · activité 4</div></div>
+      <div class="mkmod"><span>K</span><span>5</span></div>
+      <div class="eu">304,53</div>
+      <div class="tt">420,25</div>
+      <div class="mkst"><span class="pill-ok">Payé</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">BERNARD Alice</div><div class="pd">74 ans · 24/08</div></div>
+      <div><div class="al">Prothèse totale de hanche</div><div class="ac">NEKA020 · activité 4</div></div>
+      <div class="mkmod"><span>K</span><span>4</span></div>
+      <div class="eu">232,20</div>
+      <div class="tt">315,79</div>
+      <div class="mkst"><span class="btn-enc">Encaisser</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">LEROY Paul</div><div class="pd">56 ans · 24/08</div></div>
+      <div><div class="al">Méniscectomie par arthroscopie</div><div class="ac">NFFC004 · activité 4</div></div>
+      <div class="mkmod"><span>K</span></div>
+      <div class="eu">100,76</div>
+      <div class="tt">130,99</div>
+      <div class="mkst"><span class="pill-ok">Payé</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">MOREAU Claire</div><div class="pd">41 ans · 24/08</div></div>
+      <div><div class="al">Cholécystectomie par cœlioscopie</div><div class="ac">HMFC004 · activité 4</div></div>
+      <div class="mkmod"><span>K</span><span>4</span></div>
+      <div class="eu">151,51</div>
+      <div class="tt">206,05</div>
+      <div class="mkst"><span class="pill-ok">Payé</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">GIRARD Hugo</div><div class="pd">33 ans · 24/08</div></div>
+      <div><div class="al">Cure de hernie de l'aine avec prothèse</div><div class="ac">LMMA012 · activité 4</div></div>
+      <div class="mkmod"><span>K</span><span>4</span></div>
+      <div class="eu">101,94</div>
+      <div class="tt">138,64</div>
+      <div class="mkst"><span class="btn-enc">Encaisser</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">FONTAINE Marc</div><div class="pd">62 ans · 24/08</div></div>
+      <div><div class="al">Colectomie gauche</div><div class="ac">HHFA010 · activité 4</div></div>
+      <div class="mkmod"><span>K</span><span>5</span></div>
+      <div class="eu">297,43</div>
+      <div class="tt">410,45</div>
+      <div class="mkst"><span class="btn-enc">Encaisser</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">PETIT Nadia</div><div class="pd">49 ans · 24/08</div></div>
+      <div><div class="al">Thyroïdectomie totale</div><div class="ac">KCFA005 · activité 4</div></div>
+      <div class="mkmod"><span>K</span></div>
+      <div class="eu">242,58</div>
+      <div class="tt">315,35</div>
+      <div class="mkst"><span class="pill-ok">Payé</span></div>
+    </div>
+    <div class="mkbr">
+      <div><div class="pn">GARNIER Léa</div><div class="pd">29 ans · 24/08</div></div>
+      <div><div class="al">Amygdalectomie par dissection</div><div class="ac">FAFA014 · activité 4</div></div>
+      <div class="mkmod"><span>K</span></div>
+      <div class="eu">46,46</div>
+      <div class="tt">60,40</div>
+      <div class="mkst"><span class="pill-ok">Payé</span></div>
+    </div>
+  </div>
+  <div class="mksrc">CCAM v84 · 31/07/2026 — modificateur K OPTAM-ACO +30 % · modificateurs 4 et 5 analgésie locorégionale · simulation</div>
+</div>
+      </article>
+      <article class="dcard">
+        <div class="dc-top">
+          <h3>Suivi post-opératoire jusqu'au domicile</h3>
+          <p>Suivi de plaie, douleur, température et autonomie jusqu'au domicile. Les complications sont identifiées plus précocement, l'alerte remonte directement au service, les événements réels réalimentent le modèle de risque.</p>
+        </div>
+        <div class="mk">
+  <div class="mkcols" style="grid-template-columns:1fr 1fr;align-items:start">
 
-  <!-- STATEMENT -->
-  <div class="statement">
-    <div class="container">
-      <h2 class="statement-title fade-up">Le futur du parcours anesthésique commence ici.</h2>
-      <a href="#contact" class="btn btn-outline fade-up" style="transition-delay:.12s">
-        Rejoindre ANALOG
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <div class="mkc"><div class="mkh">Questionnaire patient<em>J+5</em></div><div class="mkb">
+      <div class="mklbl" style="margin-top:0;font-size:10px;color:#2C333A;font-weight:500">Évaluez votre douleur en ce moment</div>
+      <div class="mkends"><span>0 — aucune douleur</span><span>10 — extrêmement douloureux</span></div>
+      <div class="mkscale"><span class="">0</span><span class="">1</span><span class="">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span><span class="on">7</span><span class="">8</span><span class="">9</span><span class="">10</span></div>
+      <div class="mklbl" style="font-size:10px;color:#2C333A;font-weight:500;margin-top:11px">Avez-vous de la fièvre ?</div>
+      <div class="mkpills"><div class="mkp on">Oui</div><div class="mkp">Non</div></div>
+      <div class="mklbl" style="font-size:10px;color:#2C333A;font-weight:500;margin-top:9px">Des nausées ou vomissements ?</div>
+      <div class="mkpills"><div class="mkp">Oui</div><div class="mkp on">Non</div></div>
+      <div class="mklbl" style="font-size:10px;color:#2C333A;font-weight:500;margin-top:9px">Des saignements liés à l'intervention ?</div>
+      <div class="mkpills"><div class="mkp">Aucun</div><div class="mkp on">Léger</div><div class="mkp">Modéré</div><div class="mkp">Important</div></div>
+      <div class="mklbl" style="font-size:10px;color:#2C333A;font-weight:500;margin-top:11px">Photo de la cicatrice <i style="color:#A0A6AD;font-weight:400">— sans pansement</i></div>
+      <div class="mkdrop">Prendre ou joindre une photo</div>
+    </div></div>
+
+    <div class="mkc" style="align-self:start">
+      <div class="mkh">DUPONT Jean · PTG droite<em>Alerte J+5</em></div>
+
+      <div class="mksec2">
+        <div class="mkmini" style="margin:0">Douleur — échelle numérique, objectif ≤ 3</div>
+        <svg viewBox="0 0 310 92" style="width:100%;height:88px;display:block;margin-top:2px">
+          <polygon points="30,72 30.0,46.0 165.0,33.0 300.0,59.0 300,72" fill="#93A6BE" opacity=".07"/>
+          <line x1="30" y1="52.5" x2="300" y2="52.5" stroke="#E4A9A2"
+            stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="300" y="48.5" font-size="5.5" text-anchor="end" font-family="monospace"
+            fill="#D08A83">seuil 4</text>
+          <polyline points="30.0,46.0 165.0,33.0 300.0,59.0" fill="none" stroke="#93A6BE" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30.0" cy="46.0" r="7" fill="#E0A030" opacity=".15"/><circle cx="30.0" cy="46.0" r="3.6" fill="#E0A030"/><circle cx="165.0" cy="33.0" r="7" fill="#E0A030" opacity=".15"/><circle cx="165.0" cy="33.0" r="3.6" fill="#E0A030"/><circle cx="300.0" cy="59.0" r="3.4" fill="#fff" stroke="#93A6BE" stroke-width="1.8"/><text x="30.0" y="36.0" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#E0A030" font-weight="600">5</text><text x="165.0" y="23.0" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#E0A030" font-weight="600">7</text><text x="300.0" y="49.0" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#8A9099" font-weight="400">3</text><text x="30.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+1</text><text x="165.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+5</text><text x="300.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+7</text>
+        </svg>
+      </div>
+      <div class="mksec2">
+        <div class="mkmini" style="margin:0">Température — seuil d'alerte 38,0 °C</div>
+        <svg viewBox="0 0 310 92" style="width:100%;height:88px;display:block;margin-top:2px">
+          <polygon points="30,72 30.0,63.0 165.0,31.3 300.0,58.4 300,72" fill="#93A6BE" opacity=".07"/>
+          <line x1="30" y1="40.3" x2="300" y2="40.3" stroke="#E4A9A2"
+            stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="300" y="36.3" font-size="5.5" text-anchor="end" font-family="monospace"
+            fill="#D08A83">38,0</text>
+          <polyline points="30.0,63.0 165.0,31.3 300.0,58.4" fill="none" stroke="#93A6BE" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30.0" cy="63.0" r="3.4" fill="#fff" stroke="#93A6BE" stroke-width="1.8"/><circle cx="165.0" cy="31.3" r="7" fill="#D64545" opacity=".14"/><circle cx="165.0" cy="31.3" r="3.6" fill="#D64545"/><circle cx="300.0" cy="58.4" r="3.4" fill="#fff" stroke="#93A6BE" stroke-width="1.8"/><text x="30.0" y="53.0" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#8A9099" font-weight="400">37,0</text><text x="165.0" y="21.3" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#C0392B" font-weight="600">38,4</text><text x="300.0" y="48.4" font-size="7.5" text-anchor="middle" font-family="monospace" fill="#8A9099" font-weight="400">37,2</text><text x="30.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+1</text><text x="165.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+5</text><text x="300.0" y="86" font-size="6" text-anchor="middle" font-family="monospace" fill="#AEB4BA">J+7</text>
+        </svg>
+      </div>
+
+      <div class="mksec2">
+        <div class="mkmini" style="margin:0">Cicatrice</div>
+        <div class="mkph"><div><span>J+1</span></div><div><span>J+5</span></div><div><span>J+7</span></div></div>
+      </div>
+
+      <div class="mksec2">
+        <div class="mkmini" style="margin:0">Autonomie et fonction — scores déclarés</div>
+        <div class="mkrw"><span class="n">Indice de Barthel</span>
+          <span class="tr"><i class="gd" style="width:85%"></i></span><b>85/100</b></div>
+        <div class="mkrw"><span class="n">Oxford Knee Score</span>
+          <span class="tr"><i class="gd" style="width:58%"></i></span><b>28/48</b></div>
+        <div class="mkrw"><span class="n">Satisfaction · PREM</span>
+          <span class="tr"><i class="gd" style="width:88%"></i></span><b>4,4/5</b></div>
+      </div>    </div>
+
+  </div>
+</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="pad light cream" id="contact">
+  <div class="wrap reveal">
+    <p class="eyebrow">Parlons-en</p>
+    <h2 class="big">Le futur du parcours anesthésique<br>commence ici.</h2>
+    <div class="doors">
+      <a href="#contact-form" class="door">
+        <div class="dt">Établissement de santé</div>
+        <div class="dd">Évaluer ANALOG dans votre structure, estimer le retour sur investissement, organiser une démonstration.</div>
+        <div class="da">NOUS CONTACTER →</div>
+      </a>
+      <a href="#contact-form" class="door">
+        <div class="dt">Investisseur</div>
+        <div class="dd">Accéder au dossier complet : marché, modèle économique, trajectoire financière et feuille de route produit.</div>
+        <div class="da">NOUS CONTACTER →</div>
+      </a>
+      <a href="https://test.analoganesthesia.com/" class="door">
+        <div class="dt">Utilisateur</div>
+        <div class="dd">Accéder à la plateforme ANALOG. Réservé aux professionnels de santé des centres participants.</div>
+        <div class="da">SE CONNECTER →</div>
       </a>
     </div>
   </div>
+</section>
 
-  <!-- TEAM -->
-  <section id="equipe">
-    <div class="container">
-      <div class="split">
-        <div class="fade-up">
-          <p class="label">Équipe</p>
-          <h2 class="section-title">Conçu par des médecins, pour des médecins.</h2>
-        </div>
-        <div class="split-text fade-up" style="transition-delay:.12s">
-          <p class="section-body">ANALOG a été imaginé par des médecins anesthésistes-réanimateurs confrontés chaque jour aux limites des outils actuels.</p>
-          <p class="section-body">Notre ambition : concevoir l'infrastructure numérique de l'anesthésie moderne.</p>
-        </div>
+<section class="pad light" id="equipe">
+  <div class="wrap reveal">
+    <p class="eyebrow">L'équipe</p>
+    <h2 class="big">Conçu par des anesthésistes,<br>pour des anesthésistes.</h2>
+    <p class="lead" style="margin-top:26px">ANALOG est né de la pratique quotidienne de deux médecins anesthésistes-réanimateurs confrontés aux limites des outils existants. Notre ambition : concevoir l'infrastructure numérique de l'anesthésie moderne.</p>
+          <div class="trust">
+      <div class="tl">Ils nous font confiance</div>
+      <div class="trust-row">
+        <img src="assets/partner-bpifrance.png" alt="Bpifrance">
+        <img src="assets/partner-digital-medical-hub.png" alt="Digital Medical Hub" class="tall">
+        <img src="assets/partner-hiit.png" alt="HIIT — Health Innovation Intensive Training" class="tall">
+        <img src="assets/partner-french-tech.png" alt="La French Tech Grand Paris" class="tall">
       </div>
     </div>
-  </section>
+</div>
+</section>
 
-  <div class="rule"></div>
-
-  <!-- TRUST -->
-  <div class="trust">
-    <div class="container">
-      <p class="label">Ils nous font confiance</p>
-      <div class="trust-logos">
-        <img src="logo_la_french_tech_grand_paris.png" alt="La French Tech Grand Paris">
-        <img src="logo_hiit.png" alt="HIIT">
-        <img src="logo_digital_medical_hub.png" alt="Digital Medical Hub">
+<section class="pad light cream" id="contact-form">
+  <div class="wrap reveal">
+    <div class="ctg">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 class="big">On répond vite.</h2>
+        <p class="lead" style="margin-top:26px">Une question, une démonstration dans votre
+        établissement, un partenariat de recherche : écrivez-nous, on vous répond.</p>
       </div>
+      <form class="ctf" id="cform" action="https://formspree.io/f/xpqjvygb" method="POST">
+        <div class="fld"><label for="cf-nom">Nom</label>
+          <input id="cf-nom" name="name" type="text" placeholder="Votre nom" required></div>
+        <div class="fld"><label for="cf-mail">Email</label>
+          <input id="cf-mail" name="email" type="email" placeholder="email@exemple.com" required></div>
+        <div class="fld"><label for="cf-msg">Message</label>
+          <textarea id="cf-msg" name="message" placeholder="Votre message" required></textarea></div>
+        <button type="submit">Envoyer</button>
+      </form>
     </div>
   </div>
+</section>
 
-  <div class="rule"></div>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-wrap">
-        <div class="contact-info fade-up">
-          <p class="label">Contact</p>
-          <h2 class="section-title">Parlons de votre projet.</h2>
-          <p class="section-body">Une question sur ANALOG ou notre solution ? Envoyez-nous un message, nous vous répondrons rapidement.</p>
-        </div>
-        <form class="contact-form fade-up" style="transition-delay:.12s" action="https://formspree.io/f/xpqjvygb" method="POST">
-          <div class="field">
-            <label class="field-label">Nom</label>
-            <input class="field-input" type="text" name="name" placeholder="Votre nom" required>
-          </div>
-          <div class="field">
-            <label class="field-label">Email</label>
-            <input class="field-input" type="email" name="email" placeholder="email@exemple.com" required>
-          </div>
-          <div class="field">
-            <label class="field-label">Message</label>
-            <textarea class="field-textarea" name="message" placeholder="Votre message" required></textarea>
-          </div>
-          <button type="submit" class="btn" style="align-self:flex-start; margin-top:4px">
-            Envoyer
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </form>
+<footer>
+  <div class="wrap">
+    <div class="f-in">
+      <div>
+        <div class="f-logo">AN<img src="assets/logo-a-letter-light.png?v=2" alt="A">LOG</div>
+        ANALOG SAS · 22 rue des Bernardins, 75005 Paris<br>
+        <a href="mailto:analoganesthesia@gmail.com">analoganesthesia@gmail.com</a>
+      </div>
+      <div>
+        <a href="#plateforme">Plateforme</a><br>
+        <a href="#profil">Profil de risque</a><br>
+        <a href="protocole.html" target="_blank" rel="noopener">Protocole scientifique</a><br>
+        <a href="#equipe">L'équipe</a>
+      </div>
+      <div>
+        <a href="#contact">Établissements</a><br>
+        <a href="#contact">Nous écrire</a><br>
+        <a href="confidentialite.html">Protection des données</a>
       </div>
     </div>
-  </section>
+    <p class="disc">ANALOG est une plateforme logicielle destinée aux professionnels de santé. Les fonctionnalités signalées « en développement » ou « V1 2027 » ne sont pas disponibles à ce jour. Le profil de risque anesthésique est un démonstrateur de recherche : il n'est pas destiné à l'usage clinique et ne doit fonder aucune décision diagnostique, thérapeutique ou d'orientation. Les données de santé sont hébergées chez un hébergeur agréé HDS. ANALOG ne dispose pas à ce jour du marquage CE en tant que dispositif médical ; la trajectoire de certification est décrite dans le protocole scientifique.</p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="container">
-      © <span id="y"></span> ANALOG
-    </div>
-  </footer>
+<script>
+const nav=document.getElementById('nav'),hero=document.querySelector('.hero');
+new IntersectionObserver(e=>{nav.classList.toggle('on',!e[0].isIntersecting)},{rootMargin:'-60px 0px 0px 0px'}).observe(hero);
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+function countTo(el,to,dur){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/dur,1);
+  const e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e);if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
+const rp=document.getElementById('rp');
+if(rp){
+  const nums=[...rp.querySelectorAll('.rw-ring .n')];
+  const count=(el,to)=>{let t0=null;const f=ts=>{if(!t0)t0=ts;const p=Math.min((ts-t0)/1400,1),
+    e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e);if(p<1)requestAnimationFrame(f)};
+    el.textContent='0';requestAnimationFrame(f)};
+  new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){
+    rp.classList.add('in');nums.forEach(n=>count(n,+n.dataset.to||+n.textContent));o.disconnect();}
+  },{threshold:.25}).observe(rp);
+}
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-    lucide.createIcons();
+const chrono=document.querySelector('.chrono');
+if(chrono){new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){chrono.classList.add('in');o.disconnect()}},
+  {threshold:.2}).observe(chrono);}
 
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll(".fade-up").forEach(el => obs.observe(el));
-  </script>
+document.querySelectorAll('.rw-more').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const panel=btn.closest('.rw-fold').nextElementSibling;
+    const open=panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.querySelector('.lbl').textContent=open?'Replier':'Tout afficher';
+  });
+});
+
+const deck=document.getElementById('deck');
+if(deck){
+  const real=[...deck.querySelectorAll('.dcard')], N=real.length, first=real[0];
+  const dup=c=>{const k=c.cloneNode(true);k.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    k.setAttribute('aria-hidden','true');return k;};
+  real.forEach(c=>deck.insertBefore(dup(c),first));
+  real.forEach(c=>deck.appendChild(dup(c)));
+
+  const cards=[...deck.querySelectorAll('.dcard')];
+  const gap=26;
+  const step=()=>cards[0].offsetWidth+gap;
+  const cycle=()=>N*step();
+  const center=i=>{const b=cards[i].getBoundingClientRect(), r=deck.getBoundingClientRect();
+    return deck.scrollLeft+(b.left-r.left)-(r.width-b.width)/2;};
+  let origin=0;
+
+  const tilt=()=>{
+    const r=deck.getBoundingClientRect(), cx=r.left+r.width/2;
+    cards.forEach(c=>{
+      const b=c.getBoundingClientRect();
+      const d=Math.max(-1.4,Math.min(1.4,(b.left+b.width/2-cx)/(r.width*.75)));
+      const a=Math.abs(d);
+      c.style.transform=`perspective(2000px) rotateY(${-d*8}deg) scale(${1-Math.min(a,1)*.09}) translateZ(${-a*40}px)`;
+      c.style.opacity=String(1-Math.min(a,1)*.42);
+      c.style.zIndex=String(40-Math.round(a*20));
+    });
+  };
+
+  const teleport=dx=>{
+    const sb=deck.style.scrollBehavior, sn=deck.style.scrollSnapType;
+    deck.style.scrollBehavior='auto';deck.style.scrollSnapType='none';
+    deck.scrollLeft+=dx;
+    deck.style.scrollSnapType=sn||'x mandatory';deck.style.scrollBehavior=sb||'';
+    tilt();
+  };
+  const norm=()=>{const w=cycle();
+    if(deck.scrollLeft<origin-w/2) teleport(w);
+    else if(deck.scrollLeft>origin+w/2) teleport(-w);};
+
+  const place=()=>{origin=center(N);
+    const sb=deck.style.scrollBehavior;deck.style.scrollBehavior='auto';
+    deck.scrollLeft=origin;deck.style.scrollBehavior=sb||'';tilt();};
+
+  let t=null;
+  deck.addEventListener('scroll',()=>{tilt();clearTimeout(t);t=setTimeout(norm,150)},{passive:true});
+  window.addEventListener('resize',place);
+  dprev.onclick=()=>{norm();deck.scrollBy({left:-step(),behavior:'smooth'})};
+  dnext.onclick=()=>{norm();deck.scrollBy({left:step(),behavior:'smooth'})};
+
+  place();
+  requestAnimationFrame(place);
+  window.addEventListener('load',place);
+}
+
+const tcase=document.querySelector('.tcase');
+const tro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  countTo(document.getElementById('s1'),68,1200);document.getElementById('b1').style.width='68%';
+  setTimeout(()=>{countTo(document.getElementById('s2'),41,1200);document.getElementById('b2').style.width='41%'},1000);
+  tro.unobserve(e.target)}})},{threshold:.3});
+if(tcase)tro.observe(tcase);
+</script>
 </body>
 </html>
