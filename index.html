@@ -51,8 +51,7 @@ section{position:relative;scroll-margin-top:96px}
 .pad-s{padding:84px 0}
 
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--acc);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:'';width:22px;height:1px;background:var(--acc);opacity:.6}
+  color:var(--acc);margin-bottom:20px}
 h2.big{font-size:clamp(32px,4.2vw,52px);line-height:1.08;letter-spacing:-.035em;font-weight:600}
 h3{font-size:19px;font-weight:600;line-height:1.35;letter-spacing:-.015em}
 p.lead{font-size:18.5px;color:var(--t2);line-height:1.62;max-width:66ch}
@@ -95,25 +94,25 @@ nav.on{border-bottom-color:var(--line);background:rgba(4,7,17,.9)}
     linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
   background-size:56px 56px;
   mask-image:radial-gradient(ellipse 85% 60% at 50% 10%,#000 20%,transparent 75%)}
-.h1-wrap{position:relative}
-.trace{position:absolute;top:50%;left:50%;width:100vw;height:198px;
-  transform:translate(-50%,-50%);opacity:.66;pointer-events:none;z-index:0;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.trace{position:absolute;left:0;right:0;bottom:14px;height:146px;opacity:.5;pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
 .trace svg{width:100%;height:100%;display:block}
-.trace path{fill:none;stroke:var(--acc);stroke-width:2.9;vector-effect:non-scaling-stroke;
-  stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 5.2s cubic-bezier(.32,0,.12,1) forwards}
-@keyframes draw{to{stroke-dashoffset:0}}
+.trace path{fill:none;stroke:var(--acc);stroke-width:2.4;vector-effect:non-scaling-stroke;
+  stroke-linecap:round;stroke-linejoin:round}
+.sweep{position:absolute;inset:0;clip-path:inset(0 100% 0 0);
+  animation:sweep 2.9s linear .12s forwards}
+@keyframes sweep{to{clip-path:inset(0 0 0 0)}}
+@media(prefers-reduced-motion:reduce){.sweep{clip-path:none;animation:none}}
 .hero .wrap{position:relative;z-index:3}
 h1{font-size:clamp(38px,6.2vw,82px);line-height:1.04;letter-spacing:-.045em;font-weight:600;max-width:24ch;text-wrap:balance}
 h1 em{font-style:normal;color:var(--acc)}
-.hero h1{position:relative;z-index:2;margin:0 auto;text-shadow:0 0 26px var(--void),0 0 58px var(--void),0 0 90px var(--void)}
+.hero h1{position:relative;z-index:2;margin:0 auto}
 .hero-lede{font-size:21px;line-height:1.5;color:#F3F0E9;font-weight:500;
   letter-spacing:-.012em;max-width:52ch;margin:clamp(26px,3.6vh,40px) auto 0;
-  text-shadow:0 0 20px var(--void),0 0 44px var(--void)}
+}
 @media(max-width:700px){.hero{min-height:max(380px,calc(100svh - 236px));padding:78px 0 20px}
-  .hero-sub{font-size:17px}.trace{opacity:.5;height:150px}
+  .hero-sub{font-size:17px}.trace{opacity:.42;height:120px}
   .hero-lede{margin-top:26px;font-size:18px}}
 .hero-sub{font-size:18.5px;line-height:1.58;color:var(--t2);max-width:none;margin-top:0}
 .hero-btns{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
@@ -244,9 +243,15 @@ h1 em{font-style:normal;color:var(--acc)}
 .rr-x{font-size:19px;font-weight:600;letter-spacing:-.03em;line-height:1}
 .rr-n{font-size:12.5px;flex:1;color:#1B2229;min-width:0}
 .rr-p{font-family:var(--mono);font-size:11px;color:#8A9099}
-.rr-b{position:relative;height:6px;background:#EFECE5;border-radius:3px;margin-bottom:5px}
-.rr-b .band{position:absolute;height:100%;background:#DAD5CB;border-radius:3px}
-.rr-b .me{position:absolute;top:-2.5px;width:3px;height:11px;border-radius:2px}
+.rr-b{position:relative;height:7px;background:#EDEAE3;border-radius:4px;margin-bottom:6px;overflow:hidden}
+.rr-b .fill{display:block;height:100%;border-radius:4px;width:0;
+  transition:width 1.1s cubic-bezier(.22,1,.36,1) .25s}
+.rp.in .rr-b .fill{width:var(--w)}
+.ro-t{flex:none;width:58px;height:5px;background:#EDEAE3;border-radius:3px;overflow:hidden}
+.ro-t.nb{background:transparent}
+.ro-t i{display:block;height:100%;border-radius:3px;width:0;
+  transition:width .9s cubic-bezier(.22,1,.36,1) .4s}
+.rp.in .ro-t i{width:var(--w)}
 .rr-s{font-size:10.5px;color:#8A9099;line-height:1.4}
 .rw-fold{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E6E2DA;border-radius:9px;
   padding:9px 9px 9px 13px;margin-bottom:9px;font-size:11.5px;color:#6E767E}
@@ -265,9 +270,9 @@ h1 em{font-style:normal;color:var(--acc)}
 .rw-grp{background:#F6F4EF;border-top:1px solid #EDE9E1;padding:5px 13px;font-family:var(--mono);
   font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#9AA1A8}
 .rw-grp:first-child{border-top:none}
-.ro{display:flex;align-items:center;gap:9px;padding:7px 13px;border-top:1px solid #F4F1EA;font-size:11.5px}
+.ro{display:flex;align-items:center;gap:8px;padding:7px 13px;border-top:1px solid #F4F1EA;font-size:11.5px}
 .ro-n{flex:1;color:#3A424B;min-width:0}
-.ro-p{font-family:var(--mono);font-size:10px;color:#9AA1A8;flex:none}
+.ro-p{font-family:var(--mono);font-size:10px;color:#9AA1A8;flex:none;width:46px;text-align:right}
 .ro-x{font-family:var(--mono);font-size:11.5px;font-weight:600;flex:none;width:38px;text-align:right}
 .ro.wait .ro-n{color:#9AA1A8}
 .ro-w{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:#9AA1A8;border:1px solid #E6E2DA;
@@ -646,6 +651,12 @@ footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--sur
 .reveal{opacity:0;transform:translateY(14px);
   transition:opacity .85s cubic-bezier(.22,1,.36,1),transform .85s cubic-bezier(.22,1,.36,1)}
 .reveal.in{opacity:1;transform:none}
+/* échelle globale : tout le site rendu à 90 % sur écran large */
+@media(min-width:1040px){
+  body{zoom:0.9}
+  .hero{min-height:max(478px,calc(111.1vh - 206px));
+    min-height:max(478px,calc(111.1svh - 206px))}
+}
 </style>
 </head>
 <body>
@@ -659,15 +670,15 @@ footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--sur
 
 <section class="hero" id="top">
   <div class="grid-bg"></div>
-  <div class="wrap">
-    <div class="h1-wrap">
-      <div class="trace">
-        <svg viewBox="0 20 2400 220" preserveAspectRatio="none">
-          <path pathLength="1000" d="M 0 130 L 60 130 Q 86 106 112 130 L 138 130 L 147 144 L 160 24 L 172 170 L 182 130 L 212 130 Q 252 72 292 130 L 370 130 Q 396 106 422 130 L 448 130 L 457 144 L 470 24 L 482 170 L 492 130 L 522 130 Q 562 72 602 130 L 1798 130 L 1798 130 Q 1824 106 1850 130 L 1876 130 L 1885 144 L 1898 24 L 1910 170 L 1920 130 L 1950 130 Q 1990 72 2030 130 L 2108 130 Q 2134 106 2160 130 L 2186 130 L 2195 144 L 2208 24 L 2220 170 L 2230 130 L 2260 130 Q 2300 72 2340 130 L 2400 130"/>
-        </svg>
-      </div>
-      <h1>Automatiser l'ensemble<br>du <em>péri&#8209;opératoire</em>.</h1>
+  <div class="trace">
+    <div class="sweep">
+    <svg viewBox="0 16 2400 160" preserveAspectRatio="none">
+      <path d="M 0 130 L 70 130 Q 96 108 122 130 L 148 130 L 157 142 L 170 30 L 182 164 L 192 130 L 222 130 Q 262 76 302 130 L 800 130 L 870 130 Q 896 108 922 130 L 948 130 L 957 142 L 970 30 L 982 164 L 992 130 L 1022 130 Q 1062 76 1102 130 L 1600 130 L 1670 130 Q 1696 108 1722 130 L 1748 130 L 1757 142 L 1770 30 L 1782 164 L 1792 130 L 1822 130 Q 1862 76 1902 130 L 2400 130"/>
+    </svg>
     </div>
+  </div>
+  <div class="wrap">
+    <h1>Automatiser l'ensemble<br>du <em>péri&#8209;opératoire</em>.</h1>
     <p class="hero-lede">Une seule plateforme, conçue par des anesthésistes.</p>
   </div>
 </section>
@@ -744,58 +755,54 @@ footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--sur
         </div></div>
         <div class="rw-c"><div class="rw-h"><span>4 risques majorés</span><em>sur 22</em></div>
         <div class="rr">
-          <div class="rr-l"><span class="rr-x" style="color:#C0392B">×3,2</span>
+          <div class="rr-l"><span class="rr-x" style="color:#B3261E">×3,2</span>
             <span class="rr-n">Transfusion péri-opératoire</span><span class="rr-p">34 %</span></div>
-          <div class="rr-b"><span class="band" style="left:4%;width:38%"></span>
-            <span class="me" style="left:78%;background:#C0392B"></span></div>
+          <div class="rr-b"><span class="fill" style="--w:73%;background:#B3261E"></span></div>
           <div class="rr-s">Seuil établissement : commande de culots au-delà de 20 %</div></div>
         <div class="rr">
-          <div class="rr-l"><span class="rr-x" style="color:#C0392B">×2,9</span>
+          <div class="rr-l"><span class="rr-x" style="color:#B3261E">×2,9</span>
             <span class="rr-n">Infection du site opératoire</span><span class="rr-p">4,8 %</span></div>
-          <div class="rr-b"><span class="band" style="left:6%;width:32%"></span>
-            <span class="me" style="left:72%;background:#C0392B"></span></div>
+          <div class="rr-b"><span class="fill" style="--w:63%;background:#B3261E"></span></div>
           <div class="rr-s">Portée par le déséquilibre glycémique, l’anémie et le tabagisme</div></div>
         <div class="rr">
-          <div class="rr-l"><span class="rr-x" style="color:#B0700C">×2,3</span>
+          <div class="rr-l"><span class="rr-x" style="color:#C0392B">×2,3</span>
             <span class="rr-n">Délirium postopératoire</span><span class="rr-p">14 %</span></div>
-          <div class="rr-b"><span class="band" style="left:8%;width:36%"></span>
-            <span class="me" style="left:63%;background:#B0700C"></span></div>
+          <div class="rr-b"><span class="fill" style="--w:43%;background:#C0392B"></span></div>
           <div class="rr-s">Seuil établissement : dépistage au-delà de 10 %</div></div>
         <div class="rr">
           <div class="rr-l"><span class="rr-x" style="color:#B0700C">×1,8</span>
             <span class="rr-n">Durée de séjour prolongée</span><span class="rr-p">41 %</span></div>
-          <div class="rr-b"><span class="band" style="left:10%;width:40%"></span>
-            <span class="me" style="left:66%;background:#B0700C"></span></div>
+          <div class="rr-b"><span class="fill" style="--w:27%;background:#B0700C"></span></div>
           <div class="rr-s">Médiane attendue 5 jours · estimation 8 jours</div></div>
         </div>
         <div class="rw-fold"><span>17 autres critères · 1 en attente</span><button class="rw-more" type="button" aria-expanded="false"><span class="lbl">Tout afficher</span><span class="chev">›</span></button></div>
         <div class="rw-all"><div class="in-c">
           <div class="rw-grp">Général</div>
-          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-p">1,2 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
-          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-p">2,4 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
-          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-p">18 %</span><span class="ro-x" style="color:#B0700C">×2,0</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">1,2 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-t"><i style="--w:17%;background:#B0700C"></i></span><span class="ro-p">2,4 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-t"><i style="--w:33%;background:#C0392B"></i></span><span class="ro-p">18 %</span><span class="ro-x" style="color:#C0392B">×2,0</span></div>
           <div class="rw-grp">Infectieux</div>
-          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-p">1,6 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
-          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#C0392B">×2,4</span></div>
+          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-t"><i style="--w:30%;background:#B0700C"></i></span><span class="ro-p">1,6 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-t"><i style="--w:47%;background:#C0392B"></i></span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#C0392B">×2,4</span></div>
           <div class="rw-grp">Hémostase et transfusion</div>
-          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-x" style="color:#3A424B">1,8 u</span></div>
-          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
+          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-t nb"></span><span class="ro-p"></span><span class="ro-x" style="color:#3A424B">1,8 u</span></div>
+          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-t"><i style="--w:20%;background:#B0700C"></i></span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
           <div class="rw-grp">Respiratoire</div>
-          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-p">9 %</span><span class="ro-x" style="color:#B0700C">×2,1</span></div>
-          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#B0700C">×1,7</span></div>
+          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-t"><i style="--w:37%;background:#C0392B"></i></span><span class="ro-p">9 %</span><span class="ro-x" style="color:#C0392B">×2,1</span></div>
+          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-t"><i style="--w:23%;background:#B0700C"></i></span><span class="ro-p">1,9 %</span><span class="ro-x" style="color:#B0700C">×1,7</span></div>
           <div class="rw-grp">Cardiovasculaire</div>
-          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-w">en attente · ECG</span></div>
-          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
-          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-t nb"></span><span class="ro-w">en attente · ECG</span></div>
+          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-t"><i style="--w:30%;background:#B0700C"></i></span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
           <div class="rw-grp">Rénal et métabolique</div>
-          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-p">5,4 %</span><span class="ro-x" style="color:#B0700C">×1,8</span></div>
-          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-p">22 %</span><span class="ro-x" style="color:#C0392B">×2,6</span></div>
+          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-t"><i style="--w:27%;background:#B0700C"></i></span><span class="ro-p">5,4 %</span><span class="ro-x" style="color:#B0700C">×1,8</span></div>
+          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-t"><i style="--w:53%;background:#B3261E"></i></span><span class="ro-p">22 %</span><span class="ro-x" style="color:#B3261E">×2,6</span></div>
           <div class="rw-grp">Neurologique et confort</div>
-          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-p">27 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
-          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-p">31 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">27 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">31 %</span><span class="ro-x" style="color:#8A9099">×1,2</span></div>
           <div class="rw-grp">Parcours et organisation</div>
-          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-p">4 %</span><span class="ro-x" style="color:#6E767E">×1,1</span></div>
-          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-p">8,6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">4 %</span><span class="ro-x" style="color:#8A9099">×1,1</span></div>
+          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-t"><i style="--w:17%;background:#B0700C"></i></span><span class="ro-p">8,6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
         </div></div>
         <div class="rw-c"><div class="rw-lh"><span class="t">30 points récupérables</span>
           <span style="font-size:10px">score cible</span>
@@ -814,41 +821,40 @@ footer{padding:56px 0 46px;border-top:1px solid var(--line);background:var(--sur
         <div class="rr">
           <div class="rr-l"><span class="rr-x" style="color:#B0700C">×1,8</span>
             <span class="rr-n">Durée de séjour prolongée</span><span class="rr-p">41 %</span></div>
-          <div class="rr-b"><span class="band" style="left:10%;width:40%"></span>
-            <span class="me" style="left:66%;background:#B0700C"></span></div>
+          <div class="rr-b"><span class="fill" style="--w:27%;background:#B0700C"></span></div>
           <div class="rr-s">Médiane attendue 5 jours · estimation 8 jours</div></div>
         </div>
         <div class="rw-fold"><span>20 autres critères · 1 en attente</span><button class="rw-more" type="button" aria-expanded="false"><span class="lbl">Tout afficher</span><span class="chev">›</span></button></div>
         <div class="rw-all"><div class="in-c">
           <div class="rw-grp">Général</div>
-          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-p">0,9 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
-          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-p">1,8 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
-          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-p">12 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 30 jours</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">0,9 %</span><span class="ro-x" style="color:#8A9099">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Mortalité à 90 jours</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">1,8 %</span><span class="ro-x" style="color:#8A9099">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Complication majeure, tout appareil</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">12 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
           <div class="rw-grp">Infectieux</div>
-          <div class="ro"><span class="ro-n">Infection du site opératoire</span><span class="ro-p">2,0 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
-          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-p">1,1 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
-          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-p">1,0 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Infection du site opératoire</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">2,0 %</span><span class="ro-x" style="color:#8A9099">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Sepsis postopératoire</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">1,1 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Reprise chirurgicale pour infection</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">1,0 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
           <div class="rw-grp">Hémostase et transfusion</div>
-          <div class="ro"><span class="ro-n">Transfusion péri-opératoire</span><span class="ro-p">12 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
-          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-x" style="color:#3A424B">0,4 u</span></div>
-          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
+          <div class="ro"><span class="ro-n">Transfusion péri-opératoire</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">12 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nombre de culots attendus</span><span class="ro-t nb"></span><span class="ro-p"></span><span class="ro-x" style="color:#3A424B">0,4 u</span></div>
+          <div class="ro"><span class="ro-n">Maladie thromboembolique veineuse</span><span class="ro-t"><i style="--w:20%;background:#B0700C"></i></span><span class="ro-p">3,1 %</span><span class="ro-x" style="color:#B0700C">×1,6</span></div>
           <div class="rw-grp">Respiratoire</div>
-          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-p">6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
-          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-p">1,4 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Complication pulmonaire</span><span class="ro-t"><i style="--w:17%;background:#B0700C"></i></span><span class="ro-p">6 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Ventilation prolongée au-delà de 48 h</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">1,4 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
           <div class="rw-grp">Cardiovasculaire</div>
-          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-w">en attente · ECG</span></div>
-          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
-          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro wait"><span class="ro-n">Complication cardiaque majeure</span><span class="ro-t nb"></span><span class="ro-w">en attente · ECG</span></div>
+          <div class="ro"><span class="ro-n">Fibrillation atriale de novo</span><span class="ro-t"><i style="--w:30%;background:#B0700C"></i></span><span class="ro-p">6,2 %</span><span class="ro-x" style="color:#B0700C">×1,9</span></div>
+          <div class="ro"><span class="ro-n">Accident vasculaire cérébral</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">0,8 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
           <div class="rw-grp">Rénal et métabolique</div>
-          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-p">4,3 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
-          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-p">11 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Insuffisance rénale aiguë KDIGO ≥ 2</span><span class="ro-t"><i style="--w:17%;background:#B0700C"></i></span><span class="ro-p">4,3 %</span><span class="ro-x" style="color:#B0700C">×1,5</span></div>
+          <div class="ro"><span class="ro-n">Déséquilibre glycémique péri-opératoire</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">11 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
           <div class="rw-grp">Neurologique et confort</div>
-          <div class="ro"><span class="ro-n">Délirium postopératoire</span><span class="ro-p">7 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
-          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-p">27 %</span><span class="ro-x" style="color:#6E767E">×1,4</span></div>
-          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-p">31 %</span><span class="ro-x" style="color:#6E767E">×1,2</span></div>
+          <div class="ro"><span class="ro-n">Délirium postopératoire</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">7 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Douleur postopératoire sévère</span><span class="ro-t"><i style="--w:13%;background:#8A9099"></i></span><span class="ro-p">27 %</span><span class="ro-x" style="color:#8A9099">×1,4</span></div>
+          <div class="ro"><span class="ro-n">Nausées et vomissements postopératoires</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">31 %</span><span class="ro-x" style="color:#8A9099">×1,2</span></div>
           <div class="rw-grp">Parcours et organisation</div>
-          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-p">4 %</span><span class="ro-x" style="color:#6E767E">×1,1</span></div>
-          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-p">7,0 %</span><span class="ro-x" style="color:#6E767E">×1,3</span></div>
+          <div class="ro"><span class="ro-n">Admission non programmée en réanimation</span><span class="ro-t"><i style="--w:7%;background:#8A9099"></i></span><span class="ro-p">4 %</span><span class="ro-x" style="color:#8A9099">×1,1</span></div>
+          <div class="ro"><span class="ro-n">Réhospitalisation à 30 jours</span><span class="ro-t"><i style="--w:10%;background:#8A9099"></i></span><span class="ro-p">7,0 %</span><span class="ro-x" style="color:#8A9099">×1,3</span></div>
         </div></div>
         <div class="rw-c"><div class="rw-lh"><span class="t">30 points récupérés</span>
           <span style="font-size:10px">atteint</span>
